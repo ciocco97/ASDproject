@@ -21,4 +21,4 @@ def main():
 
 if __name__ == '__main__':
     main()
-    print("mamme qui si giocaa yeeee. Prova yeeee")
+    print("facciamo i seri pls")
