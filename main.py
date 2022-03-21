@@ -13,6 +13,7 @@ from matrix_parser import MatrixParser
 # See PyCharm help at https://www.jetbrains.com/help/pycharm/
 
 def main():
+    print("Prosciutto")
     parser = MatrixParser()
     parser.parse_file_number_n()
     for line in parser.sets_viewable_using_domain():
@@ -21,4 +22,3 @@ def main():
 
 if __name__ == '__main__':
     main()
-    print("facciamo i seri pls")
