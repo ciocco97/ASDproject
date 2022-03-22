@@ -1,5 +1,6 @@
 from subset import Subset
 
+
 class SubsQueue:
     def __init__(self):
         self.items = []

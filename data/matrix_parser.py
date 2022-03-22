@@ -7,6 +7,7 @@ class MatrixParser:
 
     def __init__(self, path='Benchmarks/benchmarks1/'):
 
+        self.sets_number = 0
         self.domain_size = 0
         self.dictionary = {}
 
@@ -74,4 +75,7 @@ class MatrixParser:
         return self.domain
 
     def get_domain_size(self):
-        return len(self.dictionary)
+        return self.domain_size
+
+    def get_sets_number(self):
+        return self.sets_number

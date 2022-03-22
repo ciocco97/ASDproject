@@ -25,7 +25,12 @@ class Subset:
         return max(self.components)
 
     def add(self, singoletto):
+        if self.is_empty():
+            self.components.remove(0)
         self.components.append(singoletto)
 
     def get_components(self):
         return self.components
+
+    def is_empty(self):
+        return len(self.components) == 1 and self.components[0] == 0
