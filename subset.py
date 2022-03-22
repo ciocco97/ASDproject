@@ -20,3 +20,6 @@ class Subset:
                 elif val > oval:
                     return 1
             return 0
+
+    def max(self):
+        return max(self.components)
