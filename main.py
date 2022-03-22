@@ -8,16 +8,13 @@
 #     print(f'Bella quebec, {name}')  # Press Ctrl+F8 to toggle the breakpoint.
 
 # See PyCharm help at https://www.jetbrains.com/help/pycharm/
+import logging
 
 from mbase import mbase
 
 
 def main():
-    # print("Prosciutto")
-    # parser = MatrixParser()
-    # parser.parse_file_number_n()
-    # for line in parser.sets_viewable_using_domain():
-    #     print(*line, sep="\t")
+    logging.basicConfig(filename='ASD.log', encoding='utf-8', level=logging.DEBUG)
     mbase()
 
 

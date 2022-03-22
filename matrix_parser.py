@@ -1,3 +1,4 @@
+import logging
 import os
 import re
 
@@ -18,6 +19,7 @@ class MatrixParser:
         self.dictionary = {}
         self.matrix_one_zero = []
         selected_file = self.file_list[n]
+        logging.debug("File selezionato per il parsing: " + selected_file)
         with open(self.path + selected_file) as file:
             for line in file:
                 if not line.startswith(';;'):
@@ -27,16 +29,17 @@ class MatrixParser:
                             row.append(int(num))
                     self.matrix_one_zero.append(row)
                 else:
-                    tonio = line.split()
-                    if tonio[1] == "Map":
-                        del tonio[:2]
-                        # tonio = tonio[2:len(tonio)]
-                        for num_element in tonio:
+                    num_elements = line.split()
+                    if num_elements[1] == "Map":
+                        del num_elements[:2]
+                        # num_elements = num_elements[2:len(num_elements)]
+                        for num_element in num_elements:
                             element = re.findall(r'\(.*?\)', num_element)[0]
                             num = int(num_element.replace(element, ""))
                             element = element[1:-1]
                             self.dictionary[num] = element
                             self.domain.append(num)
+        logging.debug(f"Parsing completato: {len(self.domain)} elementi del dominio e {len(self.matrix_one_zero)} insiemi")
 
     def matrix_domain(self):
         # return [x if x not in self.dictionary else self.dictionary[k + 1] for y in self.matrix for k, x in enumerate(y)]
