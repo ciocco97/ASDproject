@@ -8,7 +8,7 @@ class Subset:
         text = ""
         for val in self.components:
             text = text + str(val) + " - "
-        return text.removesuffix(' - ')
+        return text.removesuffix(" - ")
 
     def compare(self, other):
         if isinstance(other, Subset):
