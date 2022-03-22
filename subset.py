@@ -1,8 +1,9 @@
+import copy
+
+
 class Subset:
-    def __init__(self, *vals):
-        self.components = []
-        for i, val in enumerate(vals):
-            self.components.insert(i, val)
+    def __init__(self, vals):
+        self.components = copy.deepcopy(vals)
 
     def __str__(self):
         text = ""
@@ -14,7 +15,6 @@ class Subset:
         if isinstance(other, Subset):
             for i, val in enumerate(self.components):
                 oval = other.components[i]
-                # print(val, oval)
                 if val < oval:
                     return -1
                 elif val > oval:
