@@ -1,8 +1,9 @@
+import copy
+
+
 class Subset:
-    def __init__(self, *vals):
-        self.components = []
-        for i, val in enumerate(vals):
-            self.components.insert(i, val)
+    def __init__(self, vals):
+        self.components = copy.deepcopy(vals)
 
     def __str__(self):
         text = ""

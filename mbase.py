@@ -13,3 +13,5 @@ def mbase():
     print(f"sub2: {sub2}")
     print(f"sub1 compare sub2: {sub1.compare(sub2)}")
     print(f"max sub2: {sub2.max()}")
+
+
