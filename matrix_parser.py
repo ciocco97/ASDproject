@@ -73,4 +73,4 @@ class MatrixParser:
         return self.domain
 
     def get_domain_size(self):
-        return self.domain_size
+        return len(self.dictionary)
