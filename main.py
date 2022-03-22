@@ -14,7 +14,7 @@ from mbase import mbase
 
 
 def main():
-    logging.basicConfig(filename='ASD.log', encoding='utf-8', level=logging.DEBUG)
+    logging.basicConfig(filename='ASD.log', level=logging.DEBUG)
     mbase()
 
 

@@ -1,15 +1,14 @@
-import copy
-
-
 class Subset:
-    def __init__(self, vals):
-        self.components = copy.deepcopy(vals)
+    def __init__(self, *vals):
+        self.components = []
+        for val in vals:
+            self.components.append(val)
 
     def __str__(self):
         text = ""
         for val in self.components:
             text = text + str(val) + " - "
-        return text.removesuffix(" - ")
+        return text[:len(text) - 3]
 
     def compare(self, other):
         if isinstance(other, Subset):
@@ -23,3 +22,6 @@ class Subset:
 
     def max(self):
         return max(self.components)
+
+    def add(self, singoletto):
+        self.components.append(singoletto)

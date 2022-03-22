@@ -15,15 +15,23 @@ def mbase():
     print(f"sub1 compare sub2: {sub1.compare(sub2)}")
     print(f"max sub2: {sub2.max()}")
 
-    print("inizio procedura quella vera eh, mica le prove\n\n---INIZIO VERO---\n\n--DA ADESSO IN POI--\n\n")
 
+    print("inizio procedura quella vera eh, mica le prove\n\n---INIZIO VERO---\n\n--DA ADESSO IN POI--\n\n")
+    main_procedure()
 
 def main_procedure():
     matrix_parser = MatrixParser()
+    matrix_parser.parse_file_number_n()
 
     queue = SubsQueue()
-    while len(queue) > 0:
-        item = queue.dequeue()
-        for e in range(item.max() + 1, matrix_parser.get_domain_size())[(item.max() + 1),matrix_parser.get_domain_size()):
+    while queue.mamma() > 0:
+        delta = queue.dequeue()
+        for e in range(delta.max() + 1, matrix_parser.get_domain_size()):
+            print(f"delta:{delta}")
+            T = Subset(delta, e)
+            result = the_best_check_in_the_entire_world(T)
+            print(f"new delta: {T}")
+    
 
-
+def the_best_check_in_the_entire_world(T):
+    print("mamma")
