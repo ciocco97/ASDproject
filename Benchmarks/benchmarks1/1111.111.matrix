@@ -1,7 +1,7 @@
 ;;; Host = Eil, Version = 1.0, date = 2022-03-22-17-24-43
 ;;; Source = ERROR 404
 ;;; Error status nil
-;;; Injected fault:32(o2)
+;;; Injected fault:4(B4)
 ;;; Map 1(A1) 2(A2) 3(B3) 4(B4) 5(A5)
 0 0 1 1 0 -
 1 1 0 1 0 -
