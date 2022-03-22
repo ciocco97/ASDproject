@@ -41,7 +41,8 @@ class MatrixParser:
                             self.dictionary[num] = element
                             self.domain.append(num)
         logging.debug(f"Parsing completato: {len(self.domain)} elementi del dominio e {len(self.matrix_one_zero)} insiemi")
-        self.domain_size = len(self.dictionary)
+        self.domain_size = len(self.domain)
+        self.sets_number = len(self.matrix_one_zero)
 
     def matrix_domain(self):
         # return [x if x not in self.dictionary else self.dictionary[k + 1] for y in self.matrix for k, x in enumerate(y)]

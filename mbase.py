@@ -33,28 +33,31 @@ def main_procedure():
 
     queue = SubsQueue()
     while queue.size() > 0:
+        print(f"\tQueue size: {queue.size()}")
         delta = queue.dequeue()
         
-        print(f"delta: {delta}")
-        print(f"delta_max: {delta.max()}")
+        print(f"\tdelta: {delta}")
+        print(f"\tdelta_max: {delta.max()}")
         
         for e in range(delta.max() + 1, matrix_parser.get_domain_size()):
             
-            print(f"delta components: {delta.get_components()}")
+            print(f"\t\tdelta components: {delta.get_components()}")
             
-            T = Subset(delta.get_components())
-            T.add(e)
+            t = Subset(delta.get_components())
+            t.add(e)
             
-            print(f"new delta: {T}")
+            print(f"\t\tnew delta: {t}")
             
-            result = the_best_check_in_the_entire_world(T)
+            result = the_best_check_in_the_entire_world(t)
             
-            print(f"result: {RESULT_TO_STRING[result]}")
+            print(f"\t\tresult: {RESULT_TO_STRING[result]}")
             
             if result == OK:
-                queue.enqueue(T)
+                queue.enqueue(t)
             elif result == MHS:
-                print(f"Minimal hitting set: {T}")
+                print(f"Minimal hitting set: {t}")
+
+            print(f"\t\t- e: {e} in {range(delta.max() + 1, matrix_parser.get_domain_size())} -")
 
 
 def the_best_check_in_the_entire_world(T):

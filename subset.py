@@ -5,10 +5,10 @@ class Subset:
             self.components.append(val)
 
     def __str__(self):
-        text = "Subset str: "
+        text = "| "
         for val in self.components:
             text = text + str(val) + " - "
-        return text[:len(text) - 3]
+        return text[:len(text) - 3] + " |"
 
     def compare(self, other):
         if isinstance(other, Subset):
