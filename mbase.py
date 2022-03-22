@@ -1,5 +1,6 @@
 from matrix_parser import MatrixParser
 from subset import Subset
+from subqueue import SubsQueue
 
 
 def mbase():
@@ -14,4 +15,12 @@ def mbase():
     print(f"sub1 compare sub2: {sub1.compare(sub2)}")
     print(f"max sub2: {sub2.max()}")
 
+    print("inizio procedura quella vera eh, mica le prove\n\n---INIZIO VERO---\n\n--DA ADESSO IN POI--\n\n")
+
+
+def main_procedure():
+    queue = SubsQueue()
+    while len(queue) > 0:
+        item = queue.dequeue()
+        for e in [item.max() + 1:]
 

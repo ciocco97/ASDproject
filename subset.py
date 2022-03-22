@@ -15,7 +15,6 @@ class Subset:
         if isinstance(other, Subset):
             for i, val in enumerate(self.components):
                 oval = other.components[i]
-                # print(val, oval)
                 if val < oval:
                     return -1
                 elif val > oval:
