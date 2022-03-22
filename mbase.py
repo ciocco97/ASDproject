@@ -19,8 +19,11 @@ def mbase():
 
 
 def main_procedure():
+    matrix_parser = MatrixParser()
+
     queue = SubsQueue()
     while len(queue) > 0:
         item = queue.dequeue()
-        for e in [item.max() + 1:]
+        for e in range(item.max() + 1, matrix_parser.get_domain_size())[(item.max() + 1),matrix_parser.get_domain_size()):
+
 
