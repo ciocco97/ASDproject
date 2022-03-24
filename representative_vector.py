@@ -3,6 +3,7 @@ from subset import Subset
 
 
 class RepresentativeVector:
+    X_VAL = -1
 
     def __init__(self, size):
         self.vector = [0] * size
@@ -18,4 +19,3 @@ class RepresentativeVector:
 
     def get_values(self):
         return self.vector
-

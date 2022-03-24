@@ -10,12 +10,14 @@
 # See PyCharm help at https://www.jetbrains.com/help/pycharm/
 import logging
 
-from mbase import mbase
+from mbase import MBase
 
 
 def main():
-    logging.basicConfig(filename='ASD.log', level=logging.DEBUG)
-    mbase()
+    logging.basicConfig(filename='ASD.log', level=logging.DEBUG, format="%(asctime)s:%(levelname)s:%(message)s")
+    logging.FileHandler('ASD.log', mode='w')
+    mamma = MBase()
+    mamma.main_procedure()
 
 
 if __name__ == '__main__':
