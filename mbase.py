@@ -31,6 +31,9 @@ def mbase():
 def main_procedure():
     problem_data = Data()
 
+    for symbol in problem_data.get_domain():
+        print(f"{problem_data.get_representative_vector(symbol)}")
+
     queue = SubsQueue()
     while queue.size() > 0:
         print(f"\tQueue size: {queue.size()}")

@@ -21,5 +21,11 @@ class Data:
                     current_repr_vector.set_sigma_i_val(k, symbol)
             self.singlet_representative_vector[symbol] = current_repr_vector
 
+    def get_representative_vector(self, symbol: int) -> RepresentativeVector:
+        return self.singlet_representative_vector[symbol]
+
     def get_domain_size(self):
         return self.matrix_parser.get_domain_size()
+
+    def get_domain(self):
+        return self.matrix_parser.get_domain()
