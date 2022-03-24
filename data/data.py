@@ -17,7 +17,7 @@ class Data:
         # the representative vector of the empty subset is the null vector of size N
         self.singlet_representative_vectors[0] = RepresentativeVector(self.N)
 
-        # calcolo dei vettori rappresentativi dei singoletti
+        # computation of the representative vectors of the singolitties :')
         for symbol in self.matrix_parser.get_domain():
             current_repr_vector = RepresentativeVector(self.N)
             for k, n_i in enumerate(self.matrix_parser.matrix_lexiconographic()):
