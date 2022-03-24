@@ -10,6 +10,7 @@ class Data:
         self.matrix_parser.parse_file_number_n(file_number)
 
         self.N = self.matrix_parser.get_sets_number()
+        RepresentativeVector.X_VAL = -1 * (self.matrix_parser.get_domain_size() + 1)
 
         self.singlet_representative_vectors = {}
         self.representative_vectors = {}

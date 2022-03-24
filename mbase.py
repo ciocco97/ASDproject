@@ -33,6 +33,7 @@ class MBase:
             logging.info(f"\tdelta components: {delta.get_components()}, {delta.__hash__()}")
 
             for e in range(delta.max() + 1, data.get_domain_size()):
+                logging.info(f"\t\t- e: {e} in {range(delta.max() + 1, data.get_domain_size())} -")
 
                 t = Subset(delta.get_components())
 
@@ -43,6 +44,7 @@ class MBase:
                 logging.info(f"\t\t{t} - {rv1}")
                 logging.info(f"\t\t{e} - {rv2}")
                 new_rv = self.generate_new_rv(rv1, rv2)
+                logging.info(f"\t\t{e} - {rv2}")
                 t.add(e)
                 data.add_representative_vector(t, new_rv)
                 result = self.the_best_check_in_the_entire_world(t)
@@ -54,8 +56,6 @@ class MBase:
                     self.output.append(t)
                     logging.info(f"\t\tMinimal hitting set: {t}")
 
-                logging.info(f"\t\t- e: {e} in {range(delta.max() + 1, data.get_domain_size())} -")
-
         print(*(x for x in self.output), sep='\n')
 
     # this procedure generate the new rv starting from a couple
@@ -64,7 +64,7 @@ class MBase:
         for i, phi1 in enumerate(rv1.get_values()):
             phi2 = rv2.get_values()[i]
             result = phi1 + phi2
-            new.set_val_by_index(i, result if result <= max(phi1, phi2) else RepresentativeVector.X_VAL)
+            new.set_val_by_index(i, result if 0 <= result <= max(phi1, phi2) else RepresentativeVector.X_VAL)
         return new
 
     def the_best_check_in_the_entire_world(self, t):

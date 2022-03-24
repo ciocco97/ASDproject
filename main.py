@@ -14,8 +14,10 @@ from mbase import MBase
 
 
 def main():
+    # For log record attributes visit https://docs.python.org/3/library/logging.html#logrecord-objects
     logging.basicConfig(filename='ASD.log', level=logging.DEBUG, format="%(asctime)s:%(levelname)s:%(message)s")
     logging.FileHandler('ASD.log', mode='w')
+
     mamma = MBase()
     mamma.main_procedure()
 
