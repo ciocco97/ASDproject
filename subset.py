@@ -10,6 +10,9 @@ class Subset:
             text = text + str(val) + " - "
         return text[:len(text) - 3] + " |"
 
+    def __hash__(self):
+        return hash(str(self.__str__()))
+
     def compare(self, other):
         if isinstance(other, Subset):
             for i, val in enumerate(self.components):

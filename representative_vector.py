@@ -4,15 +4,18 @@ from subset import Subset
 
 class RepresentativeVector:
 
-    def __init__(self, size, sigma):
+    def __init__(self, size):
         self.vector = [0] * size
-        self.set = sigma
 
     def __str__(self) -> str:
-        return str(self.set) + " - " + self.vector_to_str()
+        return self.vector_to_str()
 
     def vector_to_str(self) -> str:
         return ' '.join(map(str, self.vector))
 
-    def set_sigma_i_val(self, n_i_index, val):
+    def set_val_by_index(self, n_i_index, val):
         self.vector[n_i_index] = val
+
+    def get_values(self):
+        return self.vector
+

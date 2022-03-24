@@ -29,10 +29,10 @@ def mbase():
 
 
 def main_procedure():
-    problem_data = Data()
+    data = Data()
 
-    for symbol in problem_data.get_domain():
-        print(f"{problem_data.get_representative_vector(symbol)}")
+    for rv in data.get_representative_vectors():
+        print(rv)
 
     queue = SubsQueue()
     while queue.size() > 0:
@@ -60,8 +60,17 @@ def main_procedure():
             elif result == MHS:
                 print(f"Minimal hitting set: {t}")
 
-            print(f"\t\t- e: {e} in {range(delta.max() + 1, problem_data.get_domain_size())} -")
+            print(f"\t\t- e: {e} in {range(delta.max() + 1, data.get_domain_size())} -")
 
 
-def the_best_check_in_the_entire_world(T):
+def the_best_check_in_the_entire_world(rv1, rv2):
     return round(random.uniform(-1, 1))
+
+
+# in this procedure we use the current rv (representative vector) and the last selected singlet to generate the rv of the new subset
+def update_representative_vector(rv: RepresentativeVector, e: RepresentativeVector):
+    vect1 = rv.vector
+    vect2 = e.vector
+
+    print(f"\t\t\t{vect1}")
+    print(f"\t\t\t{vect2}")
