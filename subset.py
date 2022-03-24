@@ -11,7 +11,7 @@ class Subset:
         return text[:len(text) - 3] + " |"
 
     def __hash__(self):
-        return hash(str(self.__str__()))
+        return hash(str(self.components))
 
     def compare(self, other):
         if isinstance(other, Subset):
@@ -27,10 +27,10 @@ class Subset:
         # print(f"Max function: {self.components}")
         return max(self.components)
 
-    def add(self, singoletto):
+    def add(self, singlet):
         if self.is_empty():
             self.components.remove(0)
-        self.components.append(singoletto)
+        self.components.append(singlet)
 
     def get_components(self):
         return self.components
