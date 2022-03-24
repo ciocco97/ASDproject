@@ -1,7 +1,7 @@
 from data.data import Data
-from data.matrix_parser import MatrixParser
 from subset import Subset
 from subqueue import SubsQueue
+from representative_vector import RepresentativeVector
 import random
 
 RESULT_TO_STRING = {-1: "KO", 1: "MHS", 0: "OK"}
@@ -38,23 +38,28 @@ def main_procedure():
     while queue.size() > 0:
         print(f"\tQueue size: {queue.size()}")
         delta = queue.dequeue()
-        
+
         print(f"\tdelta: {delta}")
         print(f"\tdelta_max: {delta.max()}")
-        
-        for e in range(delta.max() + 1, problem_data.get_domain_size()):
-            
-            print(f"\t\tdelta components: {delta.get_components()}")
-            
+
+        for e in range(delta.max() + 1, data.get_domain_size()):
+
+            print(f"\t\tdelta components: {delta.get_components()}, {delta.__hash__()}")
+
             t = Subset(delta.get_components())
-            t.add(e)
-            
+
             print(f"\t\tnew delta: {t}")
-            
-            result = the_best_check_in_the_entire_world(t)
-            
+            # ottimizzazione, il secondo sappiamo che è un singoletto quindi c'è una struttura dati apposta (un array) così ci accediamo super ez
+            rv1 = data.get_representative_vector(t)
+            rv2 = data.get_singlet_representative_vector(e)
+            print(f"{t} - {rv1}")
+            print(f"{e} - {rv2}")
+            # newrv = update_representative_vector(rv1, rv2)
+            t.add(e)
+            result = the_best_check_in_the_entire_world(rv1, rv2)
+
             print(f"\t\tresult: {RESULT_TO_STRING[result]}")
-            
+
             if result == OK:
                 queue.enqueue(t)
             elif result == MHS:

@@ -37,3 +37,6 @@ class Subset:
 
     def is_empty(self):
         return len(self.components) == 1 and self.components[0] == 0
+
+    def get_size(self):
+        return len(self.components)

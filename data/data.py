@@ -1,5 +1,3 @@
-import copy
-
 from data.matrix_parser import MatrixParser
 from representative_vector import RepresentativeVector
 from subset import Subset
