@@ -8,6 +8,9 @@ RESULT_TO_STRING = {-1: "KO", 1: "MHS", 0: "OK"}
 KO = -1
 MHS = 1
 OK = 0
+XVAL = -1
+OUTPUT = []
+
 
 
 def mbase():
@@ -29,10 +32,10 @@ def mbase():
 
 
 def main_procedure():
+    global data
     data = Data()
-
-    for rv in data.get_representative_vectors():
-        print(rv)
+    # for symbol in data.get_domain():
+    #     print(f"{data.get_representative_vector(symbol)}")
 
     queue = SubsQueue()
     while queue.size() > 0:
@@ -54,28 +57,30 @@ def main_procedure():
             rv2 = data.get_singlet_representative_vector(e)
             print(f"{t} - {rv1}")
             print(f"{e} - {rv2}")
-            # newrv = update_representative_vector(rv1, rv2)
+            newrv = generate_new_rv(rv1, rv2)
             t.add(e)
-            result = the_best_check_in_the_entire_world(rv1, rv2)
-
+            data.add_representative_vector(t, newrv)
+            result = the_best_check_in_the_entire_world(t)
             print(f"\t\tresult: {RESULT_TO_STRING[result]}")
 
             if result == OK:
                 queue.enqueue(t)
             elif result == MHS:
+                OUTPUT.append(t)
                 print(f"Minimal hitting set: {t}")
 
             print(f"\t\t- e: {e} in {range(delta.max() + 1, data.get_domain_size())} -")
 
 
-def the_best_check_in_the_entire_world(rv1, rv2):
-    return round(random.uniform(-1, 1))
+def the_best_check_in_the_entire_world(t):
+    rv = data.get_representative_vector(t)
+    return round(random.uniform(0, 1))
 
-
-# in this procedure we use the current rv (representative vector) and the last selected singlet to generate the rv of the new subset
-def update_representative_vector(rv: RepresentativeVector, e: RepresentativeVector):
-    vect1 = rv.vector
-    vect2 = e.vector
-
-    print(f"\t\t\t{vect1}")
-    print(f"\t\t\t{vect2}")
+#this procedure generate the new rv starting from a couple
+def generate_new_rv(rv1: RepresentativeVector, rv2: RepresentativeVector) -> RepresentativeVector:
+    new = RepresentativeVector(data.N)
+    for i, phi1 in enumerate(rv1.get_values()):
+        phi2 = rv2.get_values()[i]
+        result = phi1 + phi2
+        new.set_val_by_index(i, result if result <= max(phi1, phi2) else XVAL)
+    return new
