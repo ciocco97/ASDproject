@@ -19,6 +19,7 @@ class MatrixParser:
         self.matrix_one_zero = []
         selected_file = self.file_list[n]
         logging.debug("File selezionato per il parsing: " + selected_file)
+
         with open(self.path + selected_file) as file:
             for line in file:
                 if not line.startswith(';;'):

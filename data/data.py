@@ -13,18 +13,19 @@ class Data:
         self.M = self.matrix_parser.get_M()
         RepresentativeVector.X_VAL = -1 * (self.M + 1)
 
-        self.singlet_representative_vectors = {}
+        self.singlet_representative_vectors = []
         self.representative_vectors = {}
         # the representative vector of the empty subset is the null vector of size N
         self.singlet_representative_vectors.insert(0, RepresentativeVector(self.N))
 
-        # computation of the representative vectors of the singolitties :')
-        for symbol in self.matrix_parser.get_domain():
+        # computation of the representative vectors of the singletties :')
+        for symbol in range(1, self.M + 1):
             current_repr_vector = RepresentativeVector(self.N)
             for k, n_i in enumerate(self.matrix_parser.matrix_lexiconographic()):
                 if symbol in n_i:
                     current_repr_vector.set_val_by_index(k, symbol)
-            self.singlet_representative_vectors[symbol] = current_repr_vector
+                    # here we put k+1 because the 0 is filled by the empty vector
+            self.singlet_representative_vectors.insert(symbol, current_repr_vector)
 
     def get_representative_vectors(self) -> dict:
         return self.representative_vectors

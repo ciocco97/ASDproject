@@ -14,6 +14,7 @@ OK = 0
 
 
 def the_best_check_in_the_entire_world(t: Subset, t_rv: RepresentativeVector):
+
     for component in t.get_components():
         if component not in t_rv.get_values():
             return KO
@@ -42,7 +43,7 @@ class MBase:
             logging.info(f"\tdelta_max: {delta.max()}")
             logging.info(f"\tdelta components: {delta.get_components()}, {delta.__hash__()}")
 
-            for e in range(delta.max() + 1, data.get_domain_size()):
+            for e in range(delta.max() + 1, data.M + 1):
                 logging.info(f"\t\t- e: {e} in {range(delta.max() + 1, data.get_domain_size())} -")
 
                 t = Subset(delta.get_components())
