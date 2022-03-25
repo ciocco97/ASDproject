@@ -3,6 +3,7 @@ import logging
 from data.data import Data
 from subset import Subset
 from subqueue import SubsQueue
+from representative_vector import RepresentativeVector
 from representative_vector import generate_new_rv
 import random
 
@@ -30,7 +31,7 @@ class MBase:
             delta = queue.dequeue()
             rv1 = data.get_representative_vector(delta)
 
-            logging.info(f"\tdelta: {delta} representative vector: - {rv1}")
+            logging.info(f"\tdelta: {delta} representative vector: {rv1}")
             logging.info(f"\tdelta_max: {delta.max()}")
             logging.info(f"\tdelta components: {delta.get_components()}, {delta.__hash__()}")
 
@@ -41,9 +42,9 @@ class MBase:
                 t.add(e)
                 # optimization: we know it is a singlet so there is a data structure on purpose (an array) so we access it super ez pz lemon sqz
                 rv2 = data.get_singlet_representative_vector(e)
-                logging.info(f"\t\te: {e} representative vector: - {rv2}")
+                logging.info(f"\t\te: {e} representative vector: {rv2}")
                 t_rv = generate_new_rv(rv1, rv2, data.N)
-                logging.info(f"\t\tT: {t} representative vector: - {t_rv}")
+                logging.info(f"\t\tT: {t} representative vector: {t_rv}")
                 data.add_representative_vector(t, t_rv)
 
                 result = self.the_best_check_in_the_entire_world(t)
@@ -57,6 +58,11 @@ class MBase:
 
         print(*(x for x in self.output), sep='\n')
 
-    def the_best_check_in_the_entire_world(self, t):
-        rv = self.data.get_representative_vector(t)
+    def the_best_check_in_the_entire_world(self, t: Subset):
+        t_rv: RepresentativeVector = self.data.get_representative_vector(t)
+        p_c_sigma = set([])
+        for ni in t.get_components():
+            if ni in t_rv.get_values():
+                p_c_sigma.add(ni)
+        logging.info(f"\t\t\tp_c_sigma: {p_c_sigma}")
         return round(random.uniform(0, 1))
