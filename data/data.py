@@ -5,9 +5,15 @@ from subset import Subset
 
 class Data:
 
-    def __init__(self, file_number: int = 0):
-        self.matrix_parser = MatrixParser()
-        self.matrix_parser.parse_file_number_n(file_number)
+    def __init__(self, path: str):
+        self.representative_vectors = None
+        self.singlet_representative_vectors = None
+        self.M = None
+        self.N = None
+        self.matrix_parser = MatrixParser(path)
+
+    def setup_data_for_file_n(self, n):
+        self.matrix_parser.parse_file_number_n(n)
 
         self.N = self.matrix_parser.get_N()
         self.M = self.matrix_parser.get_M()
@@ -44,5 +50,5 @@ class Data:
     def get_domain_size(self):
         return self.M
 
-    def get_file_number_in_path(self) -> int:
-        return len(self.matrix_parser.get_file_names_in_path())
+    def get_num_file_in_path(self) -> int:
+        return self.matrix_parser.get_num_file_in_path()

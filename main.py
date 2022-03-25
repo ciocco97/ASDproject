@@ -9,19 +9,25 @@
 
 # See PyCharm help at https://www.jetbrains.com/help/pycharm/
 import logging
+import time
 
 from mbase import MBase
 
 
 def main():
     # For log record attributes visit https://docs.python.org/3/library/logging.html#logrecord-objects
-    logging.basicConfig(filename='ASD.log', level=logging.DEBUG, format="%(asctime)s:%(levelname)s:%(message)s")
+    logging.basicConfig(filename='ASD.log', level=logging.INFO, format="%(asctime)s:%(levelname)s:%(message)s")
     logging.FileHandler('ASD.log', mode='w')
 
-    for i in range(0, 23):
-        print(f"{i}")
-        mamma = MBase()
-        mamma.main_procedure(4)
+    paths = ["Benchmarks/benchmarks1/", "Benchmarks/benchmarks2/"]
+
+    for path in paths:
+        m_base = MBase(path)
+        for i in range(0, m_base.get_num_file_in_path()):
+            print(f" - Inizio elaborazione file {i} - ")
+            m_base.main_procedure(i)
+            print(f" - Fine elaborazione file {i} - \n")
+            time.sleep(1)
 
 
 if __name__ == '__main__':
