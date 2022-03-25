@@ -1,93 +1,61 @@
-2022-03-25 10:07:10,400:DEBUG:File selezionato per il parsing: 1111.111.matrix
-2022-03-25 10:07:10,400:DEBUG:Parsing completato: 5 elementi del dominio e 3 insiemi
-2022-03-25 10:07:10,400:INFO:	Queue size: 1
-2022-03-25 10:07:10,400:INFO:	delta: | 0 | representative vector: 0 0 0
-2022-03-25 10:07:10,400:INFO:	delta_max: 0
-2022-03-25 10:07:10,400:INFO:	delta components: [0], -5722469278469743554
-2022-03-25 10:07:10,400:INFO:		- e: 1 in range(1, 5) -
-2022-03-25 10:07:10,400:INFO:		e: 1 representative vector: 0 1 0
-2022-03-25 10:07:10,400:INFO:		T: | 1 | representative vector: 0 1 0
-2022-03-25 10:07:10,400:INFO:			p_c_sigma: {1}
-2022-03-25 10:07:10,400:INFO:		result: OK
-2022-03-25 10:07:10,400:INFO:		- e: 2 in range(1, 5) -
-2022-03-25 10:07:10,400:INFO:		e: 2 representative vector: 0 2 2
-2022-03-25 10:07:10,400:INFO:		T: | 2 | representative vector: 0 2 2
-2022-03-25 10:07:10,400:INFO:			p_c_sigma: {2}
-2022-03-25 10:07:10,400:INFO:		result: MHS
-2022-03-25 10:07:10,400:INFO:		Minimal hitting set: | 2 |
-2022-03-25 10:07:10,400:INFO:		- e: 3 in range(1, 5) -
-2022-03-25 10:07:10,400:INFO:		e: 3 representative vector: 3 0 3
-2022-03-25 10:07:10,400:INFO:		T: | 3 | representative vector: 3 0 3
-2022-03-25 10:07:10,400:INFO:			p_c_sigma: {3}
-2022-03-25 10:07:10,400:INFO:		result: OK
-2022-03-25 10:07:10,400:INFO:		- e: 4 in range(1, 5) -
-2022-03-25 10:07:10,400:INFO:		e: 4 representative vector: 4 4 4
-2022-03-25 10:07:10,400:INFO:		T: | 4 | representative vector: 4 4 4
-2022-03-25 10:07:10,400:INFO:			p_c_sigma: {4}
-2022-03-25 10:07:10,400:INFO:		result: OK
-2022-03-25 10:07:10,400:INFO:	Queue size: 3
-2022-03-25 10:07:10,400:INFO:	delta: | 4 | representative vector: 4 4 4
-2022-03-25 10:07:10,400:INFO:	delta_max: 4
-2022-03-25 10:07:10,400:INFO:	delta components: [4], 3453322622442503066
-2022-03-25 10:07:10,400:INFO:	Queue size: 2
-2022-03-25 10:07:10,400:INFO:	delta: | 3 | representative vector: 3 0 3
-2022-03-25 10:07:10,400:INFO:	delta_max: 3
-2022-03-25 10:07:10,400:INFO:	delta components: [3], 5655126150090812366
-2022-03-25 10:07:10,400:INFO:		- e: 4 in range(4, 5) -
-2022-03-25 10:07:10,400:INFO:		e: 4 representative vector: 4 4 4
-2022-03-25 10:07:10,400:INFO:		T: | 3 - 4 | representative vector: -6 4 -6
-2022-03-25 10:07:10,400:INFO:			p_c_sigma: {4}
-2022-03-25 10:07:10,400:INFO:		result: MHS
-2022-03-25 10:07:10,400:INFO:		Minimal hitting set: | 3 - 4 |
-2022-03-25 10:07:10,400:INFO:	Queue size: 1
-2022-03-25 10:07:10,400:INFO:	delta: | 1 | representative vector: 0 1 0
-2022-03-25 10:07:10,400:INFO:	delta_max: 1
-2022-03-25 10:07:10,400:INFO:	delta components: [1], 4528197376428285205
-2022-03-25 10:07:10,400:INFO:		- e: 2 in range(2, 5) -
-2022-03-25 10:07:10,400:INFO:		e: 2 representative vector: 0 2 2
-2022-03-25 10:07:10,400:INFO:		T: | 1 - 2 | representative vector: 0 -6 2
-2022-03-25 10:07:10,400:INFO:			p_c_sigma: {2}
-2022-03-25 10:07:10,400:INFO:		result: OK
-2022-03-25 10:07:10,400:INFO:		- e: 3 in range(2, 5) -
-2022-03-25 10:07:10,400:INFO:		e: 3 representative vector: 3 0 3
-2022-03-25 10:07:10,400:INFO:		T: | 1 - 3 | representative vector: 3 1 3
-2022-03-25 10:07:10,400:INFO:			p_c_sigma: {1, 3}
-2022-03-25 10:07:10,400:INFO:		result: OK
-2022-03-25 10:07:10,400:INFO:		- e: 4 in range(2, 5) -
-2022-03-25 10:07:10,400:INFO:		e: 4 representative vector: 4 4 4
-2022-03-25 10:07:10,400:INFO:		T: | 1 - 4 | representative vector: 4 -6 4
-2022-03-25 10:07:10,400:INFO:			p_c_sigma: {4}
-2022-03-25 10:07:10,400:INFO:		result: OK
-2022-03-25 10:07:10,400:INFO:	Queue size: 3
-2022-03-25 10:07:10,400:INFO:	delta: | 1 - 4 | representative vector: 4 -6 4
-2022-03-25 10:07:10,400:INFO:	delta_max: 4
-2022-03-25 10:07:10,400:INFO:	delta components: [1, 4], 78474894578240149
-2022-03-25 10:07:10,400:INFO:	Queue size: 2
-2022-03-25 10:07:10,400:INFO:	delta: | 1 - 3 | representative vector: 3 1 3
-2022-03-25 10:07:10,400:INFO:	delta_max: 3
-2022-03-25 10:07:10,400:INFO:	delta components: [1, 3], -310714857448844889
-2022-03-25 10:07:10,400:INFO:		- e: 4 in range(4, 5) -
-2022-03-25 10:07:10,400:INFO:		e: 4 representative vector: 4 4 4
-2022-03-25 10:07:10,400:INFO:		T: | 1 - 3 - 4 | representative vector: -6 -6 -6
-2022-03-25 10:07:10,400:INFO:			p_c_sigma: set()
-2022-03-25 10:07:10,400:INFO:		result: MHS
-2022-03-25 10:07:10,400:INFO:		Minimal hitting set: | 1 - 3 - 4 |
-2022-03-25 10:07:10,400:INFO:	Queue size: 1
-2022-03-25 10:07:10,400:INFO:	delta: | 1 - 2 | representative vector: 0 -6 2
-2022-03-25 10:07:10,400:INFO:	delta_max: 2
-2022-03-25 10:07:10,400:INFO:	delta components: [1, 2], 4879437580615519676
-2022-03-25 10:07:10,400:INFO:		- e: 3 in range(3, 5) -
-2022-03-25 10:07:10,400:INFO:		e: 3 representative vector: 3 0 3
-2022-03-25 10:07:10,400:INFO:		T: | 1 - 2 - 3 | representative vector: 3 -6 -6
-2022-03-25 10:07:10,400:INFO:			p_c_sigma: {3}
-2022-03-25 10:07:10,400:INFO:		result: MHS
-2022-03-25 10:07:10,400:INFO:		Minimal hitting set: | 1 - 2 - 3 |
-2022-03-25 10:07:10,400:INFO:		- e: 4 in range(3, 5) -
-2022-03-25 10:07:10,400:INFO:		e: 4 representative vector: 4 4 4
-2022-03-25 10:07:10,400:INFO:		T: | 1 - 2 - 4 | representative vector: 4 -6 -6
-2022-03-25 10:07:10,400:INFO:			p_c_sigma: {4}
-2022-03-25 10:07:10,400:INFO:		result: OK
-2022-03-25 10:07:10,400:INFO:	Queue size: 1
-2022-03-25 10:07:10,400:INFO:	delta: | 1 - 2 - 4 | representative vector: 4 -6 -6
-2022-03-25 10:07:10,400:INFO:	delta_max: 4
-2022-03-25 10:07:10,400:INFO:	delta components: [1, 2, 4], 2687350226828632856
+2022-03-25 10:23:55,259:DEBUG:File selezionato per il parsing: 1111.111.matrix
+2022-03-25 10:23:55,260:DEBUG:Parsing completato: 5 elementi del dominio e 3 insiemi
+2022-03-25 10:23:55,260:INFO:	Queue size: 1
+2022-03-25 10:23:55,260:INFO:	delta: | 0 | representative vector: 0 0 0
+2022-03-25 10:23:55,260:INFO:	delta_max: 0
+2022-03-25 10:23:55,261:INFO:	delta components: [0], 3769068184292582434
+2022-03-25 10:23:55,261:INFO:		- e: 1 in range(1, 5) -
+2022-03-25 10:23:55,261:INFO:		e: 1 representative vector: 0 1 0
+2022-03-25 10:23:55,261:INFO:		T: | 1 | representative vector: 0 1 0
+2022-03-25 10:23:55,262:INFO:		result: OK
+2022-03-25 10:23:55,262:INFO:		- e: 2 in range(1, 5) -
+2022-03-25 10:23:55,262:INFO:		e: 2 representative vector: 0 2 2
+2022-03-25 10:23:55,262:INFO:		T: | 2 | representative vector: 0 2 2
+2022-03-25 10:23:55,262:INFO:		result: OK
+2022-03-25 10:23:55,262:INFO:		- e: 3 in range(1, 5) -
+2022-03-25 10:23:55,262:INFO:		e: 3 representative vector: 3 0 3
+2022-03-25 10:23:55,262:INFO:		T: | 3 | representative vector: 3 0 3
+2022-03-25 10:23:55,263:INFO:		result: OK
+2022-03-25 10:23:55,263:INFO:		- e: 4 in range(1, 5) -
+2022-03-25 10:23:55,263:INFO:		e: 4 representative vector: 4 4 4
+2022-03-25 10:23:55,263:INFO:		T: | 4 | representative vector: 4 4 4
+2022-03-25 10:23:55,263:INFO:		result: MHS
+2022-03-25 10:23:55,263:INFO:		Minimal hitting set: | 4 |
+2022-03-25 10:23:55,263:INFO:	Queue size: 3
+2022-03-25 10:23:55,263:INFO:	delta: | 3 | representative vector: 3 0 3
+2022-03-25 10:23:55,263:INFO:	delta_max: 3
+2022-03-25 10:23:55,263:INFO:	delta components: [3], 5320136903421684604
+2022-03-25 10:23:55,263:INFO:		- e: 4 in range(4, 5) -
+2022-03-25 10:23:55,264:INFO:		e: 4 representative vector: 4 4 4
+2022-03-25 10:23:55,264:INFO:		T: | 3 - 4 | representative vector: -6 4 -6
+2022-03-25 10:23:55,264:INFO:		result: KO
+2022-03-25 10:23:55,264:INFO:	Queue size: 2
+2022-03-25 10:23:55,264:INFO:	delta: | 2 | representative vector: 0 2 2
+2022-03-25 10:23:55,264:INFO:	delta_max: 2
+2022-03-25 10:23:55,264:INFO:	delta components: [2], 6146250775080142971
+2022-03-25 10:23:55,264:INFO:		- e: 3 in range(3, 5) -
+2022-03-25 10:23:55,264:INFO:		e: 3 representative vector: 3 0 3
+2022-03-25 10:23:55,264:INFO:		T: | 2 - 3 | representative vector: 3 2 -6
+2022-03-25 10:23:55,264:INFO:		result: MHS
+2022-03-25 10:23:55,264:INFO:		Minimal hitting set: | 2 - 3 |
+2022-03-25 10:23:55,264:INFO:		- e: 4 in range(3, 5) -
+2022-03-25 10:23:55,264:INFO:		e: 4 representative vector: 4 4 4
+2022-03-25 10:23:55,265:INFO:		T: | 2 - 4 | representative vector: 4 -6 -6
+2022-03-25 10:23:55,265:INFO:		result: KO
+2022-03-25 10:23:55,265:INFO:	Queue size: 1
+2022-03-25 10:23:55,265:INFO:	delta: | 1 | representative vector: 0 1 0
+2022-03-25 10:23:55,265:INFO:	delta_max: 1
+2022-03-25 10:23:55,265:INFO:	delta components: [1], -3823878118494658994
+2022-03-25 10:23:55,265:INFO:		- e: 2 in range(2, 5) -
+2022-03-25 10:23:55,265:INFO:		e: 2 representative vector: 0 2 2
+2022-03-25 10:23:55,265:INFO:		T: | 1 - 2 | representative vector: 0 -6 2
+2022-03-25 10:23:55,265:INFO:		result: KO
+2022-03-25 10:23:55,265:INFO:		- e: 3 in range(2, 5) -
+2022-03-25 10:23:55,265:INFO:		e: 3 representative vector: 3 0 3
+2022-03-25 10:23:55,265:INFO:		T: | 1 - 3 | representative vector: 3 1 3
+2022-03-25 10:23:55,265:INFO:		result: MHS
+2022-03-25 10:23:55,265:INFO:		Minimal hitting set: | 1 - 3 |
+2022-03-25 10:23:55,266:INFO:		- e: 4 in range(2, 5) -
+2022-03-25 10:23:55,266:INFO:		e: 4 representative vector: 4 4 4
+2022-03-25 10:23:55,266:INFO:		T: | 1 - 4 | representative vector: 4 -6 4
+2022-03-25 10:23:55,266:INFO:		result: KO
