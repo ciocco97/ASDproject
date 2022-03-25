@@ -18,8 +18,10 @@ def main():
     logging.basicConfig(filename='ASD.log', level=logging.DEBUG, format="%(asctime)s:%(levelname)s:%(message)s")
     logging.FileHandler('ASD.log', mode='w')
 
-    mamma = MBase()
-    mamma.main_procedure()
+    for i in range(0, 23):
+        print(f"{i}")
+        mamma = MBase()
+        mamma.main_procedure(4)
 
 
 if __name__ == '__main__':

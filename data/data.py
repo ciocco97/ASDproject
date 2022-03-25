@@ -9,13 +9,14 @@ class Data:
         self.matrix_parser = MatrixParser()
         self.matrix_parser.parse_file_number_n(file_number)
 
-        self.N = self.matrix_parser.get_sets_number()
-        RepresentativeVector.X_VAL = -1 * (self.matrix_parser.get_domain_size() + 1)
+        self.N = self.matrix_parser.get_N()
+        self.M = self.matrix_parser.get_M()
+        RepresentativeVector.X_VAL = -1 * (self.M + 1)
 
         self.singlet_representative_vectors = {}
         self.representative_vectors = {}
         # the representative vector of the empty subset is the null vector of size N
-        self.singlet_representative_vectors[0] = RepresentativeVector(self.N)
+        self.singlet_representative_vectors.insert(0, RepresentativeVector(self.N))
 
         # computation of the representative vectors of the singolitties :')
         for symbol in self.matrix_parser.get_domain():
@@ -40,7 +41,7 @@ class Data:
         self.representative_vectors[hash(sigma)] = representative_vector
 
     def get_domain_size(self):
-        return self.matrix_parser.get_domain_size()
+        return self.M
 
-    def get_domain(self):
-        return self.matrix_parser.get_domain()
+    def get_file_number_in_path(self) -> int:
+        return len(self.matrix_parser.get_file_names_in_path())

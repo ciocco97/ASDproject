@@ -26,9 +26,9 @@ class MBase:
         self.data = None
         self.output = None
 
-    def main_procedure(self):
+    def main_procedure(self, file_number: int):
         self.output = []
-        self.data = Data()
+        self.data = Data(file_number)
         data = self.data
 
         queue = SubsQueue()
@@ -64,3 +64,4 @@ class MBase:
                     logging.info(f"\t\tMinimal hitting set: {t}")
 
         print(*(x for x in self.output), sep='\n')
+        print("\nFine")

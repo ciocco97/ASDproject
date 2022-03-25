@@ -24,7 +24,6 @@ class Subset:
             return 0
 
     def max(self):
-        # print(f"Max function: {self.components}")
         return max(self.components)
 
     def add(self, singlet):
