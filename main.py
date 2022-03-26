@@ -14,10 +14,11 @@ def log_config():
 def main():
     log_config()
     parser = Parser(["Benchmarks/benchmarks1/", "Benchmarks/benchmarks2/"])
-    instance = parser.get_problem_instance_n()
-    problem_solver = Solver()
-    problem_solver.main_procedure(instance)
-    problem_solver.print_output()
+    for i in range(1, parser.num_file_in_paths):
+        instance = parser.get_problem_instance_n(i)
+        problem_solver = Solver()
+        problem_solver.main_procedure(instance)
+        problem_solver.print_output()
 
 
 if __name__ == '__main__':
