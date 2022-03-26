@@ -1,4 +1,4 @@
-from subset import Subset
+from data_structure.subset import Subset
 
 
 class SubsQueue:
