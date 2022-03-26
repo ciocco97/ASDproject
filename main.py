@@ -1,4 +1,5 @@
 import logging
+from datetime import time
 
 from instance_parser import Parser
 from data_structure.problem_instance import ProblemInstance
@@ -17,8 +18,11 @@ def main():
     for i in range(1, parser.num_file_in_paths):
         instance = parser.get_problem_instance_n(i)
         problem_solver = Solver()
+        print(f" - Inizio elaborazione file {i} - ")
         problem_solver.main_procedure(instance)
         problem_solver.print_output()
+        print(f" - Fine elaborazione file {i} - \n")
+        time.sleep(1)
 
 
 if __name__ == '__main__':
