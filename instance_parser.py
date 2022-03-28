@@ -2,7 +2,6 @@ import logging
 import os
 
 from data_structure.problem_instance import ProblemInstance
-from data_structure.subset import Subset
 
 
 class Parser:
@@ -33,4 +32,3 @@ class Parser:
         logging.info(
             f"Parsing completato: {len(matrix_one_zero[0])} elementi del dominio e {len(matrix_one_zero)} insiemi")
         return matrix_one_zero
-

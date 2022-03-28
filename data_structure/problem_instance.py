@@ -17,7 +17,7 @@ class ProblemInstance:
         self.representative_vectors = {}
 
         # here starts the pre-processing
-        self.cols_pp(matrix_one_zero)
+        # self.cols_pp(matrix_one_zero)
 
         self.conf(matrix_one_zero)
 
