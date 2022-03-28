@@ -1,8 +1,8 @@
 import logging
 import time
 
+from data_structure.subset import Subset
 from instance_parser import Parser
-from data_structure.problem_instance import ProblemInstance
 from problem_solver import Solver
 
 
@@ -15,14 +15,25 @@ def log_config():
 def main():
     log_config()
     parser = Parser(["Benchmarks/benchmarks1/", "Benchmarks/benchmarks2/"])
-    instance = parser.get_problem_instance_n(5)
-    print(instance.map(3))
-        # problem_solver = Solver()
-        # print(f" - Inizio elaborazione file {i} - ")
-        # problem_solver.main_procedure(instance)
-        # problem_solver.print_output()
-        # print(f" - Fine elaborazione file {i} - \n")
-        # time.sleep(1)
+    # for i in range(4, 5):
+    i = 4
+    instance = parser.get_problem_instance_n(i)
+    problem_solver = Solver()
+    print(f" - Inizio elaborazione file {i} - ")
+    problem_solver.main_procedure(instance)
+    problem_solver.print_output()
+
+    # debug of the columns pp
+    output = problem_solver.get_output()
+    print("map debug")
+    for sub in output:
+        if isinstance(sub, Subset):
+            newsub = Subset(instance.map(x) for x in sub.get_components())
+            print(newsub)
+    # end debug
+
+    print(f" - Fine elaborazione file {i} - \n")
+    time.sleep(1)
 
 
 if __name__ == '__main__':

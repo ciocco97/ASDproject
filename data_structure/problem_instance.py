@@ -16,9 +16,8 @@ class ProblemInstance:
         self.singlet_representative_vectors = []
         self.representative_vectors = {}
 
-        self.cols_pp(matrix_one_zero)
-
         # here starts the pre-processing
+        self.cols_pp(matrix_one_zero)
 
         self.conf(matrix_one_zero)
 
@@ -58,6 +57,7 @@ class ProblemInstance:
                 else:
                     remove_index += 1
         print(matrix_one_zero)
+        print(self.zeros)
         return matrix_one_zero
 
     # this method uses the zeros map to obtain the index of a component in the restricted domain, in the original one.
@@ -67,8 +67,8 @@ class ProblemInstance:
         count = 0
         for i, e in enumerate(self.zeros):
             count += e
-            if count == (index+1):
-                return i
+            if count == index:
+                return i+1
 
     def set_M(self, M):
         self.M = M
@@ -89,7 +89,7 @@ class ProblemInstance:
     def get_rv(self, sigma: Subset) -> RepresentativeVector:
         if sigma.get_size() == 1:
             return self.get_singlet_rv(sigma.get_components()[0])
-        return self.representative_vector[hash(sigma)]
+        return self.representative_vectors[hash(sigma)]
 
     def remove_rv(self, sigma: Subset):
         self.representative_vectors.pop(sigma)

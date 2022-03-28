@@ -26,8 +26,6 @@ class Solver:
     def main_procedure(self, instance: ProblemInstance):
         self.output = []
 
-        self.preprocessing(instance)
-
         queue = SubsQueue()
         while queue.size() > 0:
             logging.debug(f"\tQueue size: {queue.size()}")
@@ -64,3 +62,6 @@ class Solver:
 
     def print_output(self):
         print(*(x for x in self.output), sep='\n')
+
+    def get_output(self):
+        return self.output
