@@ -16,7 +16,7 @@ def main():
     log_config()
     parser = Parser(["Benchmarks/benchmarks1/", "Benchmarks/benchmarks2/"])
     # for i in range(4, 5):
-    i = 5
+    i = 22
     instance = parser.get_problem_instance_n(i)
     problem_solver = Solver()
     print(f" - Inizio elaborazione file {i} - ")
@@ -24,12 +24,12 @@ def main():
     problem_solver.print_output()
 
     # debug of the columns pp
-    # output = problem_solver.get_output()
-    # print("map debug")
-    # for sub in output:
-    #     if isinstance(sub, Subset):
-    #         newsub = Subset(instance.map(x) for x in sub.get_components())
-    #         print(newsub)
+    output = problem_solver.get_output()
+    print("map debug")
+    for sub in output:
+        if isinstance(sub, Subset):
+            newsub = Subset(instance.map(x) for x in sub.get_components())
+            print(newsub)
     # end debug
 
     print(f" - Fine elaborazione file {i} - \n")
