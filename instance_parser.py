@@ -1,8 +1,6 @@
 import logging
 import os
 
-from data_structure.problem_instance import ProblemInstance
-
 
 class Parser:
 
@@ -12,12 +10,7 @@ class Parser:
             self.file_list += [path + x for x in os.listdir(path) if x.endswith(".matrix")]
         self.num_file_in_paths = len(self.file_list)
 
-    def get_problem_instance_n(self, n: int = 0) -> ProblemInstance:
-        matrix_one_zero = self.parse_file_number_n(n)
-        instance = ProblemInstance(matrix_one_zero)
-        return instance
-
-    def parse_file_number_n(self, n: int):
+    def parse_file_number_n(self, n: int) -> list:
         matrix_one_zero = []
         selected_file = self.file_list[n]
         logging.info("File selezionato per il parsing: " + selected_file)

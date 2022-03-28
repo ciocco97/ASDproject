@@ -1,4 +1,5 @@
 import logging
+import time
 
 from data_structure.problem_instance import ProblemInstance
 from data_structure.representative_vector import generate_new_rv, RepresentativeVector
@@ -23,7 +24,13 @@ class Solver:
     def __init__(self):
         self.output = None
 
+        self.start = None
+        self.end = None
+
     def main_procedure(self, instance: ProblemInstance):
+
+        self.start = time.time()
+
         self.output = []
 
         queue = SubsQueue()
@@ -58,6 +65,9 @@ class Solver:
                 elif result == MHS:
                     self.output.append(t)
                     logging.debug(f"\t\tMinimal hitting set: {t}")
+
+        self.end = time.time()
+        logging.info(f"Processing completato: {len(self.output)} MHS trovati")
         self.output.reverse()
 
     def print_output(self):
@@ -65,3 +75,6 @@ class Solver:
 
     def get_output(self):
         return self.output
+
+    def get_elapsed(self):
+        return self.end - self.start
