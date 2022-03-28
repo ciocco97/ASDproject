@@ -39,6 +39,3 @@ class Subset:
 
     def get_size(self):
         return len(self.components)
-
-    def is_inside(self, component: int):
-        return self.components.__contains__(component)
