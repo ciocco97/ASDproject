@@ -73,8 +73,8 @@ class Solver:
     def print_output(self):
         print(*(x for x in self.output), sep='\n')
 
-    def get_output(self):
+    def get_output(self) -> list:
         return self.output
 
-    def get_elapsed(self):
+    def get_elapsed(self) -> float:
         return self.end - self.start

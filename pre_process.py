@@ -13,14 +13,16 @@ class PreProcess:
         # positions of the components in the domain that are not in the sets.
         self.zeros = None
 
+        self.num_del_rows = 0
         self.start = None
         self.end = None
 
     def main_procedure(self):
         self.start = time.time()
         self.cols_pp()
+        self.rows_pp()
         self.end = time.time()
-        logging.info(f"Preprocessing completato: {len(self.zeros)} colonne rimosse")
+        logging.info(f"Preprocessing completato ({self.end - self.start}s): {len(self.zeros)} colonne rimosse, {self.num_del_rows} righe rimosse")
         return self.matrix_one_zero
 
     def cols_pp(self):
@@ -48,17 +50,27 @@ class PreProcess:
             return sum(r)
 
         self.matrix_one_zero.sort(key=row_sum)
-        for i, row in enumerate(self.matrix_one_zero):
+
+        i = 0
+        while i < len(self.matrix_one_zero):
             candidate = {x: None for x in range(i + 1, len(self.matrix_one_zero))}
-            for j, e in enumerate(row):
+            next_row = False
+            for j, e in enumerate(self.matrix_one_zero[i]):
                 if e == 1:
-                    for k in candidate:
-                        if self.matrix_one_zero[k][j] == 0:
-                            del candidate[k]
+                    for c in {k: None for k in candidate}:
+                        if self.matrix_one_zero[c][j] == 0:
+                            del candidate[c]
                         if len(candidate) == 0:
-                            print("mamma")
+                            next_row = True
+                            break
                             # in questo caso non è rimasta neanche una riga che può contenere la corrente -> si può
                             # passare alla prossima riga.
+                    if next_row:
+                        break
+            for c in sorted(candidate.keys(), reverse=True):
+                del self.matrix_one_zero[c]
+                self.num_del_rows += 1
+            i += 1
             # Quando questo for è concluso, utte le righe con indice candidate possono essere eliminate
 
     # this method uses the zeros map to obtain the index of a component in the restricted domain, in the original one.
@@ -77,5 +89,13 @@ class PreProcess:
                 newsub = Subset(self.map(x) for x in sub.get_components())
                 print(newsub)
 
-    def get_elapsed(self):
+    def get_output(self, output) -> list:
+        subsets = []
+        for sub in output:
+            if isinstance(sub, Subset):
+                newsub = Subset(self.map(x) for x in sub.get_components())
+                subsets.append(newsub)
+        return subsets
+
+    def get_elapsed(self) -> float:
         return self.end - self.start
