@@ -8,7 +8,6 @@ from pre_process import PreProcess
 from problem_solver import Solver
 
 
-
 def log_config():
     # For log record attributes visit https://docs.python.org/3/library/logging.html#logrecord-objects
     logging.basicConfig(filename='ASD.log', level=logging.INFO, format="%(asctime)s:%(levelname)s:%(message)s")
