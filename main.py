@@ -28,6 +28,7 @@ def main():
 
 
 def main_menu():
+    clc()
     i = 1
     text = "---Welcome to Eils MHS resolver v 1.47---\n"
     text += "Please, select an option from the list below\n"
@@ -45,7 +46,7 @@ def main_menu():
     return text
 
 
-def clear_all_close_all():
+def clc():
     print('\n' * 10)
 
 
@@ -54,21 +55,21 @@ def performance_comparison():
 
 
 def info():
-    clear_all_close_all()
+    clc()
     return "---INFO SUBMENU---" \
            "This software has been developped by Alessandro Trainini and Francesco Cremascoli (Eils team) for the " \
            "exam of Algoritmi e strutture dati. We are the very best in the entire world."
 
 
 def custom_run():
-    clear_all_close_all()
+    clc()
     message = "You selected to run "
     i = 1
     text = "---CUSTOM RUN SUBMENU---\n"
     text += "How do you want to specify the input file?\n"
-    text += f"{i})By number\n"
-    i += 1
     text += f"{i})By filename\n"
+    i += 1
+    text += f"{i})By index\n"
     i += 1
     text += f"{i})By range\n"
     input_type = int(input(text + ">>>"))
@@ -78,37 +79,42 @@ def custom_run():
         message += f"a file named {filename} "
     elif input_type == 2:
         filenumber = int(input("number of file to run: >>>"))
-        message += f"a file named indexed by {filenumber} "
+        message += f"a file indexed by {filenumber} "
     else:
         start = int(input("from file number: >>>"))
         end = int(input("to file number: >>>"))
         message += f"multiple files indexed from {start} to {end} "
 
-    i = 1
+    i = 0
     text = "Which kind of pre-process do you want to run?\n"
-    text += f"{i}){SOLVER_DICTIONARY[i]}\n"
+    text += f"{i + 1}){SOLVER_DICTIONARY[i]}\n"
     i += 1
-    text += f"{i}){SOLVER_DICTIONARY[i]}\n"
+    text += f"{i + 1}){SOLVER_DICTIONARY[i]}\n"
     i += 1
-    text += f"{i}){SOLVER_DICTIONARY[i]}\n"
+    text += f"{i + 1}){SOLVER_DICTIONARY[i]}\n"
     i += 1
-    text += f"{i}){SOLVER_DICTIONARY[i]}\n"
-    pp_choice = int(input("type of pre-process: >>>")) - 1
+    text += f"{i + 1}){SOLVER_DICTIONARY[i]}\n"
+    pp_choice = int(input(text + "type of pre-process: >>>")) - 1
     launcher.set_pre_process(pp_choice)
     message += f"with {SOLVER_DICTIONARY[pp_choice]}\n"
 
     message += "Do you want to run it?\n"
     message += "1) Run it\n"
-    message += "2) Back to menu\n"
+    message += "2) Back to custom run submenu\n"
+    message += "3) Back to main menu\n"
     choice = int(input(message + ">>>"))
 
     if choice == 1:
+        print(" - Custom run in process... please wait - \n")
         if input_type == 1:
             launcher.solve_file_name(filename)
         elif input_type == 2:
             launcher.solve_file_number(filenumber)
         else:
             launcher.solve_range(start, end)
+        print(" - End of the operation - ")
+    elif choice == 2:
+        custom_run()
     else:
         main_menu()
 

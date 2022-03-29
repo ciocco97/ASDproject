@@ -46,7 +46,7 @@ class Launcher:
         for i in range(i_start, i_end):
             matrix_one_zero = self.parser.parse_file_number_n(i)
             pre_process = PreProcess(copy.deepcopy(matrix_one_zero))
-            new_matrix_one_zero = pre_process.main_procedure()
+            new_matrix_one_zero = pre_process.full_pp()
             instance_performance = ProblemInstance(new_matrix_one_zero)
             problem_solver = Solver()
             print(f" - Inizio elaborazione file {i} - ")
@@ -66,24 +66,28 @@ class Launcher:
             plot_data_to_compare(i_start, i_end, elapsed_performance, elapsed_low_performance)
 
     def solve_file_number(self, n: int):
-        matrix_one_zero = self.parser.parse_file_number_n(n)
-        self.solve(matrix_one_zero)
+        matrix = self.parser.parse_file_number_n(n)
+        self.solve(matrix)
 
     def solve_file_name(self, file_name: str):
         print("da_implementare")
 
     def solve_range(self, start, end):
-        print("da_implementare")
+        for k in range(start, end):
+            self.solve_file_number(k)
 
-    def solve(self, matrix_one_zero):
+    def solve(self, matrix):
         if self.pre_process_mode != Launcher.ZERO:
-            pre_process = PreProcess(matrix_one_zero)
-            matrix_one_zero = pre_process.main_procedure(self.pre_process_mode)
-            instance = ProblemInstance(matrix_one_zero)
-            problem_solver = Solver()
-            print(" - Inizio elaborazione file - ")
-            problem_solver.main_procedure(instance)
-            print(" - Fine elaborazione file - ")
+            pre_process = PreProcess(matrix)
+            if self.pre_process_mode == Launcher.ALL:
+                matrix = pre_process.full_pp()
+            elif self.pre_process_mode == Launcher.COLUMN:
+                matrix = pre_process.cols_pp()
+            else:
+                matrix = pre_process.rows_pp()
+        instance = ProblemInstance(matrix)
+        problem_solver = Solver()
+        problem_solver.main_procedure(instance)
 
     def set_pre_process(self, mode: int):
         self.pre_process_mode = mode

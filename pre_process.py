@@ -18,18 +18,23 @@ class PreProcess:
         self.start = None
         self.end = None
 
-    def main_procedure(self, mode: int = launcher.Launcher.ALL) -> list:
-        self.start = time.time()
-        if mode == launcher.Launcher.COLUMN or mode == launcher.Launcher.ALL:
-            self.cols_pp()
-        if mode == launcher.Launcher.ROW or mode == launcher.Launcher.ALL:
-            self.rows_pp()
-        self.end = time.time()
-        logging.info(
-            f"Preprocessing completato ({'{:e}'.format(self.end - self.start, 3)}s): {len(self.zeros) - len(self.matrix_one_zero[0])} colonne rimosse, {self.num_del_rows} righe rimosse")
+    # def main_procedure(self, mode: int = launcher.Launcher.ALL) -> list:
+    #     self.start = time.time()
+    #     if mode == launcher.Launcher.COLUMN or mode == launcher.Launcher.ALL:
+    #         self.cols_pp()
+    #     if mode == launcher.Launcher.ROW or mode == launcher.Launcher.ALL:
+    #         self.rows_pp()
+    #     self.end = time.time()
+    #     logging.info(
+    #         f"Preprocessing completato ({'{:e}'.format(self.end - self.start, 3)}s): {len(self.zeros) - len(self.matrix_one_zero[0])} colonne rimosse, {self.num_del_rows} righe rimosse")
+    #     return self.matrix_one_zero
+
+    def full_pp(self) -> list:
+        self.rows_pp()
+        self.cols_pp()
         return self.matrix_one_zero
 
-    def cols_pp(self):
+    def cols_pp(self) -> list:
         self.zeros = [0] * len(self.matrix_one_zero[0])
         for row in self.matrix_one_zero:
             for k, e in enumerate(row):
@@ -40,6 +45,7 @@ class PreProcess:
         for row in self.matrix_one_zero:
             for index in indexes:
                 del row[index]
+        return self.matrix_one_zero
 
         # for row in self.matrix_one_zero:
         #     remove_index = 0
@@ -49,7 +55,7 @@ class PreProcess:
         #         else:
         #             remove_index += 1
 
-    def rows_pp(self):
+    def rows_pp(self) -> list:
         def row_sum(r: list) -> int:
             return sum(r)
 
@@ -75,6 +81,7 @@ class PreProcess:
                 del self.matrix_one_zero[c]
                 self.num_del_rows += 1
             i += 1
+        return self.matrix_one_zero
             # Quando questo for è concluso, utte le righe con indice candidate possono essere eliminate
 
     # this method uses the zeros map to obtain the index of a component in the restricted domain, in the original one.
