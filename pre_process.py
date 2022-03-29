@@ -1,6 +1,7 @@
 import logging
 import time
 
+import launcher
 from data_structure.subset import Subset
 
 
@@ -17,12 +18,15 @@ class PreProcess:
         self.start = None
         self.end = None
 
-    def main_procedure(self):
+    def main_procedure(self, mode: int = launcher.Launcher.ALL) -> list:
         self.start = time.time()
-        self.cols_pp()
-        self.rows_pp()
+        if mode == launcher.Launcher.COLUMN or mode == launcher.Launcher.ALL:
+            self.cols_pp()
+        if mode == launcher.Launcher.ROW or mode == launcher.Launcher.ALL:
+            self.rows_pp()
         self.end = time.time()
-        logging.info(f"Preprocessing completato ({'{:e}'.format(self.end - self.start, 3)}s): {len(self.zeros)-len(self.matrix_one_zero[0])} colonne rimosse, {self.num_del_rows} righe rimosse")
+        logging.info(
+            f"Preprocessing completato ({'{:e}'.format(self.end - self.start, 3)}s): {len(self.zeros) - len(self.matrix_one_zero[0])} colonne rimosse, {self.num_del_rows} righe rimosse")
         return self.matrix_one_zero
 
     def cols_pp(self):

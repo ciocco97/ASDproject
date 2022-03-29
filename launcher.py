@@ -8,13 +8,14 @@ from pre_process import PreProcess
 from problem_solver import Solver
 
 
+
 def log_config():
     # For log record attributes visit https://docs.python.org/3/library/logging.html#logrecord-objects
     logging.basicConfig(filename='ASD.log', level=logging.INFO, format="%(asctime)s:%(levelname)s:%(message)s")
     logging.FileHandler('ASD.log', mode='w')
 
 
-def plot_data(i_start: int, i_end: int, data1: list, data2: list):
+def plot_data_to_compare(i_start: int, i_end: int, data1: list, data2: list):
     plt.title("Solving time")
     plt.xlabel("Problem n°")
     plt.ylabel("Seconds")
@@ -26,31 +27,64 @@ def plot_data(i_start: int, i_end: int, data1: list, data2: list):
     plt.pause(0.5)
 
 
-def performance_comparation():
-    log_config()
-    parser = Parser(["Benchmarks/benchmarks1/", "Benchmarks/benchmarks2/"])
-    elapsed_performance = []
-    elapsed_low_performance = []
-    i_start = 20
-    i_end = 30
-    for i in range(i_start, i_end):
-        matrix_one_zero = parser.parse_file_number_n(i)
-        pre_process = PreProcess(copy.deepcopy(matrix_one_zero))
-        new_matrix_one_zero = pre_process.main_procedure()
-        instance_performance = ProblemInstance(new_matrix_one_zero)
-        problem_solver = Solver()
-        print(f" - Inizio elaborazione file {i} - ")
+class Launcher:
+    ZERO = 0
+    ROW = 1
+    COLUMN = 2
+    ALL = 3
 
-        problem_solver.main_procedure(instance_performance)
+    def __init__(self):
+        log_config()
+        self.parser = Parser(["Benchmarks/benchmarks1/", "Benchmarks/benchmarks2/"])
 
-        print(f" - Fine elaborazione file {i} - \n")
+        self.pre_process_mode = Launcher.ALL
 
-        elapsed_performance.append(problem_solver.get_elapsed())
+    def performance_comparison(self):
+        elapsed_performance = []
+        elapsed_low_performance = []
+        i_start = 0
+        i_end = self.parser.num_file_in_paths()
+        for i in range(i_start, i_end):
+            matrix_one_zero = self.parser.parse_file_number_n(i)
+            pre_process = PreProcess(copy.deepcopy(matrix_one_zero))
+            new_matrix_one_zero = pre_process.main_procedure()
+            instance_performance = ProblemInstance(new_matrix_one_zero)
+            problem_solver = Solver()
+            print(f" - Inizio elaborazione file {i} - ")
 
-        print(f" - Inizio elaborazione file {i} (low performance) - ")
-        instance_low_performance = ProblemInstance(matrix_one_zero)
-        problem_solver.main_procedure(instance_low_performance)
-        elapsed_low_performance.append(problem_solver.get_elapsed())
-        print(f" - Fine elaborazione file {i} (low performance) - \n")
+            problem_solver.main_procedure(instance_performance)
 
-        plot_data(i_start, i_end, elapsed_performance, elapsed_low_performance)
+            print(f" - Fine elaborazione file {i} - \n")
+
+            elapsed_performance.append(problem_solver.get_elapsed())
+
+            print(f" - Inizio elaborazione file {i} (low performance) - ")
+            instance_low_performance = ProblemInstance(matrix_one_zero)
+            problem_solver.main_procedure(instance_low_performance)
+            elapsed_low_performance.append(problem_solver.get_elapsed())
+            print(f" - Fine elaborazione file {i} (low performance) - \n")
+
+            plot_data_to_compare(i_start, i_end, elapsed_performance, elapsed_low_performance)
+
+    def solve_file_number(self, n: int):
+        matrix_one_zero = self.parser.parse_file_number_n(n)
+        self.solve(matrix_one_zero)
+
+    def solve_file_name(self, file_name: str):
+        print("da_implementare")
+
+    def solve_range(self, start, end):
+        print("da_implementare")
+
+    def solve(self, matrix_one_zero):
+        if self.pre_process_mode != Launcher.ZERO:
+            pre_process = PreProcess(matrix_one_zero)
+            matrix_one_zero = pre_process.main_procedure(self.pre_process_mode)
+            instance = ProblemInstance(matrix_one_zero)
+            problem_solver = Solver()
+            print(" - Inizio elaborazione file - ")
+            problem_solver.main_procedure(instance)
+            print(" - Fine elaborazione file - ")
+
+    def set_pre_process(self, mode: int):
+        self.pre_process_mode = mode

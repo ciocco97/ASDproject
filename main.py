@@ -4,6 +4,9 @@ from os import system, name
 import launcher
 from launcher import *
 
+SOLVER_DICTIONARY = {Launcher.ZERO: "no pre-pocess", Launcher.ROW: "only rows pre-process",
+                     Launcher.COLUMN: "only columns pre-process", Launcher.ALL: "full pre-process"}
+launcher = Launcher()
 
 def main():
     choice = input(main_menu())
@@ -28,18 +31,19 @@ def clear_all_close_all():
 
 
 def performance_comparison():
-    launcher.performance_comparation()
+    Launcher.performance_comparison()
 
 
 def info():
     clear_all_close_all()
     return "---INFO SUBMENU---" \
-           "This software has been developped by Alessandro Trainini and Francesco Cremascoli for the exam of " \
-           "Algoritmo e strutture dati. We are the very best in the world."
+           "This software has been developped by Alessandro Trainini and Francesco Cremascoli (Eils team) for the " \
+           "exam of Algoritmi e strutture dati. We are the very best in the entire world."
 
 
 def custom_run():
     return "Custom run"
+
 
 if __name__ == '__main__':
     main()

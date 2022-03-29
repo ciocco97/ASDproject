@@ -25,3 +25,6 @@ class Parser:
         logging.info(
             f"Parsing completato: {len(matrix_one_zero[0])} elementi del dominio e {len(matrix_one_zero)} insiemi")
         return matrix_one_zero
+
+    def parse_file_named(self, file_name: str) -> list:
+        print("mamma")
