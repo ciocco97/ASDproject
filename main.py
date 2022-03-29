@@ -47,11 +47,11 @@ def main_menu():
 
 
 def clc():
-    print('\n' * 10)
+    print('\n' * 0)
 
 
 def performance_comparison():
-    Launcher.performance_comparison()
+    launcher.performance_comparison()
 
 
 def info():
@@ -78,8 +78,8 @@ def custom_run():
         filename = input("filename to run: >>>")
         message += f"a file named {filename} "
     elif input_type == 2:
-        filenumber = int(input("number of file to run: >>>"))
-        message += f"a file indexed by {filenumber} "
+        file_number = int(input("number of file to run: >>>"))
+        message += f"a file indexed by {file_number} "
     else:
         start = int(input("from file number: >>>"))
         end = int(input("to file number: >>>"))
@@ -109,7 +109,7 @@ def custom_run():
         if input_type == 1:
             launcher.solve_file_name(filename)
         elif input_type == 2:
-            launcher.solve_file_number(filenumber)
+            launcher.solve_file_number(file_number)
         else:
             launcher.solve_range(start, end)
         print(" - End of the operation - ")

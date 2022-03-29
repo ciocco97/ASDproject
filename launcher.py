@@ -15,14 +15,24 @@ def log_config():
 
 
 def plot_data_to_compare(i_start: int, i_end: int, data1: list, data2: list):
-    plt.title("Solving time")
-    plt.xlabel("Problem n°")
-    plt.ylabel("Seconds")
-    plt.grid()
-    x = range(i_start, i_end + 2)
-    plt.plot(x, data1, label="preprocess")
-    plt.plot(x, data2, label="no preprocess")
-    plt.legend()
+    fig, axs = plt.subplots(2)
+    x = range(i_start, i_end + 1)
+
+    axs[0].set_title("Solving time")
+    # axs[0].xlabel("Problem n°")
+    # axs[0].ylabel("Seconds")
+    # axs[0].grid()
+    axs[0].plot(x, data1, label="preprocess")
+    axs[0].plot(x, data2, label="no preprocess")
+    # axs[0].legend()
+
+    # axs[1].title("Delta time")
+    # axs[1].xlabel("Problem n°")
+    # axs[1].ylabel("Seconds")
+    # axs[1].grid()
+    axs[1].plot(x, [data1[i] - data2[i] for i in x], label="difference")
+    # axs[1].legend()
+
     plt.pause(0.5)
 
 
@@ -42,7 +52,7 @@ class Launcher:
         elapsed_performance = []
         elapsed_low_performance = []
         i_start = 0
-        i_end = self.parser.num_file_in_paths()
+        i_end = self.parser.num_file_in_paths
         for i in range(i_start, i_end):
             matrix_one_zero = self.parser.parse_file_number_n(i)
             pre_process = PreProcess(copy.deepcopy(matrix_one_zero))
@@ -63,14 +73,15 @@ class Launcher:
             elapsed_low_performance.append(problem_solver.get_elapsed())
             print(f" - Fine elaborazione file {i} (low performance) - \n")
 
-            plot_data_to_compare(i_start, i_end, elapsed_performance, elapsed_low_performance)
+            plot_data_to_compare(i_start, i, elapsed_performance, elapsed_low_performance)
 
     def solve_file_number(self, n: int):
         matrix = self.parser.parse_file_number_n(n)
         self.solve(matrix)
 
     def solve_file_name(self, file_name: str):
-        print("da_implementare")
+        matrix = self.parser.parse_file_named(file_name)
+        self.solve(matrix)
 
     def solve_range(self, start, end):
         for k in range(start, end):

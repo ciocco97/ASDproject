@@ -27,4 +27,6 @@ class Parser:
         return matrix_one_zero
 
     def parse_file_named(self, file_name: str) -> list:
-        print("mamma")
+        for index, file in enumerate(self.file_list):
+            if file.endswith(file_name):
+                return self.parse_file_number_n(index)
