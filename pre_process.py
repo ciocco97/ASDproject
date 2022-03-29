@@ -22,7 +22,7 @@ class PreProcess:
         self.cols_pp()
         self.rows_pp()
         self.end = time.time()
-        logging.info(f"Preprocessing completato ({self.end - self.start}s): {len(self.zeros)} colonne rimosse, {self.num_del_rows} righe rimosse")
+        logging.info(f"Preprocessing completato ({'{:e}'.format(self.end - self.start, 3)}s): {len(self.zeros)-len(self.matrix_one_zero[0])} colonne rimosse, {self.num_del_rows} righe rimosse")
         return self.matrix_one_zero
 
     def cols_pp(self):

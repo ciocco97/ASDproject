@@ -27,6 +27,9 @@ class Solver:
         self.start = None
         self.end = None
 
+        self.max = None
+        self.min = None
+
     def main_procedure(self, instance: ProblemInstance):
 
         self.start = time.time()
@@ -67,7 +70,10 @@ class Solver:
                     logging.debug(f"\t\tMinimal hitting set: {t}")
 
         self.end = time.time()
-        logging.info(f"Processing completato: {len(self.output)} MHS trovati")
+        self.max = max(len(x.get_components()) for x in self.output)
+        self.min = min(len(x.get_components()) for x in self.output)
+        logging.info(f"Processing completato ({'{:e}'.format(self.end - self.start, 3)}s): {len(self.output)} MHS trovati")
+        logging.info(f"Dimensioni MHS: {self.max} dimensione massima, {self.min} dimensione minima")
         self.output.reverse()
 
     def print_output(self):
