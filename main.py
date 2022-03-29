@@ -1,4 +1,5 @@
 import os
+import time
 from os import system, name
 
 import launcher
@@ -10,8 +11,7 @@ launcher = Launcher()
 
 
 def main():
-    end = False
-    while not end:
+    while True:
         choice = int(input(main_menu() + ">>>"))
         if choice == 1:
             launcher.performance_comparison()
@@ -24,7 +24,7 @@ def main():
         elif choice == 5:
             info()
         else:
-            end = True
+            break
 
 
 def main_menu():
@@ -56,9 +56,31 @@ def performance_comparison():
 
 def info():
     clc()
-    return "---INFO SUBMENU---" \
+    i = 1
+    text = "---INFO SUBMENU---\n" \
            "This software has been developped by Alessandro Trainini and Francesco Cremascoli (Eils team) for the " \
-           "exam of Algoritmi e strutture dati. We are the very best in the entire world."
+           "exam of Algoritmi e strutture dati.\n" \
+           "Down below is reported the details of the main menu entry:\n" \
+
+    text += f"{i})Performance comparison with standard configuration\n"
+    text += "\tWith this option you'll be able to compare the performance of this resolver with and without the pre-process\n"
+    text += "\tIn this configuration, all the files available will be executed all in one execution\n"
+    i += 1
+    text += f"{i})Performance comparison with custom configuration\n"
+    text += "\tWith this option you'll be able to compare the performance of this resolver with and without the pre-process\n"
+    text += "\tIn this configuration, will be the user to specify the files that will be executed\n"
+    i += 1
+    text += f"{i})MHS resolver with best configuration\n"
+    text += "\tWith this option, the resolver will execute all the available files with the best configuration, in order\n"
+    text += "\tto process the files in the shortest time possible\n"
+    i += 1
+    text += f"{i})Custom run\n"
+    text += "\tWith this option, the user will specify which files and the configuration the files will be executed with\n"
+    i += 1
+    text += f"{i})Info\n"
+    i += 1
+    text += f"{i})Exit\n"
+    print(text)
 
 
 def custom_run():
@@ -112,7 +134,8 @@ def custom_run():
             launcher.solve_file_number(file_number)
         else:
             launcher.solve_range(start, end)
-        print(" - End of the operation - ")
+        print(" - End of the operation. You can see the log file for further information - ")
+        time.sleep(3)
     elif choice == 2:
         custom_run()
     else:
