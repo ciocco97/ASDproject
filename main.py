@@ -1,8 +1,8 @@
 from business_logic import launcher
 from business_logic.launcher import *
 
-SOLVER_DICTIONARY = {Launcher.ZERO: "no pre-pocess", Launcher.ROW: "only rows pre-process",
-                     Launcher.COLUMN: "only columns pre-process", Launcher.ALL: "full pre-process"}
+SOLVER_DICTIONARY = {Launcher.ZERO: "No pre-pocess", Launcher.ROW: "Only rows pre-process",
+                     Launcher.COLUMN: "Only columns pre-process", Launcher.ALL: "Full pre-process"}
 launcher = Launcher()
 
 
@@ -97,16 +97,11 @@ def info():
 def custom_run():
     clc()
     message = "You selected to run "
-    i = 1
-    text = "---CUSTOM RUN SUBMENU---\n"
-    text += "How do you want to specify the input file?\n"
-    text += f"{i})By filename\n"
-    i += 1
-    text += f"{i})By index\n"
-    i += 1
-    text += f"{i})By range\n"
-    input_type = int(input(text + ">>>"))
-
+    text = "---CUSTOM RUN SUBMENU---\nHow do you want to specify the input file?\n"
+    input_type = int(input(get_menu(text, ["By filename",
+                                           "By index",
+                                           "By range (from one to another)"
+                                           ])))
     if input_type == 1:
         filename = input("filename to run: >>>")
         message += f"a file named {filename} "
@@ -118,16 +113,8 @@ def custom_run():
         end = int(input("to file number: >>>"))
         message += f"multiple files indexed from {start} to {end} "
 
-    i = 0
     text = "Which kind of pre-process do you want to run?\n"
-    text += f"{i + 1}){SOLVER_DICTIONARY[i]}\n"
-    i += 1
-    text += f"{i + 1}){SOLVER_DICTIONARY[i]}\n"
-    i += 1
-    text += f"{i + 1}){SOLVER_DICTIONARY[i]}\n"
-    i += 1
-    text += f"{i + 1}){SOLVER_DICTIONARY[i]}\n"
-    pp_choice = int(input(text + "type of pre-process: >>>")) - 1
+    pp_choice = int(input(get_menu(text, SOLVER_DICTIONARY.values()))) - 1
     launcher.set_pre_process(pp_choice)
     message += f"with {SOLVER_DICTIONARY[pp_choice]}\n"
 
@@ -160,8 +147,8 @@ def confirmation(message, callback) -> bool:
 
 def process_end():
     message = "The run has concluded successfully, you can find details of the result in the log file\n"
-    message += "1) Back to main menu\n"
-    message += "2) Exit\n"
+    get_menu(message, ["Back to main manu",
+                       "Exit"])
     choice = int(input(message + ">>>"))
     print(choice)
     if choice == 1:
