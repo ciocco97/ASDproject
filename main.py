@@ -10,11 +10,11 @@ def main():
     while True:
         choice = int(input(main_menu() + ">>>"))
         if choice == 1:
-            launcher.performance_comparison()
+            performance_comparison()
         elif choice == 2:
-            launcher.custom_performance_comparison()
+            custom_performance_comparison()
         elif choice == 3:
-            launcher.best_resolver()
+            best_solver()
         elif choice == 4:
             custom_run()
         elif choice == 5:
@@ -43,11 +43,35 @@ def main_menu():
 
 
 def clc():
-    print('\n' * 0)
+    print('\n' * 10)
 
 
 def performance_comparison():
-    launcher.performance_comparison()
+    clc()
+    message = " --- PERFORMANCE COMPARISON SUBMENU ---\n"
+    message += "You have selected to run the standard comparison between with and without pre-process\n"
+    if confirmation(message, performance_comparison):
+        launcher.performance_comparison()
+    process_end()
+
+
+def custom_performance_comparison():
+    clc()
+    message = " --- CUSTOM PERFORMANCE COMPARISON SUBMENU ---\n"
+    message += "You have selected to run the custom performance comparison between with and without pre-process\n"
+    if confirmation(message, performance_comparison):
+        launcher.performance_comparison()
+    process_end()
+
+
+def best_solver():
+    clc()
+    message = " --- BEST RESOLVER SUBMENU ---\n"
+    message += "You have selected to run all the tests with the most performing configuration\n"
+    if confirmation(message, best_solver):
+        launcher.set_pre_process(Launcher.ALL)
+        launcher.solve_range(0, -1)
+    process_end()
 
 
 def info():
@@ -56,8 +80,7 @@ def info():
     text = "---INFO SUBMENU---\n" \
            "This software has been developped by Alessandro Trainini and Francesco Cremascoli (Eils team) for the " \
            "exam of Algoritmi e strutture dati.\n" \
-           "Down below is reported the details of the main menu entry:\n" \
-
+           "Down below is reported the details of the main menu entry:\n"
     text += f"{i})Performance comparison with standard configuration\n"
     text += "\tWith this option you'll be able to compare the performance of this resolver with and without the pre-process\n"
     text += "\tIn this configuration, all the files available will be executed all in one execution\n"
@@ -76,7 +99,9 @@ def info():
     text += f"{i})Info\n"
     i += 1
     text += f"{i})Exit\n"
-    print(text)
+    text += "press enter to get back to main menu"
+    input(text)
+    main_menu()
 
 
 def custom_run():
@@ -116,26 +141,44 @@ def custom_run():
     launcher.set_pre_process(pp_choice)
     message += f"with {SOLVER_DICTIONARY[pp_choice]}\n"
 
-    message += "Do you want to run it?\n"
-    message += "1) Run it\n"
-    message += "2) Back to custom run submenu\n"
-    message += "3) Back to main menu\n"
-    choice = int(input(message + ">>>"))
-
-    if choice == 1:
-        print(" - Custom run in process... please wait - \n")
+    if confirmation(message, custom_run):
+        launcher.set_pre_process(pp_choice)
         if input_type == 1:
             launcher.solve_file_name(filename)
         elif input_type == 2:
             launcher.solve_file_number(file_number)
         else:
             launcher.solve_range(start, end)
-        print(" - End of the operation. You can see the log file for further information - ")
-        time.sleep(3)
+    process_end()
+
+
+def confirmation(message, callback) -> bool:
+    message += "Do you want to run this configuration?\n"
+    message += "1) Run it\n"
+    message += "2) Back to previous submenu\n"
+    message += "3) Back to main menu\n"
+
+    choice = int(input(message + ">>>"))
+    print(choice)
+    if choice == 1:
+        return True
     elif choice == 2:
-        custom_run()
+        callback()
     else:
         main_menu()
+    return False
+
+
+def process_end():
+    message = "The run has concluded successfully, you can find details of the result in the log file\n"
+    message += "1) Back to main menu\n"
+    message += "2) Exit\n"
+    choice = int(input(message + ">>>"))
+    print(choice)
+    if choice == 1:
+        main_menu()
+    else:
+        exit(0)
 
 
 if __name__ == '__main__':

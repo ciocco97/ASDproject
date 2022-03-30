@@ -8,7 +8,7 @@ class Parser:
         self.file_list = []
         for path in paths:
             self.file_list += [path + x for x in os.listdir(path) if x.endswith(".matrix")]
-        self.num_file_in_paths = len(self.file_list)
+        self.dir_size = len(self.file_list)
 
     def parse_file_number_n(self, n: int) -> list:
         matrix_one_zero = []
@@ -30,3 +30,6 @@ class Parser:
         for index, file in enumerate(self.file_list):
             if file.endswith(file_name):
                 return self.parse_file_number_n(index)
+
+    def get_dir_size(self):
+        return self.dir_size

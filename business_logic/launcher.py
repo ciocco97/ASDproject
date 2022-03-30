@@ -31,7 +31,7 @@ class Launcher:
         my_plotter = OurPlotter()
 
         i_start = 0
-        i_end = self.parser.num_file_in_paths
+        i_end = self.parser.get_dir_size()
         for i in range(i_start, i_end):
             matrix = self.parser.parse_file_number_n(i)
             self.pre_process_mode = self.ALL
