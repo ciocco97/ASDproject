@@ -1,39 +1,18 @@
 import copy
 import logging
-import matplotlib.pyplot as plt
+import time
 
 from data_structure.problem_instance import ProblemInstance
 from instance_parser import Parser
-from pre_process import PreProcess
-from problem_solver import Solver
+from business_logic.problem_solver import Solver
+from business_logic.pre_process import PreProcess
+from our_plotter import OurPlotter
 
 
 def log_config():
     # For log record attributes visit https://docs.python.org/3/library/logging.html#logrecord-objects
-    logging.basicConfig(filename='ASD.log', level=logging.INFO, format="%(asctime)s:%(levelname)s:%(message)s")
-    logging.FileHandler('ASD.log', mode='w')
-
-
-def plot_data_to_compare(i_start: int, i_end: int, data1: list, data2: list):
-    fig, axs = plt.subplots(2)
-    x = range(i_start, i_end + 1)
-
-    axs[0].set_title("Solving time")
-    # axs[0].xlabel("Problem n°")
-    # axs[0].ylabel("Seconds")
-    # axs[0].grid()
-    axs[0].plot(x, data1, label="preprocess")
-    axs[0].plot(x, data2, label="no preprocess")
-    # axs[0].legend()
-
-    # axs[1].title("Delta time")
-    # axs[1].xlabel("Problem n°")
-    # axs[1].ylabel("Seconds")
-    # axs[1].grid()
-    axs[1].plot(x, [data1[i] - data2[i] for i in x], label="difference")
-    # axs[1].legend()
-
-    plt.pause(0.5)
+    logging.basicConfig(filename='log/ASD.log', level=logging.INFO, format="%(asctime)s:%(levelname)s:%(message)s")
+    logging.FileHandler('log/ASD.log', mode='w')
 
 
 class Launcher:
@@ -49,22 +28,22 @@ class Launcher:
         self.pre_process_mode = Launcher.ALL
 
     def performance_comparison(self):
-        elapsed_performance = []
-        elapsed_low_performance = []
+        my_plotter = OurPlotter()
+
         i_start = 0
         i_end = self.parser.num_file_in_paths
         for i in range(i_start, i_end):
             matrix = self.parser.parse_file_number_n(i)
             self.pre_process_mode = self.ALL
-            self.solve(matrix)
-
-            # elapsed_performance.append(problem_solver.get_elapsed())
+            time_1 = self.solve(copy.deepcopy(matrix))
+            my_plotter.add_data("pre_process_time", time_1[0], OurPlotter.PRE_PROC_TIME)
+            my_plotter.add_data("solver_performance", time_1[1], OurPlotter.SOLVER_TIME)
 
             self.pre_process_mode = self.ZERO
-            self.solve(matrix)
-            # elapsed_low_performance.append(problem_solver.get_elapsed())
-
-            # plot_data_to_compare(i_start, i, elapsed_performance, elapsed_low_performance)
+            time_2 = self.solve(copy.deepcopy(matrix))
+            my_plotter.add_data("pre_process_time", time_2[0], OurPlotter.PRE_PROC_TIME)
+            my_plotter.add_data("solver_low_performance", time_2[1], OurPlotter.SOLVER_TIME)
+            my_plotter.plot_data_to_compare(OurPlotter.SOLVER_TIME, "solver_performance", "solver_low_performance")
 
     def solve_file_number(self, n: int):
         matrix = self.parser.parse_file_number_n(n)
@@ -75,10 +54,13 @@ class Launcher:
         self.solve(matrix)
 
     def solve_range(self, start, end):
+        if end == -1:
+            end = self.parser.get_dir_size()
         for k in range(start, end):
             self.solve_file_number(k)
 
     def solve(self, matrix):
+        pre_proc_start = time.time()
         if self.pre_process_mode != Launcher.ZERO:
             pre_process = PreProcess(matrix)
             if self.pre_process_mode == Launcher.ALL:
@@ -87,9 +69,13 @@ class Launcher:
                 matrix = pre_process.cols_pp()
             else:
                 matrix = pre_process.rows_pp()
+        pre_proc_elapsed = time.time() - pre_proc_start
         instance = ProblemInstance(matrix)
         problem_solver = Solver()
+        solver_start = time.time()
         problem_solver.main_procedure(instance)
+        solver_elapsed = time.time() - solver_start
+        return pre_proc_elapsed, solver_elapsed
 
     def set_pre_process(self, mode: int):
         self.pre_process_mode = mode

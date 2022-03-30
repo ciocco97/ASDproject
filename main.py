@@ -1,9 +1,5 @@
-import os
-import time
-from os import system, name
-
-import launcher
-from launcher import *
+from business_logic import launcher
+from business_logic.launcher import *
 
 SOLVER_DICTIONARY = {Launcher.ZERO: "no pre-pocess", Launcher.ROW: "only rows pre-process",
                      Launcher.COLUMN: "only columns pre-process", Launcher.ALL: "full pre-process"}
