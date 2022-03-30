@@ -8,7 +8,7 @@ launcher = Launcher()
 
 def main():
     while True:
-        choice = int(input(main_menu() + ">>>"))
+        choice = int(input(main_menu()))
         if choice == 1:
             performance_comparison()
         elif choice == 2:
@@ -23,23 +23,24 @@ def main():
             break
 
 
+def get_menu(sentence: str, options: list, show_input: bool = True):
+    text = sentence
+    for index, option in enumerate(options):
+        text += f"\t{index + 1})" + str(option) + "\n"
+    return text + (">>>" if show_input else "")
+
+
 def main_menu():
     clc()
-    i = 1
-    text = "---Welcome to Eils MHS resolver v 1.47---\n"
-    text += "Please, select an option from the list below\n"
-    text += f"{i})Performance comparison with standard configuration\n"
-    i += 1
-    text += f"{i})Performance comparison with custom configuration\n"
-    i += 1
-    text += f"{i})MHS resolver with best configuration\n"
-    i += 1
-    text += f"{i})Custom run\n"
-    i += 1
-    text += f"{i})Info\n"
-    i += 1
-    text += f"{i})Exit\n"
-    return text
+    return get_menu("---Welcome to Eils MHS resolver v 1.47---\nPlease, select an option from the list below\n",
+                    [
+                        "Performance comparison with standard configuration",
+                        "Performance comparison with custom configuration",
+                        "MHS resolver with best configuration",
+                        "Custom run",
+                        "Info",
+                        "Exit"
+                    ])
 
 
 def clc():
@@ -76,31 +77,20 @@ def best_solver():
 
 def info():
     clc()
-    i = 1
-    text = "---INFO SUBMENU---\n" \
-           "This software has been developped by Alessandro Trainini and Francesco Cremascoli (Eils team) for the " \
-           "exam of Algoritmi e strutture dati.\n" \
-           "Down below is reported the details of the main menu entry:\n"
-    text += f"{i})Performance comparison with standard configuration\n"
-    text += "\tWith this option you'll be able to compare the performance of this resolver with and without the pre-process\n"
-    text += "\tIn this configuration, all the files available will be executed all in one execution\n"
-    i += 1
-    text += f"{i})Performance comparison with custom configuration\n"
-    text += "\tWith this option you'll be able to compare the performance of this resolver with and without the pre-process\n"
-    text += "\tIn this configuration, will be the user to specify the files that will be executed\n"
-    i += 1
-    text += f"{i})MHS resolver with best configuration\n"
-    text += "\tWith this option, the resolver will execute all the available files with the best configuration, in order\n"
-    text += "\tto process the files in the shortest time possible\n"
-    i += 1
-    text += f"{i})Custom run\n"
-    text += "\tWith this option, the user will specify which files and the configuration the files will be executed with\n"
-    i += 1
-    text += f"{i})Info\n"
-    i += 1
-    text += f"{i})Exit\n"
-    text += "press enter to get back to main menu"
-    input(text)
+    sentence = "---INFO SUBMENU---\n" \
+               "This software has been developped by Alessandro Trainini and Francesco Cremascoli (Eils team) for the exam of Algoritmi e strutture dati.\n" \
+               "Down below is reported the details of the main menu entry:\n"
+    sentence += get_menu(sentence,
+                         [
+                             "Performance comparison with standard configuration\n\tWith this option you'll be able to compare the performance of this resolver with and without the pre-process\n\tIn this configuration, all the files available will be executed all in one execution",
+                             "Performance comparison with custom configuration\n\tWith this option you'll be able to compare the performance of this resolver with and without the pre-process\n\tIn this configuration, will be the user to specify the files that will be executed",
+                             "MHS resolver with best configuration\n\tWith this option, the resolver will execute all the available files with the best configuration, in order\n\tto process the files in the shortest time possible",
+                             "Custom run\n\tWith this option, the user will specify which files and the configuration the files will be executed with",
+                             "Info",
+                             "Exit"
+                         ], False
+                         )
+    input(sentence + "press enter to get back to main menu")
     main_menu()
 
 
@@ -154,10 +144,9 @@ def custom_run():
 
 def confirmation(message, callback) -> bool:
     message += "Do you want to run this configuration?\n"
-    message += "1) Run it\n"
-    message += "2) Back to previous submenu\n"
-    message += "3) Back to main menu\n"
-
+    message += get_menu(message, ["Run it",
+                                  "Back to previous submenu",
+                                  "Back to main menu"])
     choice = int(input(message + ">>>"))
     print(choice)
     if choice == 1:
