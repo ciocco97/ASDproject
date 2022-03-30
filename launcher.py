@@ -54,26 +54,17 @@ class Launcher:
         i_start = 0
         i_end = self.parser.num_file_in_paths
         for i in range(i_start, i_end):
-            matrix_one_zero = self.parser.parse_file_number_n(i)
-            pre_process = PreProcess(copy.deepcopy(matrix_one_zero))
-            new_matrix_one_zero = pre_process.full_pp()
-            instance_performance = ProblemInstance(new_matrix_one_zero)
-            problem_solver = Solver()
-            print(f" - Inizio elaborazione file {i} - ")
+            matrix = self.parser.parse_file_number_n(i)
+            self.pre_process_mode = self.ALL
+            self.solve(matrix)
 
-            problem_solver.main_procedure(instance_performance)
+            # elapsed_performance.append(problem_solver.get_elapsed())
 
-            print(f" - Fine elaborazione file {i} - \n")
+            self.pre_process_mode = self.ZERO
+            self.solve(matrix)
+            # elapsed_low_performance.append(problem_solver.get_elapsed())
 
-            elapsed_performance.append(problem_solver.get_elapsed())
-
-            print(f" - Inizio elaborazione file {i} (low performance) - ")
-            instance_low_performance = ProblemInstance(matrix_one_zero)
-            problem_solver.main_procedure(instance_low_performance)
-            elapsed_low_performance.append(problem_solver.get_elapsed())
-            print(f" - Fine elaborazione file {i} (low performance) - \n")
-
-            plot_data_to_compare(i_start, i, elapsed_performance, elapsed_low_performance)
+            # plot_data_to_compare(i_start, i, elapsed_performance, elapsed_low_performance)
 
     def solve_file_number(self, n: int):
         matrix = self.parser.parse_file_number_n(n)
