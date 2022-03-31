@@ -11,8 +11,8 @@ from our_plotter import OurPlotter
 
 def log_config():
     # For log record attributes visit https://docs.python.org/3/library/logging.html#logrecord-objects
-    logging.basicConfig(filename='ASD.log', level=logging.INFO, format="%(asctime)s:%(levelname)s:%(message)s")
-    logging.FileHandler('ASD.log', mode='w')
+    logging.basicConfig(filename='ASD.log', level=logging.INFO, format="%(asctime)s: %(levelname)s: %(message)s")
+    logging.FileHandler('ASD.log', mode='w+')
 
 
 class Launcher:

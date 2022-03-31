@@ -135,7 +135,6 @@ def confirmation(message, callback) -> bool:
                                   "Back to previous submenu",
                                   "Back to main menu"])
     choice = int(input(message + ">>>"))
-    print(choice)
     if choice == 1:
         return True
     elif choice == 2:
@@ -147,10 +146,9 @@ def confirmation(message, callback) -> bool:
 
 def process_end():
     message = "The run has concluded successfully, you can find details of the result in the log file\n"
-    get_menu(message, ["Back to main manu",
-                       "Exit"])
+    message += get_menu(message, ["Back to main manu",
+                                  "Exit"])
     choice = int(input(message + ">>>"))
-    print(choice)
     if choice == 1:
         main_menu()
     else:

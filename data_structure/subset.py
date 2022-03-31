@@ -31,6 +31,9 @@ class Subset:
             self.components.remove(0)
         self.components.append(singlet)
 
+    def pop_last(self):
+        self.components.pop()
+
     def get_components(self):
         return self.components
 

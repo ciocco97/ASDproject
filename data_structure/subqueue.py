@@ -22,7 +22,7 @@ class SubsQueue:
 
         sub = self.head.get_value()
 
-        if self.size > 0:
+        if self.size != 0:
             self.head = self.head.get_next()
             self.head.set_prev(None)
 
