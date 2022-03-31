@@ -1,3 +1,5 @@
+import time
+
 from data_structure.subset import Subset
 import logging
 
@@ -21,6 +23,8 @@ class PreProcess:
         return self.matrix_one_zero
 
     def cols_pp(self) -> list:
+        start = time.time()
+
         self.zeros = [0] * len(self.matrix_one_zero[0])
         for row in self.matrix_one_zero:
             for k, e in enumerate(row):
@@ -30,11 +34,16 @@ class PreProcess:
         for row in self.matrix_one_zero:
             for index in indexes:
                 del row[index]
+
+        end = time.time()
         logging.info(
-            f"columns pre-process successfully completed with {len(self.zeros) - len(self.matrix_one_zero[0])} removed columns")
+            f"columns pre-process successfully completed with {len(self.zeros) - len(self.matrix_one_zero[0])}"
+            f" removed columns in {start - end}s")
         return self.matrix_one_zero
 
     def rows_pp(self) -> list:
+        start = time.time()
+
         def row_sum(r: list) -> int:
             return sum(r)
 
@@ -60,8 +69,9 @@ class PreProcess:
                 del self.matrix_one_zero[c]
                 self.num_del_rows += 1
             i += 1
+        end = time.time()
         logging.info(
-            f"rows pre-process successfully completed with {self.num_del_rows} removed rows")
+            f"rows pre-process successfully completed with {self.num_del_rows} removed rows in {start - end}s")
         return self.matrix_one_zero
 
     # this method uses the zeros map to obtain the index of a component in the restricted domain, in the original one.

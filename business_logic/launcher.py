@@ -77,7 +77,10 @@ class Launcher:
         problem_solver.main_procedure(instance)
 
         logging.info("MHS Trovati:")
-        pre_process.log_output(problem_solver.get_output())
+        if self.pre_process_mode == (self.ALL or self.COLUMN):
+            pre_process.log_output(problem_solver.get_output())
+        else:
+            problem_solver.log_output()
         solver_elapsed = time.time() - solver_start
         return pre_proc_elapsed, solver_elapsed
 

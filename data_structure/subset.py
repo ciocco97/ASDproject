@@ -33,6 +33,8 @@ class Subset:
 
     def pop_last(self):
         self.components.pop()
+        if len(self.components) == 0:
+            self.components.append(0)
 
     def get_components(self):
         return self.components
