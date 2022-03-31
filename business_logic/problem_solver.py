@@ -37,18 +37,18 @@ class Solver:
         self.output = []
 
         queue = SubsQueue()
-        while queue.size() > 0:
-            logging.debug(f"\tQueue size: {queue.size()}")
+        while queue.get_size() > 0:
+            # logging.debug(f"\tQueue size: {queue.size()}")
 
             delta = queue.dequeue()
             rv1 = instance.get_rv(delta)
 
-            logging.debug(f"\tdelta: {delta} representative vector: {rv1}")
-            logging.debug(f"\tdelta_max: {delta.max()}")
-            logging.debug(f"\tdelta components: {delta.get_components()}, {hash(delta)}")
+            # logging.debug(f"\tdelta: {delta} representative vector: {rv1}")
+            # logging.debug(f"\tdelta_max: {delta.max()}")
+            # logging.debug(f"\tdelta components: {delta.get_components()}, {hash(delta)}")
 
             for e in range(delta.max() + 1, instance.M + 1):
-                logging.debug(f"\t\t- e: {e} in {range(delta.max() + 1, instance.M)} -")
+                # logging.debug(f"\t\t- e: {e} in {range(delta.max() + 1, instance.M)} -")
 
                 t = Subset(delta.get_components())
                 t.add(e)
@@ -57,30 +57,34 @@ class Solver:
                 rv2 = instance.get_singlet_rv(e)
                 logging.debug(f"\t\te: {e} representative vector: {rv2}")
                 t_rv = generate_new_rv(rv1, rv2, instance.N)
-                logging.debug(f"\t\tT: {t} representative vector: {t_rv}")
+                # logging.debug(f"\t\tT: {t} representative vector: {t_rv}")
                 instance.add_rv(t, t_rv)
 
                 result = the_best_check_in_the_entire_world(t, t_rv)
-                logging.debug(f"\t\tresult: {RESULT_TO_STRING[result]}")
+                # logging.debug(f"\t\tresult: {RESULT_TO_STRING[result]}")
 
                 if result == OK:
                     queue.enqueue(t)
                 elif result == MHS:
                     self.output.append(t)
-                    logging.debug(f"\t\tMinimal hitting set: {t}")
+                    # logging.debug(f"\t\tMinimal hitting set: {t}")
 
         self.end = time.time()
         self.max = max(len(x.get_components()) for x in self.output)
         self.min = min(len(x.get_components()) for x in self.output)
-        logging.info(f"Processing completato ({'{:e}'.format(self.end - self.start, 3)}s): {len(self.output)} MHS trovati")
+        logging.info(f"Processing completato ({'{:e}'.format(self.end - self.start, 3)}s): {len(self.output)} MHS "
+                     f"trovati")
         logging.info(f"Dimensioni MHS: {self.max} dimensione massima, {self.min} dimensione minima")
-        self.output.reverse()
 
     def print_output(self):
         print(*(x for x in self.output), sep='\n')
 
     def get_output(self) -> list:
         return self.output
+
+    def log_output(self):
+        for x in self.output:
+            logging.info(str(x))
 
     def get_elapsed(self) -> float:
         return self.end - self.start

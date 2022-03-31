@@ -31,5 +31,8 @@ class Parser:
             if file.endswith(file_name):
                 return self.parse_file_number_n(index)
 
+    def get_dir_size(self) -> int:
+        return self.dir_size
+
     def get_dir_size(self):
         return self.dir_size

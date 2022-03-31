@@ -11,8 +11,8 @@ from our_plotter import OurPlotter
 
 def log_config():
     # For log record attributes visit https://docs.python.org/3/library/logging.html#logrecord-objects
-    logging.basicConfig(filename='log/ASD.log', level=logging.INFO, format="%(asctime)s:%(levelname)s:%(message)s")
-    logging.FileHandler('log/ASD.log', mode='w')
+    logging.basicConfig(filename='ASD.log', level=logging.INFO, format="%(asctime)s:%(levelname)s:%(message)s")
+    logging.FileHandler('ASD.log', mode='w')
 
 
 class Launcher:
@@ -70,10 +70,14 @@ class Launcher:
             else:
                 matrix = pre_process.rows_pp()
         pre_proc_elapsed = time.time() - pre_proc_start
+
         instance = ProblemInstance(matrix)
         problem_solver = Solver()
         solver_start = time.time()
         problem_solver.main_procedure(instance)
+
+        logging.info("MHS Trovati:")
+        pre_process.log_output(problem_solver.get_output())
         solver_elapsed = time.time() - solver_start
         return pre_proc_elapsed, solver_elapsed
 

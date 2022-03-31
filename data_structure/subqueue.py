@@ -1,16 +1,32 @@
 from data_structure.subset import Subset
+from data_structure.node import Node
 
 
 class SubsQueue:
     def __init__(self):
-        self.items = []
-        self.items.insert(0, Subset([0]))
+        self.size = 1
+        self.head = self.tail = Node(Subset([0]))
 
-    def enqueue(self, item):
-        self.items.append(item)
+    def enqueue(self, item: Subset):
+        self.size += 1
 
-    def dequeue(self):
-        return self.items.pop()
+        if self.size == 1:
+            self.head = self.tail = Node(item)
+        else:
+            new_node = Node(item, None, self.tail)
+            self.tail.set_next(new_node)
+            self.tail = new_node
 
-    def size(self):
-        return len(self.items)
+    def dequeue(self) -> Subset:
+        self.size -= 1
+
+        sub = self.head.get_value()
+
+        if self.size > 0:
+            self.head = self.head.get_next()
+            self.head.set_prev(None)
+
+        return sub
+
+    def get_size(self) -> int:
+        return self.size
