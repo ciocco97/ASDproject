@@ -18,8 +18,8 @@ class PreProcess:
         self.end = None
 
     def full_pp(self) -> list:
-        self.cols_pp()
         self.rows_pp()
+        self.cols_pp()
         return self.matrix_one_zero
 
     def cols_pp(self) -> list:

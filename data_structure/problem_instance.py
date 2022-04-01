@@ -49,12 +49,12 @@ class ProblemInstance:
         self.singlet_representative_vectors.insert(singlet, representative_vector)
 
     def add_rv(self, sigma: Subset, representative_vector: RepresentativeVector):
-        self.representative_vectors[hash(sigma)] = representative_vector
+        self.representative_vectors[str(sigma)] = representative_vector
 
     def get_rv(self, sigma: Subset) -> RepresentativeVector:
         size = sigma.get_size()
         if size > 1:
-            return self.representative_vectors[hash(sigma)]
+            return self.representative_vectors[str(sigma)]
         elif size == 1:
             return self.singlet_representative_vectors[sigma.get_components()[0]]
         else:

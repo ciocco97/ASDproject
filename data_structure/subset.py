@@ -8,13 +8,7 @@ class Subset:
         self.components = vals.copy()
 
     def __str__(self):
-        text = ""
-        for val in self.components:
-            text = text + str(val) + ","
-        return text[:len(text) - 1]
-
-    def __hash__(self):
-        return hash(str(self.components))
+        return str(self.components)
 
     def max(self):
         # the last component is the highest
@@ -23,7 +17,7 @@ class Subset:
     def add(self, singlet):
         self.components.append(singlet)
 
-    def pop_right(self):
+    def popright(self):
         self.components.pop()
 
     def get_components(self):

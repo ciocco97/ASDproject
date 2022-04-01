@@ -15,10 +15,9 @@ class RepresentativeVector:
 
 
 # this procedure generate the new rv starting from a couple
-def generate_new_rv(rv1: RepresentativeVector, rv2: RepresentativeVector, num_of_sets: int) -> RepresentativeVector:
-    values = [0] * num_of_sets
-    for i, phi1 in enumerate(rv1.vector):
-        phi2 = rv2.vector[i]
+def generate_new_rv(rv1: RepresentativeVector, rv2: RepresentativeVector) -> RepresentativeVector:
+    values = []
+    for phi1, phi2 in zip(rv1.vector, rv2.vector):
         result = phi1 + phi2
-        values[i] = result if 0 <= result <= max(phi1, phi2) else RepresentativeVector.X_VAL
+        values.append(result if 0 <= result <= max(phi1, phi2) else RepresentativeVector.X_VAL)
     return RepresentativeVector(values)
