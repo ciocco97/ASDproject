@@ -23,7 +23,7 @@ def main():
             break
 
 
-def get_menu(sentence: str, options: list, show_input: bool = True):
+def get_menu(sentence: str, options, show_input: bool = True) -> str:
     text = sentence
     for index, option in enumerate(options):
         text += f"\t{index + 1})" + str(option) + "\n"
@@ -131,9 +131,9 @@ def custom_run():
 
 def confirmation(message, callback) -> bool:
     message += "Do you want to run this configuration?\n"
-    message += get_menu(message, ["Run it",
-                                  "Back to previous submenu",
-                                  "Back to main menu"])
+    message = get_menu(message, ["Run it",
+                                 "Back to previous submenu",
+                                 "Back to main menu"])
     choice = int(input(message + ">>>"))
     if choice == 1:
         return True
@@ -146,8 +146,8 @@ def confirmation(message, callback) -> bool:
 
 def process_end():
     message = "The run has concluded successfully, you can find details of the result in the log file\n"
-    message += get_menu(message, ["Back to main manu",
-                                  "Exit"])
+    message = get_menu(message, ["Back to main manu",
+                                 "Exit"])
     choice = int(input(message + ">>>"))
     if choice == 1:
         main_menu()
