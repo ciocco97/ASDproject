@@ -4,7 +4,6 @@ import collections
 
 from data_structure.problem_instance import ProblemInstance
 from data_structure.representative_vector import generate_new_rv, RepresentativeVector
-from data_structure.subqueue import SubsQueue
 from data_structure.subset import Subset
 
 RESULT_TO_STRING = {-1: "KO", 1: "MHS", 0: "OK"}
