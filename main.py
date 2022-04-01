@@ -97,8 +97,8 @@ def info():
 def custom_run():
     clc()
     message = "You selected to run "
-    text = "---CUSTOM RUN SUBMENU---\nHow do you want to specify the input file?\n"
-    input_type = int(input(get_menu(text, ["By filename",
+    sentence = "---CUSTOM RUN SUBMENU---\nHow do you want to specify the input file?\n"
+    input_type = int(input(get_menu(sentence, ["By filename",
                                            "By index",
                                            "By range (from one to another)"
                                            ])))
@@ -113,8 +113,8 @@ def custom_run():
         end = int(input("to file number: >>>"))
         message += f"multiple files indexed from {start} to {end} "
 
-    text = "Which kind of pre-process do you want to run?\n"
-    pp_choice = int(input(get_menu(text, SOLVER_DICTIONARY.values()))) - 1
+    sentence = "Which kind of pre-process do you want to run?\n"
+    pp_choice = int(input(get_menu(sentence, SOLVER_DICTIONARY.values()))) - 1
     launcher.set_pre_process(pp_choice)
     message += f"with {SOLVER_DICTIONARY[pp_choice]}\n"
 
@@ -134,7 +134,7 @@ def confirmation(message, callback) -> bool:
     message = get_menu(message, ["Run it",
                                  "Back to previous submenu",
                                  "Back to main menu"])
-    choice = int(input(message + ">>>"))
+    choice = int(input(message))
     if choice == 1:
         return True
     elif choice == 2:
