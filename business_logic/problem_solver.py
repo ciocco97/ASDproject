@@ -66,8 +66,9 @@ class Solver:
                 delta.pop_right()
 
         self.end = time.time()
-        self.max = self.output.popleft().get_size()
-        self.min = self.output.pop().get_size()
+        if len(self.output):
+            self.max = self.output[0].get_size()
+            self.min = self.output.pop().get_size()
         logging.info(f"Processing completed ({'{:e}'.format(self.end - self.start, 3)}s): {len(self.output)} MHS "
                      f"found")
         logging.info(f"dimensions of the MHS: {self.max} max size, {self.min} min size")

@@ -21,7 +21,7 @@ class ProblemInstance:
         self.M = len(matrix_one_zero[0])
 
         self.set_matrix_lex(matrix_one_zero)
-        logging.info(f"List of Subsets: {self.matrix_lex}")
+        # logging.info(f"List of Subsets: {self.matrix_lex}")
 
         RepresentativeVector.X_VAL = -1 * (self.M + 1)
         # the representative vector of the empty subset is the null vector of size N
