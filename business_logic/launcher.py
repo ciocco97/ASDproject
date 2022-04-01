@@ -10,7 +10,7 @@ from business_logic.problem_solver import Solver
 from business_logic.pre_process import PreProcess
 from our_plotter import OurPlotter
 
-log_path = 'log/ASD.log'
+log_path = 'ASD.log'
 
 
 def log_config():

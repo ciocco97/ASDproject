@@ -17,16 +17,13 @@ class Subset:
         return hash(str(self.components))
 
     def max(self):
-        return max(self.components)
+        # the last component is the highest
+        return 0 if len(self.components) == 0 else self.components[len(self.components)-1]
 
     def add(self, singlet):
-        if len(self.components) == 1 and self.components[0] == 0:
-            self.components.remove(0)
         self.components.append(singlet)
 
     def pop_right(self):
-        if len(self.components) == 0:
-            self.components.append(0)
         self.components.pop()
 
     def get_components(self):

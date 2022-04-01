@@ -52,9 +52,13 @@ class ProblemInstance:
         self.representative_vectors[hash(sigma)] = representative_vector
 
     def get_rv(self, sigma: Subset) -> RepresentativeVector:
-        if sigma.get_size() == 1:
-            return self.get_singlet_rv(sigma.get_components()[0])
-        return self.representative_vectors[hash(sigma)]
+        size = sigma.get_size()
+        if size > 1:
+            return self.representative_vectors[hash(sigma)]
+        elif size == 1:
+            return self.singlet_representative_vectors[sigma.get_components()[0]]
+        else:
+            return self.singlet_representative_vectors[0]
 
     def get_singlet_rv(self, singlet: int) -> RepresentativeVector:
         return self.singlet_representative_vectors[singlet]

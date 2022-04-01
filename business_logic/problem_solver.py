@@ -22,22 +22,16 @@ def check(t: Subset, t_rv: RepresentativeVector):
 class Solver:
 
     def __init__(self):
-        self.output = None
+        self.output = []
 
         self.start = None
         self.end = None
 
-        self.max = None
-        self.min = None
-
     def main_procedure(self, instance: ProblemInstance):
 
-        self.start = time.time()
-
-        self.output = collections.deque()
-
         queue = collections.deque()
-        queue.append(Subset([0]))
+        queue.append(Subset([]))
+        self.start = time.time()
         while len(queue) > 0:
 
             delta = queue.popleft()
@@ -66,11 +60,11 @@ class Solver:
 
         self.end = time.time()
         if len(self.output):
-            self.min = self.output[0].get_size()
-            self.max = self.output[len(self.output)-1].get_size()
+            min_size = self.output[0].get_size()
+            max_size = self.output[len(self.output) - 1].get_size()
         logging.info(f"Processing completed ({'{:e}'.format(self.end - self.start, 3)}s): {len(self.output)} MHS "
                      f"found")
-        logging.info(f"Dimensions of the MHS: {self.max} max size, {self.min} min size")
+        logging.info(f"Dimensions of the MHS: {max_size} max size, {min_size} min size")
 
     def print_output(self):
         print(*(x for x in self.output), sep='\n')
@@ -86,5 +80,3 @@ class Solver:
 
     def get_elapsed(self) -> float:
         return self.end - self.start
-
-
