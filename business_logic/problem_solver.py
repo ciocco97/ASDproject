@@ -31,13 +31,15 @@ class Solver:
 
         queue = collections.deque()
         queue.append(Subset([]))
+        N = instance.N
+        M = instance.M
         self.start = time.time()
         while len(queue) > 0:
 
             delta = queue.popleft()
             rv1 = instance.get_rv(delta)
 
-            for e in range(delta.max() + 1, instance.M+1):
+            for e in range(delta.max() + 1, M+1):
                 # there's no need to generate a new Subset for each new e. We just use the previous delta to make the
                 # computation. Only if the new delta is OK, we add a new Subset into the queue.
                 delta.add(e)
@@ -45,11 +47,11 @@ class Solver:
                 # optimization: we know it is a singlet so there is a data structure on purpose (an array) so we
                 # access it super ez pz lemon sqz
                 rv2 = instance.get_singlet_rv(e)
-                t_rv = generate_new_rv(rv1, rv2)
+                t_rv = generate_new_rv(rv1, rv2, N)
 
                 # optimization: we save the new RV iff the subset it represents is OK! not everytime
                 result = check(delta, t_rv)
-                if result == OK and e != instance.M:
+                if result == OK and e != M:
                     instance.add_rv(delta, t_rv)
                     queue.append(Subset(delta.get_components()))
                 elif result == MHS:
@@ -59,6 +61,7 @@ class Solver:
                 delta.popright()
 
         self.end = time.time()
+        max_size = min_size = 0
         if len(self.output):
             min_size = self.output[0].get_size()  # the first element is the smallest
             max_size = self.output[len(self.output) - 1].get_size()  # the last element is the biggest

@@ -25,6 +25,12 @@ def reset_log():
         pass
 
 
+def print_log():
+    with open(log_path, 'r') as f:
+        print(f.read())
+    reset_log()
+
+
 def save_log(file_name: str):
     original = os.path.abspath(log_path)
     target = file_name.split('/')
@@ -106,12 +112,13 @@ class Launcher:
 
         solver_elapsed = time.time() - solver_start
 
-        if self.pre_process_mode == Launcher.ALL or self.pre_process_mode == Launcher.COLUMN:
-            pre_process.log_output(problem_solver.get_output())
-        else:
-            problem_solver.log_output()
-        if save_result:
-            save_log(file_name)
+        print_log()
+        # if self.pre_process_mode == Launcher.ALL or self.pre_process_mode == Launcher.COLUMN:
+        #     pre_process.log_output(problem_solver.get_output())
+        # else:
+        #     problem_solver.log_output()
+        # if save_result:
+        #     save_log(file_name)
         return pre_proc_elapsed, solver_elapsed
 
     def set_pre_process(self, mode: int):
