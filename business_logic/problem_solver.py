@@ -66,8 +66,8 @@ class Solver:
 
         self.end = time.time()
         if len(self.output):
-            self.max = self.output[0].get_size()
-            self.min = self.output.pop().get_size()
+            self.min = self.output[0].get_size()
+            self.max = self.output[len(self.output)-1].get_size()
         logging.info(f"Processing completed ({'{:e}'.format(self.end - self.start, 3)}s): {len(self.output)} MHS "
                      f"found")
         logging.info(f"dimensions of the MHS: {self.max} max size, {self.min} min size")
