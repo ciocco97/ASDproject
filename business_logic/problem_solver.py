@@ -4,7 +4,6 @@ import collections
 
 from data_structure.problem_instance import ProblemInstance
 from data_structure.representative_vector import generate_new_rv, RepresentativeVector
-from data_structure.subqueue import SubsQueue
 from data_structure.subset import Subset
 
 RESULT_TO_STRING = {-1: "KO", 1: "MHS", 0: "OK"}
@@ -66,8 +65,8 @@ class Solver:
                 delta.pop_right()
 
         self.end = time.time()
-        self.max = self.output.popleft().get_size()
-        self.min = self.output.pop().get_size()
+        self.max = len(self.output[len(self.output)-1].get_components())
+        self.min = len(self.output[0].get_components())
         logging.info(f"Processing completed ({'{:e}'.format(self.end - self.start, 3)}s): {len(self.output)} MHS "
                      f"found")
         logging.info(f"dimensions of the MHS: {self.max} max size, {self.min} min size")

@@ -1,11 +1,10 @@
 import collections
+import hashlib
 
 
 class Subset:
     def __init__(self, vals):
-        self.components = []
-        for val in vals:
-            self.components.append(val)
+        self.components = vals.copy()
 
     def __str__(self):
         text = "| "
