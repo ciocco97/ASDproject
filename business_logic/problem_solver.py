@@ -70,7 +70,7 @@ class Solver:
             self.max = self.output[len(self.output)-1].get_size()
         logging.info(f"Processing completed ({'{:e}'.format(self.end - self.start, 3)}s): {len(self.output)} MHS "
                      f"found")
-        logging.info(f"dimensions of the MHS: {self.max} max size, {self.min} min size")
+        logging.info(f"Dimensions of the MHS: {self.max} max size, {self.min} min size")
 
     def print_output(self):
         print(*(x for x in self.output), sep='\n')
@@ -79,8 +79,10 @@ class Solver:
         return self.output
 
     def log_output(self):
+        output_str = "MHS found: "
         for x in self.output:
-            logging.info(str(x))
+            output_str += str(x) + "|"
+        logging.info(output_str[:-1])
 
     def get_elapsed(self) -> float:
         return self.end - self.start

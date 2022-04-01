@@ -1,4 +1,5 @@
 import collections
+import copy
 import hashlib
 
 
@@ -7,10 +8,10 @@ class Subset:
         self.components = vals.copy()
 
     def __str__(self):
-        text = "| "
+        text = ""
         for val in self.components:
-            text = text + str(val) + " - "
-        return text[:len(text) - 3] + " |"
+            text = text + str(val) + ","
+        return text[:len(text) - 1]
 
     def __hash__(self):
         return hash(str(self.components))

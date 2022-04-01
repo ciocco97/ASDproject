@@ -34,7 +34,8 @@ class OurPlotter:
         y1 = self.data[data_type][data_name1]
         y2 = self.data[data_type][data_name2]
         if len(y1) != len(y2):
-            logging.warning("La lunghezza dei dati che si vogliono plottare è diversa")
+            logging.warning("La lunghezza dei dati che si vogliono plottare e' diversa")
+            del self.data[data_type][data_name1][-1]
         if abscissa_name:
             x = self.data[data_type][abscissa_name]
         else:

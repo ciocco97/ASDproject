@@ -37,7 +37,7 @@ class PreProcess:
 
         end = time.time()
         logging.info(
-            f"columns pre-process successfully completed with {len(self.zeros) - len(self.matrix_one_zero[0])}"
+            f"Columns pre-process successfully completed with {len(self.zeros) - len(self.matrix_one_zero[0])}"
             f" removed columns in {end - start}s")
         return self.matrix_one_zero
 
@@ -71,7 +71,7 @@ class PreProcess:
             i += 1
         end = time.time()
         logging.info(
-            f"rows pre-process successfully completed with {self.num_del_rows} removed rows in {end - start}s")
+            f"Rows pre-process successfully completed with {self.num_del_rows} removed rows in {end - start}s")
         return self.matrix_one_zero
 
     # this method uses the zeros map to obtain the index of a component in the restricted domain, in the original one.
@@ -99,10 +99,12 @@ class PreProcess:
         return subsets
 
     def log_output(self, output):
+        output_str = "MHS found: "
         for sub in output:
             if isinstance(sub, Subset):
-                newsub = Subset(self.map(x) for x in sub.get_components())
-                logging.info(newsub)
+                newsub = Subset([self.map(x) for x in sub.get_components()])
+                output_str += f"{newsub}|"
+        logging.info(output_str[:-1])
 
     def get_elapsed(self) -> float:
         return self.end - self.start
