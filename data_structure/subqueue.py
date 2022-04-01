@@ -1,11 +1,12 @@
 from data_structure.subset import Subset
 from data_structure.node import Node
+import collections
 
 
 class SubsQueue:
     def __init__(self):
         self.size = 1
-        self.head = self.tail = Node(Subset([0]))
+        self.head = self.tail = Node()
 
     def enqueue(self, item: Subset):
         self.size += 1

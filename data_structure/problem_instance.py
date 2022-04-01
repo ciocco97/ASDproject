@@ -25,17 +25,15 @@ class ProblemInstance:
 
         RepresentativeVector.X_VAL = -1 * (self.M + 1)
         # the representative vector of the empty subset is the null vector of size N
-        rv_zero = RepresentativeVector(self.N)
+        rv_zero = RepresentativeVector([0]*self.N)
         self.add_singlet_rv(0, rv_zero)
 
         # computation of the representative vectors of the singletties :')
         for singlet in range(1, self.M + 1):
-            current_repr_vector = RepresentativeVector(self.N)
+            values = [0] * self.N
             for i, N_i in enumerate(self.matrix_lex):
-                if singlet in N_i:
-                    current_repr_vector.set_val_by_index(i, singlet)
-                    # here we put k+1 because the 0 is filled by the empty vector
-            self.add_singlet_rv(singlet, current_repr_vector)
+                values[i] = singlet if singlet in N_i else 0
+            self.add_singlet_rv(singlet, RepresentativeVector(values))
 
     def set_M(self, M):
         self.M = M
@@ -57,9 +55,6 @@ class ProblemInstance:
         if sigma.get_size() == 1:
             return self.get_singlet_rv(sigma.get_components()[0])
         return self.representative_vectors[hash(sigma)]
-
-    def remove_rv(self, sigma: Subset):
-        self.representative_vectors.pop(sigma)
 
     def get_singlet_rv(self, singlet: int) -> RepresentativeVector:
         return self.singlet_representative_vectors[singlet]
