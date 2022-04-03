@@ -28,19 +28,18 @@ def reset_log():
 def print_log():
     with open(log_path, 'r') as f:
         print(f.read())
-    reset_log()
 
 
 def save_log(file_name: str):
     original = os.path.abspath(log_path)
-    target = file_name.split('/')
+    target = file_name.split('\\')
     result_file_name = target[-1]
     target[-1] = "results"
-    target_folder = os.path.abspath('/'.join(target))
+    target_folder = os.path.abspath('\\'.join(target))
     if not os.path.exists(target_folder):
         os.makedirs(target_folder)
     target.append(result_file_name)
-    target = os.path.abspath('/'.join(target))
+    target = os.path.abspath('\\'.join(target))
     shutil.copyfile(original, target)
     reset_log()
 
@@ -50,12 +49,36 @@ class Launcher:
     ROW = 1
     COLUMN = 2
     ALL = 3
+    PRE_PROCESS_OPTIONS = [ZERO, ROW, COLUMN, ALL]
 
-    def __init__(self):
+    def __init__(self, paths=None):
+        self.file_path = None
+        if paths is None:
+            paths = ["Benchmarks\\benchmarks1\\", "Benchmarks\\benchmarks2\\"]
         log_config()
-        self.parser = Parser(["Benchmarks/benchmarks1/", "Benchmarks/benchmarks2/"])
+        self.parser = Parser(paths)
 
         self.pre_process_mode = Launcher.ALL
+
+    def set_pre_process(self, mode: int):
+        self.pre_process_mode = mode
+
+    def set_paths(self, paths):
+        self.parser = Parser(paths)
+        self.file_path = None
+
+    def set_file_path(self, file_path):
+        self.file_path = file_path
+
+    def run_from_terminal(self):
+        if self.file_path:
+            matrix = self.parser.parse_file_by_path(self.file_path)
+            self.solve(matrix, self.file_path)
+        else:
+            for i in range(0, self.parser.get_dir_size()):
+                file_name = self.parser.get_file_name_by_index(i)
+                matrix = self.parser.parse_file_number_n(i)
+                self.solve(matrix, file_name)
 
     def performance_comparison(self):
         my_plotter = OurPlotter()
@@ -112,14 +135,11 @@ class Launcher:
 
         solver_elapsed = time.time() - solver_start
 
-        print_log()
-        # if self.pre_process_mode == Launcher.ALL or self.pre_process_mode == Launcher.COLUMN:
-        #     pre_process.log_output(problem_solver.get_output())
-        # else:
-        #     problem_solver.log_output()
-        # if save_result:
-        #     save_log(file_name)
+        if self.pre_process_mode == Launcher.ALL or self.pre_process_mode == Launcher.COLUMN:
+            pre_process.log_output(problem_solver.get_output())
+        else:
+            problem_solver.log_output()
+        if save_result:
+            print_log()
+            save_log(file_name)
         return pre_proc_elapsed, solver_elapsed
-
-    def set_pre_process(self, mode: int):
-        self.pre_process_mode = mode

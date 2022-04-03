@@ -1,158 +1,95 @@
-from business_logic import launcher
-from business_logic.launcher import *
+import os
+import sys
 
-SOLVER_DICTIONARY = {Launcher.ZERO: "No pre-pocess", Launcher.ROW: "Only rows pre-process",
-                     Launcher.COLUMN: "Only columns pre-process", Launcher.ALL: "Full pre-process"}
-launcher = Launcher()
+from business_logic.launcher import Launcher
+from cl_ui import cl_ui
+
+path_separator = ","
+PRE = "-p"
+F_NAME = "-f"
+D_NAME = "-d"
+OPTIONS = [PRE, F_NAME, D_NAME]
+
+
+def launcher_config(args):
+    launcher = Launcher()
+    syntax_error = False
+    i = 0
+    while i < len(args):
+        if args[i] in OPTIONS:
+
+            if args[i] == PRE:  # Preprocessing
+                all_preprocess = False
+                if i + 1 < len(args):
+                    ppo: str = args[i + 1]  # pre process option
+                    if ppo.isnumeric():
+                        if not (int(ppo) in Launcher.PRE_PROCESS_OPTIONS):
+                            syntax_error = True
+                    elif ppo in OPTIONS:
+                        all_preprocess = True
+                    else:
+                        syntax_error = True
+                else:
+                    all_preprocess = True
+
+                if all_preprocess:
+                    launcher.set_pre_process(Launcher.ALL)
+                elif syntax_error:
+                    raise Exception(f"Syntax error near {PRE}")
+                else:
+                    launcher.set_pre_process(int(args[i + 1]))
+                    i += 1
+
+            elif args[i] == F_NAME:  # file
+                file_path = ""
+                if i + 1 >= len(args):
+                    syntax_error = True
+                else:
+                    file_path: str = args[i + 1]
+                    if os.path.exists(file_path):
+                        pass
+                    elif os.path.exists(os.path.abspath(file_path)):
+                        file_path = os.path.abspath(file_path)
+                    else:
+                        syntax_error = True
+                if syntax_error:
+                    raise Exception(f"Syntax error near {F_NAME}")
+                else:
+                    launcher.set_file_path(file_path)
+                    i += 1
+
+            elif args[i] == D_NAME:  # Directory
+                paths = []
+                if i + 1 >= len(args):
+                    syntax_error = True
+                else:
+                    for path in args[i + 1].split(path_separator):
+                        path = os.path.normpath(path) + "\\"
+                        if os.path.exists(path):
+                            paths.append(path)
+                        elif os.path.exists(os.path.abspath(path)):
+                            paths.append(path)
+                        else:
+                            syntax_error = True
+                if syntax_error:
+                    raise Exception(f"Syntax error near {D_NAME}")
+                else:
+                    launcher.set_paths(paths)
+                    i += 1
+
+        else:
+            raise Exception(f"Option {args[i]} unknown")
+        i += 1
+    launcher.run_from_terminal()
 
 
 def main():
-    while True:
-        choice = int(input(main_menu()))
-        if choice == 1:
-            performance_comparison()
-        elif choice == 2:
-            custom_performance_comparison()
-        elif choice == 3:
-            best_solver()
-        elif choice == 4:
-            custom_run()
-        elif choice == 5:
-            info()
-        else:
-            break
-
-
-def get_menu(sentence: str, options, show_input: bool = True) -> str:
-    text = sentence
-    for index, option in enumerate(options):
-        text += f"\t{index + 1})" + str(option) + "\n"
-    return text + (">>>" if show_input else "")
-
-
-def main_menu():
-    clc()
-    return get_menu("---Welcome to Eils MHS resolver v 1.47---\nPlease, select an option from the list below\n",
-                    [
-                        "Performance comparison with standard configuration",
-                        "Performance comparison with custom configuration",
-                        "MHS resolver with best configuration",
-                        "Custom run",
-                        "Info",
-                        "Exit"
-                    ])
-
-
-def clc():
-    print('\n' * 10)
-
-
-def performance_comparison():
-    clc()
-    message = " --- PERFORMANCE COMPARISON SUBMENU ---\n"
-    message += "You have selected to run the standard comparison between with and without pre-process\n"
-    if confirmation(message, performance_comparison):
-        launcher.performance_comparison()
-    process_end()
-
-
-def custom_performance_comparison():
-    clc()
-    message = " --- CUSTOM PERFORMANCE COMPARISON SUBMENU ---\n"
-    message += "You have selected to run the custom performance comparison between with and without pre-process\n"
-    if confirmation(message, performance_comparison):
-        launcher.performance_comparison()
-    process_end()
-
-
-def best_solver():
-    clc()
-    message = " --- BEST RESOLVER SUBMENU ---\n"
-    message += "You have selected to run all the tests with the most performing configuration\n"
-    if confirmation(message, best_solver):
-        launcher.set_pre_process(Launcher.ALL)
-        launcher.solve_range(0, -1)
-    process_end()
-
-
-def info():
-    clc()
-    sentence = "---INFO SUBMENU---\n" \
-               "This software has been developped by Alessandro Trainini and Francesco Cremascoli (Eils team) for the exam of Algoritmi e strutture dati.\n" \
-               "Down below is reported the details of the main menu entry:\n"
-    sentence += get_menu(sentence,
-                         [
-                             "Performance comparison with standard configuration\n\tWith this option you'll be able to compare the performance of this resolver with and without the pre-process\n\tIn this configuration, all the files available will be executed all in one execution",
-                             "Performance comparison with custom configuration\n\tWith this option you'll be able to compare the performance of this resolver with and without the pre-process\n\tIn this configuration, will be the user to specify the files that will be executed",
-                             "MHS resolver with best configuration\n\tWith this option, the resolver will execute all the available files with the best configuration, in order\n\tto process the files in the shortest time possible",
-                             "Custom run\n\tWith this option, the user will specify which files and the configuration the files will be executed with",
-                             "Info",
-                             "Exit"
-                         ], False
-                         )
-    input(sentence + "press enter to get back to main menu")
-    main_menu()
-
-
-def custom_run():
-    clc()
-    message = "You selected to run "
-    sentence = "---CUSTOM RUN SUBMENU---\nHow do you want to specify the input file?\n"
-    input_type = int(input(get_menu(sentence, ["By filename",
-                                           "By index",
-                                           "By range (from one to another)"
-                                           ])))
-    if input_type == 1:
-        filename = input("filename to run: >>>")
-        message += f"a file named {filename} "
-    elif input_type == 2:
-        file_number = int(input("number of file to run: >>>"))
-        message += f"a file indexed by {file_number} "
+    args = sys.argv
+    if len(args) == 1:
+        cl_ui()
     else:
-        start = int(input("from file number: >>>"))
-        end = int(input("to file number: >>>"))
-        message += f"multiple files indexed from {start} to {end} "
-
-    sentence = "Which kind of pre-process do you want to run?\n"
-    pp_choice = int(input(get_menu(sentence, SOLVER_DICTIONARY.values()))) - 1
-    launcher.set_pre_process(pp_choice)
-    message += f"with {SOLVER_DICTIONARY[pp_choice]}\n"
-
-    if confirmation(message, custom_run):
-        launcher.set_pre_process(pp_choice)
-        if input_type == 1:
-            launcher.solve_file_name(filename)
-        elif input_type == 2:
-            launcher.solve_file_number(file_number)
-        else:
-            launcher.solve_range(start, end)
-    process_end()
-
-
-def confirmation(message, callback) -> bool:
-    message += "Do you want to run this configuration?\n"
-    message = get_menu(message, ["Run it",
-                                 "Back to previous submenu",
-                                 "Back to main menu"])
-    choice = int(input(message))
-    if choice == 1:
-        return True
-    elif choice == 2:
-        callback()
-    else:
-        main_menu()
-    return False
-
-
-def process_end():
-    message = "The run has concluded successfully, you can find details of the result in the log file\n"
-    message = get_menu(message, ["Back to main manu",
-                                 "Exit"])
-    choice = int(input(message + ">>>"))
-    if choice == 1:
-        main_menu()
-    else:
-        exit(0)
+        del args[0]
+        launcher_config(args)
 
 
 if __name__ == '__main__':
