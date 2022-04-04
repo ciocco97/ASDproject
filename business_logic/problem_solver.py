@@ -1,6 +1,10 @@
 import logging
+import os
 import time
 import collections
+from threading import Thread
+
+import psutil
 
 from data_structure.problem_instance import ProblemInstance
 from data_structure.representative_vector import generate_new_rv, RepresentativeVector
@@ -19,6 +23,15 @@ def check(t: Subset, t_rv: RepresentativeVector):
     return OK if 0 in t_rv.get_values() else MHS
 
 
+def trial():
+    mem_usage = 0
+    while True:
+        process = psutil.Process(os.getpid())
+        mem_usage = process.memory_info().rss if process.memory_info().rss > mem_usage else mem_usage
+        print(mem_usage)
+        time.sleep(1)
+
+
 class Solver:
 
     def __init__(self):
@@ -33,13 +46,15 @@ class Solver:
         queue.append(Subset([]))
         N = instance.N
         M = instance.M
+        t = Thread(target=trial)
+        t.start()
         self.start = time.time()
         while len(queue) > 0:
 
             delta = queue.popleft()
             rv1 = instance.get_rv(delta)
 
-            for e in range(delta.max() + 1, M+1):
+            for e in range(delta.max() + 1, M + 1):
                 # there's no need to generate a new Subset for each new e. We just use the previous delta to make the
                 # computation. Only if the new delta is OK, we add a new Subset into the queue.
                 delta.add(e)

@@ -1,11 +1,12 @@
 import collections
 import copy
 import hashlib
+from array import array
 
 
 class Subset:
     def __init__(self, vals):
-        self.components = vals.copy()
+        self.components = array('H', vals)
 
     def __str__(self):
         return str(self.components)
