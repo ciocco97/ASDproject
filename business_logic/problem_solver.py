@@ -68,7 +68,7 @@ class Solver:
                 # optimization: we know it is a singlet so there is a data structure on purpose (an array) so we
                 # access it super ez pz lemon sqz
                 rv2 = instance.get_singlet_rv(e)
-                t_rv = generate_new_rv(rv1, rv2, N)
+                t_rv = generate_new_rv(rv1, rv2)
 
                 # optimization: we save the new RV iff the subset it represents is OK! not everytime
                 result = check(delta, t_rv)

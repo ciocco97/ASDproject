@@ -6,7 +6,7 @@ from array import array
 
 class Subset:
     def __init__(self, vals):
-        self.components = array('H', vals)
+        self.components = vals.copy()
 
     def __str__(self):
         return str(self.components)
