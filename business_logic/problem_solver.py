@@ -23,13 +23,7 @@ def check(t: Subset, t_rv: RepresentativeVector):
     return OK if 0 in t_rv.get_values() else MHS
 
 
-def trial():
-    mem_usage = 0
-    while True:
-        process = psutil.Process(os.getpid())
-        mem_usage = process.memory_info().rss if process.memory_info().rss > mem_usage else mem_usage
-        print(mem_usage)
-        time.sleep(1)
+
 
 
 class Solver:
@@ -40,15 +34,31 @@ class Solver:
         self.start = None
         self.end = None
 
+        self.start_memory = 0.0
+        self.end_memory = 0.0
+
+        self.running = True
+
+    def trial(self):
+        while self.running:
+            process = psutil.Process(os.getpid())
+            self.end_memory = process.memory_info().rss if process.memory_info().rss > self.end_memory else self.end_memory
+            print(self.end_memory)
+            time.sleep(2)
+
     def main_procedure(self, instance: ProblemInstance):
 
         queue = collections.deque()
         queue.append(Subset([]))
         N = instance.N
         M = instance.M
-        t = Thread(target=trial)
+
+        t = Thread(target=self.trial)
         t.start()
+
         self.start = time.time()
+        self.start_memory = psutil.Process(os.getpid()).memory_info().rss
+        print(self.start_memory)
         while len(queue) > 0:
 
             delta = queue.popleft()
@@ -76,6 +86,7 @@ class Solver:
                 delta.popright()
 
         self.end = time.time()
+        self.running = False
         max_size = min_size = 0
         if len(self.output):
             min_size = self.output[0].get_size()  # the first element is the smallest
@@ -83,6 +94,7 @@ class Solver:
         logging.info(f"Processing completed ({'{:e}'.format(self.end - self.start, 3)}s): {len(self.output)} MHS "
                      f"found")
         logging.info(f"Dimensions of the MHS: {max_size} max size, {min_size} min size")
+        logging.info(f"Memory usage for this run: {(self.end_memory - self.start_memory)/10**6}MB")
 
     def print_output(self):
         print(*(x for x in self.output), sep='\n')
@@ -98,3 +110,5 @@ class Solver:
 
     def get_elapsed(self) -> float:
         return self.end - self.start
+
+
