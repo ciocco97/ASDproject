@@ -56,7 +56,7 @@ def launcher_config(args):
                 if syntax_error:
                     raise Exception(f"Syntax error near {F_NAME}")
                 else:
-                    launcher.set_file_path(file_path)
+                    launcher.set_file_path(os.path.normpath(file_path))
                     i += 1
 
             elif args[i] == D_NAME:  # Directory

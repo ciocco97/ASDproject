@@ -52,14 +52,14 @@ class Launcher:
     PRE_PROCESS_OPTIONS = [ZERO, ROW, COLUMN, ALL]
 
     def __init__(self, paths=None):
-        self.comparison = False
-        self.file_path = None
         if paths is None:
             paths = ["Benchmarks\\benchmarks1\\", "Benchmarks\\benchmarks2\\"]
         log_config()
         self.parser = Parser(paths)
-
         self.pre_process_mode = Launcher.ALL
+        self.comparison = False
+        self.file_path = None
+        self.plotter = OurPlotter()
 
     def set_pre_process(self, mode: int):
         self.pre_process_mode = mode
@@ -78,34 +78,45 @@ class Launcher:
         if self.file_path:
             matrix = self.parser.parse_file_by_path(self.file_path)
             if self.comparison:
-                my_plotter = OurPlotter()
-                result_1 = self.solve(copy.deepcopy(matrix), self.file_path)
+                self.solve_and_compare(-1)
+            else:
+                self.solve(copy.deepcopy(matrix), self.file_path)
         else:
             for i in range(0, self.parser.get_dir_size()):
-                file_name = self.parser.get_file_name_by_index(i)
-                matrix = self.parser.parse_file_number_n(i)
-                self.solve(matrix, file_name)
+                if self.comparison:
+                    self.solve_and_compare(i)
+                else:
+                    file_name = self.parser.get_file_name_by_index(i)
+                    matrix = self.parser.parse_file_number_n(i)
+                    self.solve(matrix, file_name)
 
     def performance_comparison(self):
-        my_plotter = OurPlotter()
+        self.plotter.reset_data()
 
         i_start = 0
         i_end = self.parser.get_dir_size()
         try:
             for i in range(i_start, i_end):
-                file_name = self.parser.get_file_name_by_index(i)
-                matrix = self.parser.parse_file_number_n(i)
-                self.pre_process_mode = self.ALL
-                result_1 = self.solve(copy.deepcopy(matrix), file_name, False)
-                my_plotter.add_data("pre_process_time", result_1[0], OurPlotter.PRE_PROC_TIME)
-                my_plotter.add_data("solver_performance", result_1[1], OurPlotter.SOLVER_TIME)
-
-                self.pre_process_mode = self.ZERO
-                result_2 = self.solve(copy.deepcopy(matrix), file_name)
-                my_plotter.add_data("pre_process_time", result_2[0], OurPlotter.PRE_PROC_TIME)
-                my_plotter.add_data("solver_low_performance", result_2[1], OurPlotter.SOLVER_TIME)
+                self.solve_and_compare(i)
         except KeyboardInterrupt:
-            my_plotter.plot_data_to_compare(OurPlotter.SOLVER_TIME, "solver_performance", "solver_low_performance")
+            pass
+        self.plotter.plot_data_to_compare(OurPlotter.SOLVER_TIME, "solver_performance", "solver_low_performance")
+
+    def solve_and_compare(self, i):
+        if i >= 0:
+            matrix = self.parser.parse_file_number_n(i)
+        else:
+            matrix = self.parser.parse_file_by_path(self.file_path)
+        file_name = self.parser.get_file_name_by_index(i)
+        self.pre_process_mode = self.ALL
+        result_1 = self.solve(copy.deepcopy(matrix), file_name, False)
+        self.plotter.add_data("pre_process_time", result_1[0], OurPlotter.PRE_PROC_TIME)
+        self.plotter.add_data("solver_performance", result_1[1], OurPlotter.SOLVER_TIME)
+
+        self.pre_process_mode = self.ZERO
+        result_2 = self.solve(copy.deepcopy(matrix), file_name)
+        self.plotter.add_data("pre_process_time", result_2[0], OurPlotter.PRE_PROC_TIME)
+        self.plotter.add_data("solver_low_performance", result_2[1], OurPlotter.SOLVER_TIME)
 
     def solve_file_number(self, n: int):
         matrix = self.parser.parse_file_number_n(n)
