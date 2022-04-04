@@ -23,9 +23,6 @@ def check(t: Subset, t_rv: RepresentativeVector):
     return OK if 0 in t_rv.get_values() else MHS
 
 
-
-
-
 class Solver:
 
     def __init__(self):
@@ -43,8 +40,7 @@ class Solver:
         while self.running:
             process = psutil.Process(os.getpid())
             self.end_memory = process.memory_info().rss if process.memory_info().rss > self.end_memory else self.end_memory
-            print(self.end_memory)
-            time.sleep(2)
+            time.sleep(0.5)
 
     def main_procedure(self, instance: ProblemInstance):
 
@@ -58,7 +54,7 @@ class Solver:
 
         self.start = time.time()
         self.start_memory = psutil.Process(os.getpid()).memory_info().rss
-        print(self.start_memory)
+
         while len(queue) > 0:
 
             delta = queue.popleft()
@@ -91,6 +87,7 @@ class Solver:
         if len(self.output):
             min_size = self.output[0].get_size()  # the first element is the smallest
             max_size = self.output[len(self.output) - 1].get_size()  # the last element is the biggest
+
         logging.info(f"Processing completed ({'{:e}'.format(self.end - self.start, 3)}s): {len(self.output)} MHS "
                      f"found")
         logging.info(f"Dimensions of the MHS: {max_size} max size, {min_size} min size")
