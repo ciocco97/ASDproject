@@ -8,7 +8,8 @@ path_separator = ","
 PRE = "-p"
 F_NAME = "-f"
 D_NAME = "-d"
-OPTIONS = [PRE, F_NAME, D_NAME]
+COMP = "-c"
+OPTIONS = [PRE, F_NAME, D_NAME, COMP]
 
 
 def launcher_config(args):
@@ -76,7 +77,8 @@ def launcher_config(args):
                 else:
                     launcher.set_paths(paths)
                     i += 1
-
+            elif args[i] == COMP:
+                launcher.set_comparison(True)
         else:
             raise Exception(f"Option {args[i]} unknown")
         i += 1

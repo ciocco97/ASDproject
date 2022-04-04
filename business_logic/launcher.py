@@ -52,6 +52,7 @@ class Launcher:
     PRE_PROCESS_OPTIONS = [ZERO, ROW, COLUMN, ALL]
 
     def __init__(self, paths=None):
+        self.comparison = False
         self.file_path = None
         if paths is None:
             paths = ["Benchmarks\\benchmarks1\\", "Benchmarks\\benchmarks2\\"]
@@ -70,10 +71,15 @@ class Launcher:
     def set_file_path(self, file_path):
         self.file_path = file_path
 
+    def set_comparison(self, comparison: bool):
+        self.comparison = comparison
+
     def run_from_terminal(self):
         if self.file_path:
             matrix = self.parser.parse_file_by_path(self.file_path)
-            self.solve(matrix, self.file_path)
+            if self.comparison:
+                my_plotter = OurPlotter()
+                result_1 = self.solve(copy.deepcopy(matrix), self.file_path)
         else:
             for i in range(0, self.parser.get_dir_size()):
                 file_name = self.parser.get_file_name_by_index(i)
