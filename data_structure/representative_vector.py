@@ -15,11 +15,11 @@ class RepresentativeVector:
 
 
 # this procedure generate the new rv starting from a couple
-def generate_new_rv(rv1: RepresentativeVector, rv2: RepresentativeVector, N: int) -> RepresentativeVector:
-    values = [0]*N
+def generate_new_rv(rv1: RepresentativeVector, rv2: RepresentativeVector) -> RepresentativeVector:
+    values = rv1.vector.copy()
     i = 0
     for phi1, phi2 in zip(rv1.vector, rv2.vector):
-        if phi1 or phi2:
+        if phi2:
             result = phi1 + phi2
             values[i] = result if 0 <= result <= max(phi1, phi2) else RepresentativeVector.X_VAL
         i += 1
