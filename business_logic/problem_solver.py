@@ -3,12 +3,8 @@ import os
 import time
 import collections
 from threading import Thread
-
 import psutil
-
 from data_structure.problem_instance import ProblemInstance
-from data_structure.representative_vector import generate_new_rv, RepresentativeVector
-from data_structure.subset import Subset
 
 RESULT_TO_STRING = {-1: "KO", 1: "MHS", 0: "OK"}
 KO = -1
@@ -16,11 +12,22 @@ MHS = 1
 OK = 0
 
 
-def check(t: Subset, t_rv: RepresentativeVector):
-    for component in t.get_components():
-        if component not in t_rv.get_values():
+def check(delta: [], values: []):
+    for component in delta:
+        if component not in values:
             return KO
-    return OK if 0 in t_rv.get_values() else MHS
+    return OK if 0 in values else MHS
+
+
+def generate_new_rv(rv1: [], rv2: [], X_VAL) -> []:
+    values = rv1.copy()
+    i = 0
+    for phi1, phi2 in zip(rv1, rv2):
+        if phi2:
+            result = phi1 + phi2
+            values[i] = result if 0 <= result <= max(phi1, phi2) else X_VAL
+        i += 1
+    return values
 
 
 class Solver:
@@ -45,9 +52,11 @@ class Solver:
     def main_procedure(self, instance: ProblemInstance):
 
         queue = collections.deque()
-        queue.append(Subset([]))
+        queue.append([])
         N = instance.N
         M = instance.M
+
+        X_VAL = instance.X_VAL
 
         t = Thread(target=self.trial)
         t.start()
@@ -60,38 +69,38 @@ class Solver:
             delta = queue.popleft()
             rv1 = instance.get_rv(delta)
 
-            for e in range(delta.max() + 1, M + 1):
+            for e in range(max(delta) + 1 if len(delta) > 0 else 1, M + 1):
                 # there's no need to generate a new Subset for each new e. We just use the previous delta to make the
                 # computation. Only if the new delta is OK, we add a new Subset into the queue.
-                delta.add(e)
+                delta.append(e)
 
                 # optimization: we know it is a singlet so there is a data structure on purpose (an array) so we
                 # access it super ez pz lemon sqz
                 rv2 = instance.get_singlet_rv(e)
-                t_rv = generate_new_rv(rv1, rv2)
+                values = generate_new_rv(rv1, rv2, X_VAL)
 
                 # optimization: we save the new RV iff the subset it represents is OK! not everytime
-                result = check(delta, t_rv)
+                result = check(delta, values)
                 if result == OK and e != M:
-                    instance.add_rv(delta, t_rv)
-                    queue.append(Subset(delta.get_components()))
+                    instance.add_rv(delta, values)
+                    queue.append(delta.copy())
                 elif result == MHS:
                     # also in this case we generate the new Subset only if we need it (in this case, we need to append
                     # it onto the output. Otherwise, we use delta to save memory
-                    self.output.append(Subset(delta.get_components()))
-                delta.popright()
+                    self.output.append(delta.copy())
+                delta.pop()
 
         self.end = time.time()
         self.running = False
         max_size = min_size = 0
         if len(self.output):
-            min_size = self.output[0].get_size()  # the first element is the smallest
-            max_size = self.output[len(self.output) - 1].get_size()  # the last element is the biggest
+            min_size = len(self.output[0])  # the first element is the smallest
+            max_size = len(self.output[len(self.output) - 1])  # the last element is the biggest
 
         logging.info(f"Processing completed ({'{:e}'.format(self.end - self.start, 3)}s): {len(self.output)} MHS "
                      f"found")
         logging.info(f"Dimensions of the MHS: {max_size} max size, {min_size} min size")
-        logging.info(f"Memory usage for this run: {(self.end_memory - self.start_memory)/10**6}MB")
+        logging.info(f"Memory usage for this run: {(self.end_memory - self.start_memory) / 10 ** 6}MB")
 
     def print_output(self):
         print(*(x for x in self.output), sep='\n')
@@ -107,5 +116,3 @@ class Solver:
 
     def get_elapsed(self) -> float:
         return self.end - self.start
-
-

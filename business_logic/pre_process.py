@@ -1,6 +1,5 @@
 import time
 
-from data_structure.subset import Subset
 import logging
 
 
@@ -86,24 +85,21 @@ class PreProcess:
 
     def print_output(self, output):
         for sub in output:
-            if isinstance(sub, Subset):
-                newsub = Subset(self.map(x) for x in sub.get_components())
-                print(newsub)
+            newsub = [self.map(x) for x in sub]
+            print(newsub)
 
     def get_output(self, output) -> list:
         subsets = []
         for sub in output:
-            if isinstance(sub, Subset):
-                newsub = Subset(self.map(x) for x in sub.get_components())
-                subsets.append(newsub)
+            newsub = [(self.map(x) for x in sub)]
+            subsets.append(newsub)
         return subsets
 
     def log_output(self, output):
         output_str = "MHS found: "
         for sub in output:
-            if isinstance(sub, Subset):
-                newsub = Subset([self.map(x) for x in sub.get_components()])
-                output_str += f"{newsub}|"
+            newsub = [self.map(x) for x in sub]
+            output_str += f"{newsub}|"
         logging.info(output_str[:-1])
 
     def get_elapsed(self) -> float:
