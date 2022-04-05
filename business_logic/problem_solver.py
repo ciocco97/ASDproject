@@ -42,12 +42,23 @@ class Solver:
         self.end_memory = 0.0
 
         self.running = True
+        self.out_of_time = False
+        self.time_limit = None
 
-    def trial(self):
+    def memory_fun(self):
         while self.running:
             process = psutil.Process(os.getpid())
             self.end_memory = process.memory_info().rss if process.memory_info().rss > self.end_memory else self.end_memory
             time.sleep(0.5)
+
+    def timeout_fun(self):
+        i = 0
+        while i < self.time_limit and self.running:
+            time.sleep(0.5)
+            i += 1
+        if self.running:
+            self.running = False
+            self.out_of_time = True
 
     def main_procedure(self, instance: ProblemInstance):
 
@@ -58,13 +69,17 @@ class Solver:
 
         X_VAL = instance.X_VAL
 
-        t = Thread(target=self.trial)
-        t.start()
+        memory_thread = Thread(target=self.memory_fun)
+        memory_thread.start()
+
+        if self.time_limit:
+            time_out_thread = Thread(target=self.timeout_fun)
+            time_out_thread.start()
 
         self.start = time.time()
         self.start_memory = psutil.Process(os.getpid()).memory_info().rss
 
-        while len(queue) > 0:
+        while len(queue) > 0 and self.running:
 
             delta = queue.popleft()
             rv1 = instance.get_rv(delta)
@@ -96,9 +111,12 @@ class Solver:
         if len(self.output):
             min_size = len(self.output[0])  # the first element is the smallest
             max_size = len(self.output[len(self.output) - 1])  # the last element is the biggest
-
-        logging.info(f"Processing completed ({'{:e}'.format(self.end - self.start, 3)}s): {len(self.output)} MHS "
-                     f"found")
+        resocont = ""
+        if self.out_of_time:
+            resocont += f"Time limit exceeded. Process not terminated in "
+        else:
+            resocont += f"Processing completed "
+        logging.info(resocont + f"in {'{:e}'.format(self.end - self.start, 3)}s: {len(self.output)} MHS found")
         logging.info(f"Dimensions of the MHS: {max_size} max size, {min_size} min size")
         logging.info(f"Memory usage for this run: {(self.end_memory - self.start_memory) / 10 ** 6}MB")
 
@@ -116,3 +134,10 @@ class Solver:
 
     def get_elapsed(self) -> float:
         return self.end - self.start
+
+    def set_time_limit(self, time_limit: int):
+        self.time_limit = time_limit
+
+
+class TimeoutException(Exception):
+    pass

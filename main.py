@@ -9,7 +9,8 @@ PRE = "-p"
 F_NAME = "-f"
 D_NAME = "-d"
 COMP = "-c"
-OPTIONS = [PRE, F_NAME, D_NAME, COMP]
+TIME = "-t"
+OPTIONS = [PRE, F_NAME, D_NAME, COMP, TIME]
 
 
 def launcher_config(args):
@@ -79,6 +80,17 @@ def launcher_config(args):
                     i += 1
             elif args[i] == COMP:
                 launcher.set_comparison(True)
+            elif args[i] == TIME:
+                if i + 1 >= len(args):
+                    syntax_error = True
+                else:
+                    if not args[i + 1].isdigit():
+                        syntax_error = True
+                if syntax_error:
+                    raise Exception(f"Syntax error near {TIME}")
+                else:
+                    launcher.set_time_limit(int(args[i + 1]))
+                    i += 1
         else:
             raise Exception(f"Option {args[i]} unknown")
         i += 1

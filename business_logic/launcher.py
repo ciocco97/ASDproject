@@ -3,6 +3,7 @@ import logging
 import os
 import time
 import shutil
+from threading import Thread
 
 from data_structure.problem_instance import ProblemInstance
 from instance_parser import Parser
@@ -52,6 +53,7 @@ class Launcher:
     PRE_PROCESS_OPTIONS = [ZERO, ROW, COLUMN, ALL]
 
     def __init__(self, paths=None):
+        self.running = False
         if paths is None:
             paths = ["Benchmarks\\benchmarks1\\", "Benchmarks\\benchmarks2\\"]
         log_config()
@@ -59,6 +61,7 @@ class Launcher:
         self.pre_process_mode = Launcher.ALL
         self.comparison = False
         self.file_path = None
+        self.time_limit = None
         self.plotter = OurPlotter()
 
     def set_pre_process(self, mode: int):
@@ -73,6 +76,9 @@ class Launcher:
 
     def set_comparison(self, comparison: bool):
         self.comparison = comparison
+
+    def set_time_limit(self, time_limit: int):
+        self.time_limit = time_limit
 
     def run_from_terminal(self):
         if self.file_path:
@@ -146,7 +152,11 @@ class Launcher:
         pre_proc_elapsed = time.time() - pre_proc_start
 
         instance = ProblemInstance(matrix)
+
         problem_solver = Solver()
+        if self.time_limit:
+            problem_solver.set_time_limit(self.time_limit)
+
         solver_start = time.time()
         problem_solver.main_procedure(instance)
 
