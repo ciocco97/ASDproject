@@ -136,8 +136,4 @@ class Solver:
         return self.end - self.start
 
     def set_time_limit(self, time_limit: int):
-        self.time_limit = time_limit
-
-
-class TimeoutException(Exception):
-    pass
+        self.time_limit = time_limit * 2

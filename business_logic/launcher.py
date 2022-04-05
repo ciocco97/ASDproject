@@ -88,13 +88,18 @@ class Launcher:
             else:
                 self.solve(copy.deepcopy(matrix), self.file_path)
         else:
-            for i in range(0, self.parser.get_dir_size()):
-                if self.comparison:
-                    self.solve_and_compare(i)
-                else:
-                    file_name = self.parser.get_file_name_by_index(i)
-                    matrix = self.parser.parse_file_number_n(i)
-                    self.solve(matrix, file_name)
+            try:
+                for i in range(0, self.parser.get_dir_size()):
+                    if self.comparison:
+                        self.solve_and_compare(i)
+                    else:
+                        file_name = self.parser.get_file_name_by_index(i)
+                        matrix = self.parser.parse_file_number_n(i)
+                        self.solve(matrix, file_name)
+            except KeyboardInterrupt:
+                pass
+        if self.comparison and not self.file_path:
+            self.plotter.plot_data_to_compare(OurPlotter.SOLVER_TIME, "solver_performance", "solver_low_performance")
 
     def performance_comparison(self):
         self.plotter.reset_data()
