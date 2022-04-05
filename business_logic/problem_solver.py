@@ -23,7 +23,7 @@ def generate_new_rv(rv1: [], rv2: [], X_VAL) -> []:
     values = rv1.copy()
     i = 0
     for phi1, phi2 in zip(rv1, rv2):
-        if phi2:
+        if phi2 and phi1 != X_VAL:
             result = phi1 + phi2
             values[i] = result if 0 <= result <= max(phi1, phi2) else X_VAL
         i += 1
@@ -64,7 +64,6 @@ class Solver:
 
         queue = collections.deque()
         queue.append([])
-        N = instance.N
         M = instance.M
 
         X_VAL = instance.X_VAL
@@ -91,13 +90,13 @@ class Solver:
 
                 # optimization: we know it is a singlet so there is a data structure on purpose (an array) so we
                 # access it super ez pz lemon sqz
-                rv2 = instance.get_singlet_rv(e)
+                rv2 = instance.singlet_representative_vectors[e]
                 values = generate_new_rv(rv1, rv2, X_VAL)
 
                 # optimization: we save the new RV iff the subset it represents is OK! not everytime
                 result = check(delta, values)
                 if result == OK and e != M:
-                    instance.add_rv(delta, values)
+                    instance.add_rv(delta.copy(), values)
                     queue.append(delta.copy())
                 elif result == MHS:
                     # also in this case we generate the new Subset only if we need it (in this case, we need to append
