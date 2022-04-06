@@ -90,7 +90,7 @@ class PreProcess:
     def get_output(self, output) -> list:
         subsets = []
         for sub in output:
-            newsub = [(self.map(x) for x in sub)]
+            newsub = [self.map(x) for x in sub]
             subsets.append(newsub)
         return subsets
 

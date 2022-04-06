@@ -53,7 +53,8 @@ class Solver:
 
     def timeout_fun(self):
         i = 0
-        while i < self.time_limit and self.running:
+        time_limit = self.time_limit * 2
+        while i < time_limit and self.running:
             time.sleep(0.5)
             i += 1
         if self.running:
@@ -135,4 +136,4 @@ class Solver:
         return self.end - self.start
 
     def set_time_limit(self, time_limit: int):
-        self.time_limit = time_limit * 2
+        self.time_limit = time_limit

@@ -45,6 +45,17 @@ def save_log(file_name: str):
     reset_log()
 
 
+def log_output(output, M: int):
+    output_str = "MHS found:\n"
+    for mhs in output:
+        row = [0] * M
+        for x in mhs:
+            row[x - 1] = 1
+        row = map(str, row)
+        output_str += ' '.join(row) + " -" + "\n"
+    logging.info(output_str[:-1])
+
+
 class Launcher:
     ZERO = 0
     ROW = 1
@@ -119,15 +130,16 @@ class Launcher:
         else:
             matrix = self.parser.parse_file_by_path(self.file_path)
         file_name = self.parser.get_file_name_by_index(i)
-        self.pre_process_mode = self.ALL
-        result_1 = self.solve(copy.deepcopy(matrix), file_name, False)
-        self.plotter.add_data("pre_process_time", result_1[0], OurPlotter.PRE_PROC_TIME)
-        self.plotter.add_data("solver_performance", result_1[1], OurPlotter.SOLVER_TIME)
 
         self.pre_process_mode = self.ZERO
-        result_2 = self.solve(copy.deepcopy(matrix), file_name)
+        result_2 = self.solve(copy.deepcopy(matrix), file_name, False, False)
         self.plotter.add_data("pre_process_time", result_2[0], OurPlotter.PRE_PROC_TIME)
         self.plotter.add_data("solver_low_performance", result_2[1], OurPlotter.SOLVER_TIME)
+
+        self.pre_process_mode = self.ALL
+        result_1 = self.solve(copy.deepcopy(matrix), file_name)
+        self.plotter.add_data("pre_process_time", result_1[0], OurPlotter.PRE_PROC_TIME)
+        self.plotter.add_data("solver_performance", result_1[1], OurPlotter.SOLVER_TIME)
 
     def solve_file_number(self, n: int):
         matrix = self.parser.parse_file_number_n(n)
@@ -143,7 +155,8 @@ class Launcher:
         for k in range(start, end):
             self.solve_file_number(k)
 
-    def solve(self, matrix: list, file_name: str, save_result=True):
+    def solve(self, matrix: list, file_name: str, save_result=True, log_MHS=True):
+        M = len(matrix[0])
         print(f"Process file {file_name}, {self.pre_process_mode}")
         pre_proc_start = time.time()
         if self.pre_process_mode != Launcher.ZERO:
@@ -166,11 +179,13 @@ class Launcher:
         problem_solver.main_procedure(instance)
 
         solver_elapsed = time.time() - solver_start
-
+        logging.info("")
         if self.pre_process_mode == Launcher.ALL or self.pre_process_mode == Launcher.COLUMN:
-            pre_process.log_output(problem_solver.get_output())
+            output = pre_process.get_output(problem_solver.get_output())
         else:
-            problem_solver.log_output()
+            output = problem_solver.get_output()
+        if log_MHS:
+            log_output(output, M)
         if save_result:
             # print_log()
             save_log(file_name)
