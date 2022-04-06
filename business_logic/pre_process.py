@@ -101,5 +101,16 @@ class PreProcess:
             output_str += f"{newsub}|"
         logging.info(output_str[:-1])
 
+    def log_output_one_zero(self, output, M: int):
+        logging.info("MHS found: ")
+        indexes = range(0, M)
+        new_sub_template = ['0'] * M
+        for sub in output:
+            shifted_sub = [self.map(x) for x in sub]
+            new_sub = new_sub_template.copy()
+            for e in sub:
+                new_sub[e - 1] = '1'
+            logging.info(' '.join(new_sub) + " -")
+
     def get_elapsed(self) -> float:
         return self.end - self.start

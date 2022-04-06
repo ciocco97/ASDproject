@@ -111,8 +111,8 @@ class Solver:
         self.running = False
         max_size = min_size = 0
         if len(self.output):
-            min_size = len(self.output.popleft())  # the first element is the smallest
-            max_size = len(self.output.pop())  # the last element is the biggest
+            min_size = len(self.output[0])  # the first element is the smallest
+            max_size = len(self.output[-1])  # the last element is the biggest
         resocont = ""
         if self.out_of_time:
             resocont += f"Time limit exceeded. Process not terminated in "
@@ -133,6 +133,16 @@ class Solver:
         for x in self.output:
             output_str += str(x) + "|"
         logging.info(output_str[:-1])
+
+    def log_output_one_zero(self, M: int):
+        logging.info("MHS found: ")
+        indexes = range(0, M)
+        new_sub_template = ['0'] * M
+        for sub in self.output:
+            new_sub = new_sub_template.copy()
+            for e in sub:
+                new_sub[e-1] = '1'
+            logging.info(' '.join(new_sub) + " -")
 
     def get_elapsed(self) -> float:
         return self.end - self.start

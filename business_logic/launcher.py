@@ -17,7 +17,7 @@ log_path = 'ASD.log'
 def log_config():
     # For log record attributes visit https://docs.python.org/3/library/logging.html#logrecord-objects
     log_format = "%(asctime)s: %(levelname)s: %(message)s"
-    logging.basicConfig(filename=log_path, level=logging.INFO, format="")
+    logging.basicConfig(filename=log_path, level=logging.INFO, format="%(asctime)s: %(message)s")
     logging.FileHandler(log_path, mode='w+')
 
 
@@ -43,16 +43,6 @@ def save_log(file_name: str):
     target = os.path.abspath('\\'.join(target))
     shutil.copyfile(original, target)
     reset_log()
-
-
-def log_output(output, M: int):
-    logging.info("MHS found:")
-    for mhs in output:
-        row = [0] * M
-        for x in mhs:
-            row[x - 1] = 1
-        row = map(str, row)
-        logging.info(' '.join(row) + " -")
 
 
 class Launcher:
@@ -178,13 +168,12 @@ class Launcher:
         problem_solver.main_procedure(instance)
 
         solver_elapsed = time.time() - solver_start
-        logging.info("")
         if self.pre_process_mode == Launcher.ALL or self.pre_process_mode == Launcher.COLUMN:
-            output = pre_process.get_output(problem_solver.get_output())
+            if log_MHS:
+                pre_process.log_output_one_zero(problem_solver.get_output(), M)
         else:
-            output = problem_solver.get_output()
-        if log_MHS:
-            log_output(output, M)
+            if log_MHS:
+                problem_solver.log_output_one_zero(M)
         if save_result:
             # print_log()
             save_log(file_name)
