@@ -10,7 +10,8 @@ F_NAME = "-f"
 D_NAME = "-d"
 COMP = "-c"
 TIME = "-t"
-OPTIONS = [PRE, F_NAME, D_NAME, COMP, TIME]
+VERBOSE = "-v"
+OPTIONS = [PRE, F_NAME, D_NAME, COMP, TIME, VERBOSE]
 
 
 def launcher_config(args):
@@ -91,6 +92,8 @@ def launcher_config(args):
                 else:
                     launcher.set_time_limit(int(args[i + 1]))
                     i += 1
+            elif args[i] == VERBOSE:
+                launcher.set_verbose(True)
         else:
             raise Exception(f"Option {args[i]} unknown")
         i += 1

@@ -46,6 +46,7 @@ class PreProcess:
             return sum(r)
 
         self.matrix_one_zero.sort(key=row_sum)
+        del_row_indexes = []
 
         i = 0
         while i < len(self.matrix_one_zero):
@@ -63,6 +64,8 @@ class PreProcess:
                             # passare alla prossima riga.
                     if next_row:
                         break
+            for c in candidate.keys():
+                del_row_indexes.append(c + self.num_del_rows)
             for c in sorted(candidate.keys(), reverse=True):
                 del self.matrix_one_zero[c]
                 self.num_del_rows += 1
@@ -70,6 +73,7 @@ class PreProcess:
         end = time.time()
         logging.info(
             f"Rows pre-process completed in {'{:e}'.format(end - start, 3)}s with {self.num_del_rows} removed rows")
+        logging.info(f"Rows indexes {del_row_indexes}")
         return self.matrix_one_zero
 
     # this method uses the zeros map to obtain the index of a component in the restricted domain, in the original one.

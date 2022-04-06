@@ -60,6 +60,7 @@ class Launcher:
         self.parser = Parser(paths)
         self.pre_process_mode = Launcher.ALL
         self.comparison = False
+        self.verbose = False
         self.file_path = None
         self.time_limit = None
         self.plotter = OurPlotter()
@@ -79,6 +80,9 @@ class Launcher:
 
     def set_time_limit(self, time_limit: int):
         self.time_limit = time_limit
+
+    def set_verbose(self, verbose: bool):
+        self.verbose = verbose
 
     def run_from_terminal(self):
         if self.file_path:
@@ -170,10 +174,16 @@ class Launcher:
         solver_elapsed = time.time() - solver_start
         if self.pre_process_mode == Launcher.ALL or self.pre_process_mode == Launcher.COLUMN:
             if log_MHS:
-                pre_process.log_output_one_zero(problem_solver.get_output(), M)
+                if self.verbose:
+                    pre_process.log_output(problem_solver.get_output())
+                else:
+                    pre_process.log_output_one_zero(problem_solver.get_output(), M)
         else:
             if log_MHS:
-                problem_solver.log_output_one_zero(M)
+                if self.verbose:
+                    problem_solver.log_output()
+                else:
+                    problem_solver.log_output_one_zero(M)
         if save_result:
             # print_log()
             save_log(file_name)
