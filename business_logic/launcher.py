@@ -17,7 +17,7 @@ log_path = 'ASD.log'
 def log_config():
     # For log record attributes visit https://docs.python.org/3/library/logging.html#logrecord-objects
     log_format = "%(asctime)s: %(levelname)s: %(message)s"
-    logging.basicConfig(filename=log_path, level=logging.INFO, format="%(asctime)s: %(message)s")
+    logging.basicConfig(filename=log_path, level=logging.INFO, format="")
     logging.FileHandler(log_path, mode='w+')
 
 
@@ -124,12 +124,14 @@ class Launcher:
             matrix = self.parser.parse_file_by_path(self.file_path)
         file_name = self.parser.get_file_name_by_index(i)
 
+        requested_pre_process = self.pre_process_mode
+
         self.pre_process_mode = self.ZERO
         result_2 = self.solve(copy.deepcopy(matrix), file_name, False, False)
         self.plotter.add_data("pre_process_time", result_2[0], OurPlotter.PRE_PROC_TIME)
         self.plotter.add_data("solver_low_performance", result_2[1], OurPlotter.SOLVER_TIME)
 
-        self.pre_process_mode = self.ALL
+        self.pre_process_mode = requested_pre_process
         result_1 = self.solve(copy.deepcopy(matrix), file_name)
         self.plotter.add_data("pre_process_time", result_1[0], OurPlotter.PRE_PROC_TIME)
         self.plotter.add_data("solver_performance", result_1[1], OurPlotter.SOLVER_TIME)
@@ -172,6 +174,7 @@ class Launcher:
         problem_solver.main_procedure(instance)
 
         solver_elapsed = time.time() - solver_start
+        logging.info("")
         if self.pre_process_mode == Launcher.ALL or self.pre_process_mode == Launcher.COLUMN:
             if log_MHS:
                 if self.verbose:

@@ -6,6 +6,7 @@ import logging
 class PreProcess:
 
     def __init__(self, matrix_one_zero):
+        self.del_row_indexes = None
         self.matrix_one_zero = matrix_one_zero
 
         # this map will be used for the columns pre-processing. It's the maps of all the zeros in the matrix (the
@@ -46,7 +47,7 @@ class PreProcess:
             return sum(r)
 
         self.matrix_one_zero.sort(key=row_sum)
-        del_row_indexes = []
+        self.del_row_indexes = []
 
         i = 0
         while i < len(self.matrix_one_zero):
@@ -65,15 +66,15 @@ class PreProcess:
                     if next_row:
                         break
             for c in candidate.keys():
-                del_row_indexes.append(c + self.num_del_rows)
-            for c in sorted(candidate.keys(), reverse=True):
+                self.del_row_indexes.append(c + self.num_del_rows)
+            for c in sorted(candidate, reverse=True):
                 del self.matrix_one_zero[c]
                 self.num_del_rows += 1
             i += 1
         end = time.time()
         logging.info(
             f"Rows pre-process completed in {'{:e}'.format(end - start, 3)}s with {self.num_del_rows} removed rows")
-        logging.info(f"Rows indexes {del_row_indexes}")
+        logging.info(f"Rows indexes {self.del_row_indexes}")
         return self.matrix_one_zero
 
     # this method uses the zeros map to obtain the index of a component in the restricted domain, in the original one.
@@ -112,7 +113,7 @@ class PreProcess:
         for sub in output:
             shifted_sub = [self.map(x) for x in sub]
             new_sub = new_sub_template.copy()
-            for e in sub:
+            for e in shifted_sub:
                 new_sub[e - 1] = '1'
             logging.info(' '.join(new_sub) + " -")
 
