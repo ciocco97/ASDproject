@@ -46,14 +46,13 @@ def save_log(file_name: str):
 
 
 def log_output(output, M: int):
-    output_str = "MHS found:\n"
+    logging.info("MHS found:")
     for mhs in output:
         row = [0] * M
         for x in mhs:
             row[x - 1] = 1
         row = map(str, row)
-        output_str = ' '.join(row) + " -" + "\n"
-        logging.info(output_str[:-1])
+        logging.info(' '.join(row) + " -")
 
 
 class Launcher:
