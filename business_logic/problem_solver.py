@@ -3,6 +3,8 @@ import os
 import time
 import collections
 from threading import Thread
+
+import numpy
 import psutil
 from data_structure.problem_instance import ProblemInstance
 
@@ -19,8 +21,8 @@ def check(delta: [], values: []):
     return OK if 0 in values else MHS
 
 
-def generate_new_rv(rv1: [], rv2: [], X_VAL) -> []:
-    values = rv1.copy()
+def generate_new_rv(rv1: tuple, rv2: tuple, X_VAL) -> []:
+    values = list(rv1)
     i = 0
     for phi1, phi2 in zip(rv1, rv2):
         if phi2 and phi1 != X_VAL:
@@ -33,7 +35,7 @@ def generate_new_rv(rv1: [], rv2: [], X_VAL) -> []:
 class Solver:
 
     def __init__(self):
-        self.output = []
+        self.output = collections.deque()
 
         self.start = None
         self.end = None
@@ -97,20 +99,20 @@ class Solver:
                 # optimization: we save the new RV iff the subset it represents is OK! not everytime
                 result = check(delta, values)
                 if result == OK and e != M:
-                    instance.add_rv(delta.copy(), values)
+                    instance.add_rv(delta, tuple(values))
                     queue.append(delta.copy())
                 elif result == MHS:
                     # also in this case we generate the new Subset only if we need it (in this case, we need to append
                     # it onto the output. Otherwise, we use delta to save memory
-                    self.output.append(delta.copy())
+                    self.output.append(tuple(delta))
                 delta.pop()
 
         self.end = time.time()
         self.running = False
         max_size = min_size = 0
         if len(self.output):
-            min_size = len(self.output[0])  # the first element is the smallest
-            max_size = len(self.output[len(self.output) - 1])  # the last element is the biggest
+            min_size = len(self.output.popleft())  # the first element is the smallest
+            max_size = len(self.output.pop())  # the last element is the biggest
         resocont = ""
         if self.out_of_time:
             resocont += f"Time limit exceeded. Process not terminated in "
@@ -123,7 +125,7 @@ class Solver:
     def print_output(self):
         print(*(x for x in self.output), sep='\n')
 
-    def get_output(self) -> list:
+    def get_output(self):
         return self.output
 
     def log_output(self):
