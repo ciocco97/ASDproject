@@ -36,8 +36,7 @@ class PreProcess:
 
         end = time.time()
         logging.info(
-            f"Columns pre-process successfully completed with {len(self.zeros) - len(self.matrix_one_zero[0])}"
-            f" removed columns in {end - start}s")
+            f"Columns pre-process completed in {'{:e}'.format(end - start, 3)}s with {len(self.zeros) - len(self.matrix_one_zero[0])} removed columns")
         return self.matrix_one_zero
 
     def rows_pp(self) -> list:
@@ -70,7 +69,7 @@ class PreProcess:
             i += 1
         end = time.time()
         logging.info(
-            f"Rows pre-process successfully completed with {self.num_del_rows} removed rows in {end - start}s")
+            f"Rows pre-process completed in {'{:e}'.format(end - start, 3)}s with {self.num_del_rows} removed rows")
         return self.matrix_one_zero
 
     # this method uses the zeros map to obtain the index of a component in the restricted domain, in the original one.

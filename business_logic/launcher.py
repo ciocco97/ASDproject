@@ -172,6 +172,6 @@ class Launcher:
         else:
             problem_solver.log_output()
         if save_result:
-            print_log()
+            # print_log()
             save_log(file_name)
         return pre_proc_elapsed, solver_elapsed
