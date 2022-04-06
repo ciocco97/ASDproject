@@ -107,6 +107,7 @@ class Launcher:
                 pass
         if self.comparison and not self.file_path:
             self.plotter.plot_data_to_compare(OurPlotter.SOLVER_TIME, "solver_performance", "solver_low_performance")
+            self.plotter.plot_data_to_compare(OurPlotter.MEMORY_USAGE, "memory_pre-process", "memory_no_pre-process")
 
     def performance_comparison(self):
         self.plotter.reset_data()
@@ -119,6 +120,7 @@ class Launcher:
         except KeyboardInterrupt:
             pass
         self.plotter.plot_data_to_compare(OurPlotter.SOLVER_TIME, "solver_performance", "solver_low_performance")
+        self.plotter.plot_data_to_compare(OurPlotter.MEMORY_USAGE, "memory_pre-process", "memory_no_pre-process")
 
     def solve_and_compare(self, i):
         if i >= 0:
@@ -133,11 +135,13 @@ class Launcher:
         result_2 = self.solve(copy.deepcopy(matrix), file_name, False, False)
         self.plotter.add_data("pre_process_time", result_2[0], OurPlotter.PRE_PROC_TIME)
         self.plotter.add_data("solver_low_performance", result_2[1], OurPlotter.SOLVER_TIME)
+        self.plotter.add_data("memory_no_pre-process", result_2[2], OurPlotter.MEMORY_USAGE)
 
         self.pre_process_mode = requested_pre_process
         result_1 = self.solve(copy.deepcopy(matrix), file_name)
         self.plotter.add_data("pre_process_time", result_1[0], OurPlotter.PRE_PROC_TIME)
         self.plotter.add_data("solver_performance", result_1[1], OurPlotter.SOLVER_TIME)
+        self.plotter.add_data("memory_pre-process", result_2[2], OurPlotter.MEMORY_USAGE)
 
     def solve_file_number(self, n: int):
         matrix = self.parser.parse_file_number_n(n)
@@ -193,4 +197,4 @@ class Launcher:
         if save_result:
             # print_log()
             save_log(file_name)
-        return pre_proc_elapsed, solver_elapsed
+        return pre_proc_elapsed, solver_elapsed, problem_solver.end_memory
