@@ -44,7 +44,7 @@ class OurPlotter:
         else:
             x = range(0, max(len(y1), len(y2)))
 
-        axs[0].set_title("Both graphs")
+        axs[0].set_title("Computational time comparison")
         # axs[0].xlabel("Problem n°")
         # axs[0].ylabel("Seconds")
         # axs[0].grid()
@@ -52,7 +52,7 @@ class OurPlotter:
         axs[0].plot(x, y2, label=data_name2)
         # axs[0].legend()
 
-        axs[0].set_title("Difference graph")
+        axs[1].set_title("Difference (%)")
         # axs[1].xlabel("Problem n°")
         # axs[1].ylabel("Seconds")
         # axs[1].grid()
