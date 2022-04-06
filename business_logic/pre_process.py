@@ -114,7 +114,8 @@ class PreProcess:
         new_sub_template = ['0'] * M
         for sub in output:
             new_sub = new_sub_template.copy()
-            for e in shifted_sub:
+            sub = [self.map(x) for x in sub]
+            for e in sub:
                 new_sub[e - 1] = '1'
             logging.info(' '.join(new_sub) + " -")
 

@@ -56,7 +56,7 @@ class OurPlotter:
         # axs[1].xlabel("Problem n°")
         # axs[1].ylabel("Seconds")
         # axs[1].grid()
-        axs[1].plot(x, [y1[i] - y2[i] for i in x], label="y1 - y2")
+        axs[1].plot(x, [((y2[i] - y1[i])/y2[i] * 100 if y2[i] != 0 and y2[i] - y1[i] > 0 else 0) for i in x], label="y2 - y1")
         # axs[1].legend()
 
         plt.pause(0.5)

@@ -138,7 +138,7 @@ class Solver:
         for sub in self.output:
             new_sub = new_sub_template.copy()
             for e in sub:
-                new_sub[e-1] = '1'
+                new_sub[e - 1] = '1'
             logging.info(' '.join(new_sub) + " -")
 
     def get_elapsed(self) -> float:
