@@ -57,3 +57,4 @@ class OurPlotter:
         # axs[1].legend()
 
         plt.pause(0.5)
+        plt.savefig("last_plot_experience.png")

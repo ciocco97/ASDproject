@@ -52,8 +52,8 @@ def log_output(output, M: int):
         for x in mhs:
             row[x - 1] = 1
         row = map(str, row)
-        output_str += ' '.join(row) + " -" + "\n"
-    logging.info(output_str[:-1])
+        output_str = ' '.join(row) + " -" + "\n"
+        logging.info(output_str[:-1])
 
 
 class Launcher:
