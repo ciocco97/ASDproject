@@ -16,6 +16,8 @@ class PreProcess:
         self.start = None
         self.end = None
 
+        self.col_indexes = None
+
     def full_pp(self) -> list:
         self.rows_pp()
         self.cols_pp()
@@ -37,6 +39,7 @@ class PreProcess:
         end = time.time()
         logging.info(
             f"Columns pre-process completed in {'{:e}'.format(end - start, 3)}s with {len(self.zeros) - len(self.matrix_one_zero[0])} removed columns")
+        logging.info(f"Soppressed columns indexes {indexes}")
         return self.matrix_one_zero
 
     def rows_pp(self) -> list:
@@ -107,10 +110,8 @@ class PreProcess:
 
     def log_output_one_zero(self, output, M: int):
         logging.info("MHS found: ")
-        indexes = range(0, M)
         new_sub_template = ['0'] * M
         for sub in output:
-            shifted_sub = [self.map(x) for x in sub]
             new_sub = new_sub_template.copy()
             for e in sub:
                 new_sub[e - 1] = '1'

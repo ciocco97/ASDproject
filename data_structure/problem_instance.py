@@ -18,19 +18,20 @@ class ProblemInstance:
         self.M = len(matrix_one_zero[0])
 
         self.set_matrix_lex(matrix_one_zero)
-        # logging.info(f"List of Subsets: {self.matrix_lex}")
 
         self.X_VAL = -1 * (self.M + 1)
-        # the representative vector of the empty subset is the null vector of size N
-        singlet_rvs = [[0] * self.N]
+        # this will be the temporary list we store the rvs values in, and the first rv is the empty rv
+        singlet_rvs = [tuple([0] * self.N)]
+        # and we add the same empry rv in the dictionary
         self.add_rv([], tuple([0] * self.N))
         # computation of the representative vectors of the singletties :')
         for singlet in range(1, self.M + 1):
             values = [0] * self.N
             for i, N_i in enumerate(self.matrix_lex):
                 values[i] = singlet if singlet in N_i else 0
-            singlet_rvs.append(values)
-            self.add_rv([singlet], tuple(values))
+            rv = tuple(values)
+            singlet_rvs.append(rv)
+            self.add_rv([singlet], rv)
         self.singlet_representative_vectors = tuple(singlet_rvs)
 
     def set_M(self, M):

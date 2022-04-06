@@ -4,7 +4,6 @@ import time
 import collections
 from threading import Thread
 
-import numpy
 import psutil
 from data_structure.problem_instance import ProblemInstance
 
@@ -106,7 +105,6 @@ class Solver:
                     # it onto the output. Otherwise, we use delta to save memory
                     self.output.append(tuple(delta))
                 delta.pop()
-
         self.end = time.time()
         self.running = False
         max_size = min_size = 0
@@ -136,7 +134,6 @@ class Solver:
 
     def log_output_one_zero(self, M: int):
         logging.info("MHS found: ")
-        indexes = range(0, M)
         new_sub_template = ['0'] * M
         for sub in self.output:
             new_sub = new_sub_template.copy()

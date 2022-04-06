@@ -3,7 +3,6 @@ import logging
 import os
 import time
 import shutil
-from threading import Thread
 
 from data_structure.problem_instance import ProblemInstance
 from instance_parser import Parser
@@ -63,6 +62,7 @@ class Launcher:
         self.verbose = False
         self.file_path = None
         self.time_limit = None
+        self.verbose = False
         self.plotter = OurPlotter()
 
     def set_pre_process(self, mode: int):
@@ -77,6 +77,9 @@ class Launcher:
 
     def set_comparison(self, comparison: bool):
         self.comparison = comparison
+
+    def set_verbose(self, verbose: bool):
+        self.verbose = verbose
 
     def set_time_limit(self, time_limit: int):
         self.time_limit = time_limit
