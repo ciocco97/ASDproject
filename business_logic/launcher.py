@@ -41,6 +41,7 @@ def save_log(file_name: str):
     target.append(result_file_name)
     target = os.path.abspath('\\'.join(target))
     shutil.copyfile(original, target)
+    print(f"Result saved in {target}")
     reset_log()
 
 

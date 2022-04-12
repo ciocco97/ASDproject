@@ -72,3 +72,4 @@ class OurPlotter:
         # axs[1].legend()
         # plt.show()
         plt.savefig("last_plot_experience_" + self.FOLDER[data_type] + ".png")
+        print(f"Graph saved in main folder: {'last_plot_experience_' + self.FOLDER[data_type] + '.png'}")
