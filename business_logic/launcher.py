@@ -10,7 +10,7 @@ from business_logic.problem_solver import Solver
 from business_logic.pre_process import PreProcess
 from our_plotter import OurPlotter
 
-log_path = 'ASD.log'
+log_path = 'ASD1.log'
 
 
 def log_config():
@@ -159,6 +159,7 @@ class Launcher:
 
     def solve(self, matrix: list, file_name: str, save_result=True, log_MHS=True):
         M = len(matrix[0])
+        N = len(matrix)
         print(f"Process file {file_name}, {self.pre_process_mode}")
         pre_proc_start = time.time()
         if self.pre_process_mode != Launcher.ZERO:
@@ -197,4 +198,4 @@ class Launcher:
         if save_result:
             # print_log()
             save_log(file_name)
-        return pre_proc_elapsed, solver_elapsed, problem_solver.end_memory
+        return pre_proc_elapsed, solver_elapsed, problem_solver.max_memory

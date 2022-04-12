@@ -2,6 +2,7 @@ import logging
 import os
 import time
 import collections
+import gc
 from threading import Thread
 
 import psutil
@@ -39,18 +40,17 @@ class Solver:
         self.start = None
         self.end = None
 
-        self.start_memory = 0.0
-        self.end_memory = 0.0
+        self.max_memory = 0
 
         self.running = True
         self.out_of_time = False
         self.time_limit = None
 
     def memory_fun(self):
+        process = psutil.Process(os.getpid())
         while self.running:
-            process = psutil.Process(os.getpid())
-            self.end_memory = process.memory_info().rss if process.memory_info().rss > self.end_memory else self.end_memory
-            time.sleep(0.5)
+            self.max_memory = max(self.max_memory, process.memory_info().rss)
+            time.sleep(0.1)
 
     def timeout_fun(self):
         i = 0
@@ -64,9 +64,13 @@ class Solver:
 
     def main_procedure(self, instance: ProblemInstance):
 
+        gc.collect()
+
         queue = collections.deque()
         queue.append([])
         M = instance.M
+        N = instance.N
+        logging.info(f"Starting the main procedure with matrix [{N}x{M}]")
 
         X_VAL = instance.X_VAL
 
@@ -77,15 +81,15 @@ class Solver:
             time_out_thread = Thread(target=self.timeout_fun)
             time_out_thread.start()
 
+        self.max_memory = psutil.Process(os.getpid()).memory_info().rss
         self.start = time.time()
-        self.start_memory = psutil.Process(os.getpid()).memory_info().rss
 
         while len(queue) > 0 and self.running:
 
             delta = queue.popleft()
             rv1 = instance.get_rv(delta)
 
-            for e in range(max(delta) + 1 if len(delta) > 0 else 1, M + 1):
+            for e in range(delta[-1] + 1 if len(delta) > 0 else 1, M + 1):
                 # there's no need to generate a new Subset for each new e. We just use the previous delta to make the
                 # computation. Only if the new delta is OK, we add a new Subset into the queue.
                 delta.append(e)
@@ -117,8 +121,9 @@ class Solver:
         else:
             resocont += f"Processing completed "
         logging.info(resocont + f"in {'{:e}'.format(self.end - self.start, 3)}s: {len(self.output)} MHS found")
+        logging.info(f"Memory usage for this run: {abs(self.max_memory) / 10 ** 6}MB")
         logging.info(f"Dimensions of the MHS: {max_size} max size, {min_size} min size")
-        logging.info(f"Memory usage for this run: {(self.end_memory - self.start_memory) / 10 ** 6}MB")
+
 
     def print_output(self):
         print(*(x for x in self.output), sep='\n')

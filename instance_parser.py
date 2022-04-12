@@ -19,7 +19,7 @@ class Parser:
                 if not line.startswith(';;'):
                     row = []
                     for num in line.split(' '):
-                        if not num == '-\n':
+                        if num != '-\n':
                             row.append(int(num))
                     matrix_one_zero.append(row)
         logging.info(
