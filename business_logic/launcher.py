@@ -142,7 +142,10 @@ class Launcher:
         result_1 = self.solve(copy.deepcopy(matrix), file_name)
         self.plotter.add_data("pre_process_time", result_1[0], OurPlotter.PRE_PROC_TIME)
         self.plotter.add_data("solver_performance", result_1[1], OurPlotter.SOLVER_TIME)
-        self.plotter.add_data("memory_pre-process", result_2[2], OurPlotter.MEMORY_USAGE)
+        self.plotter.add_data("memory_pre-process", result_1[2], OurPlotter.MEMORY_USAGE)
+
+        if result_1[3].__contains__(result_2[3]):
+            logging.info("Same results")
 
     def solve_file_number(self, n: int):
         matrix = self.parser.parse_file_number_n(n)
@@ -180,7 +183,7 @@ class Launcher:
             problem_solver.set_time_limit(self.time_limit)
 
         solver_start = time.time()
-        problem_solver.main_procedure(instance)
+        output = problem_solver.main_procedure(instance)
 
         solver_elapsed = time.time() - solver_start
         logging.info("")
@@ -199,4 +202,4 @@ class Launcher:
         if save_result:
             # print_log()
             save_log(file_name)
-        return pre_proc_elapsed, solver_elapsed, problem_solver.max_memory
+        return pre_proc_elapsed, solver_elapsed, problem_solver.max_memory, output

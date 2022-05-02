@@ -27,7 +27,7 @@ def generate_new_rv(rv1: tuple, rv2: tuple, X_VAL) -> []:
     for phi1, phi2 in zip(rv1, rv2):
         if phi2 and phi1 != X_VAL:
             result = phi1 + phi2
-            values[i] = result if 0 <= result <= max(phi1, phi2) else X_VAL
+            values[i] = result if result <= max(phi1, phi2) else X_VAL
         i += 1
     return values
 
@@ -50,7 +50,7 @@ class Solver:
         process = psutil.Process(os.getpid())
         while self.running:
             self.max_memory = max(self.max_memory, process.memory_info().rss)
-            time.sleep(0.1)
+            time.sleep(0.5)
 
     def timeout_fun(self):
         i = 0
@@ -123,6 +123,8 @@ class Solver:
         logging.info(resocont + f"in {'{:e}'.format(self.end - self.start, 3)}s: {len(self.output)} MHS found")
         logging.info(f"Memory usage for this run: {abs(self.max_memory) / 10 ** 6}MB")
         logging.info(f"Dimensions of the MHS: {max_size} max size, {min_size} min size")
+
+        return self.output
 
 
     def print_output(self):

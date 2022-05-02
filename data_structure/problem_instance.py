@@ -34,12 +34,6 @@ class ProblemInstance:
             self.add_rv([singlet], rv)
         self.singlet_representative_vectors = tuple(singlet_rvs)
 
-    def set_M(self, M):
-        self.M = M
-
-    def set_N(self, N):
-        self.N = N
-
     def set_matrix_lex(self, matrix_one_zero):
         for row in matrix_one_zero:
             self.matrix_lex.append([k + 1 for k, x in enumerate(row) if x == 1])
