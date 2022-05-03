@@ -53,7 +53,8 @@ class OurPlotter:
         file.close()
 
     def plot_data_to_compare(self, data_type, data_name1, data_name2, abscissa_name=None):
-        self.save_data()
+        # Dobbiamo fare un run e poi salvare tutti i dati perché aspettare di avere i dati ogni volta è estenuante
+        # self.save_data()
         fig, axs = plt.subplots(3, figsize=(10, 7), sharex=True)
         plt.ioff()
         fig.suptitle(self.FOLDER[data_type])
