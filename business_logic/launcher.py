@@ -10,7 +10,7 @@ from business_logic.problem_solver import Solver
 from business_logic.pre_process import PreProcess
 from our_plotter import OurPlotter
 
-log_path = 'ASD1.log'
+log_path = 'ASD.log'
 
 
 def log_config():
@@ -89,13 +89,13 @@ class Launcher:
         self.verbose = verbose
 
     def run_from_terminal(self):
-        if self.file_path:
+        if self.file_path:  # a file has been selected
             matrix = self.parser.parse_file_by_path(self.file_path)
             if self.comparison:
                 self.solve_and_compare(-1)
             else:
                 self.solve(copy.deepcopy(matrix), self.file_path)
-        else:
+        else:  # one or more folders have been selected
             try:
                 for i in range(0, self.parser.get_dir_size()):
                     if self.comparison:
@@ -106,7 +106,7 @@ class Launcher:
                         self.solve(matrix, file_name)
             except KeyboardInterrupt:
                 pass
-        if self.comparison and not self.file_path:
+        if self.comparison and not self.file_path:  # the graph must be plotted only when it has been chosen to solve the files in one or more folders and to compare the results
             self.plotter.plot_data_to_compare(OurPlotter.SOLVER_TIME, "solver_performance", "solver_low_performance")
             self.plotter.plot_data_to_compare(OurPlotter.MEMORY_USAGE, "memory_pre-process", "memory_no_pre-process")
 
@@ -137,6 +137,8 @@ class Launcher:
         self.plotter.add_data("pre_process_time", result_2[0], OurPlotter.PRE_PROC_TIME)
         self.plotter.add_data("solver_low_performance", result_2[1], OurPlotter.SOLVER_TIME)
         self.plotter.add_data("memory_no_pre-process", result_2[2], OurPlotter.MEMORY_USAGE)
+        self.plotter.add_data("Domain size", result_2[4], OurPlotter.DIM)
+        self.plotter.add_data("Set number", result_2[5], OurPlotter.DIM)
 
         self.pre_process_mode = requested_pre_process
         result_1 = self.solve(copy.deepcopy(matrix), file_name)
@@ -202,4 +204,4 @@ class Launcher:
         if save_result:
             # print_log()
             save_log(file_name)
-        return pre_proc_elapsed, solver_elapsed, problem_solver.max_memory, output
+        return pre_proc_elapsed, solver_elapsed, problem_solver.max_memory, output, M, N

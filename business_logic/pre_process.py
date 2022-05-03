@@ -71,7 +71,6 @@ class PreProcess:
             for c in candidate.keys():
                 self.del_row_indexes.append(c + self.num_del_rows)
             for c in sorted(candidate, reverse=True):
-                print(self.matrix_one_zero[c])
                 del self.matrix_one_zero[c]
                 self.num_del_rows += 1
             i += 1
