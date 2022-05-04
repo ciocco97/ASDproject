@@ -38,23 +38,21 @@ class OurPlotter:
             self.data[data_type][data_name] = []
             self.data[data_type][data_name].append(data)
 
-    # def save_data(self):
-    #     file = open("last_data_experience", "w")
-    #     d = self.data
-    #     s = ""
-    #     for k1 in d:
-    #         s += f"-${k1}\n"
-    #         for k2 in d[k1]:
-    #             s += f"--${k2}\n"
-    #             for e3 in e2:
-    #                 s += f"---${e3}\n"
-    #
-    #     file.write(s)
-    #     file.close()
+    def save_data(self):
+        file = open("last_data_experience", "w")
+        d: dict = self.data
+        s = ""
+        for k1, e1 in enumerate(d):
+            s += f"-{self.FOLDER[int(k1)]}\n"
+            for k2 in e1.keys():
+                s += f"--{k2}\n"
+                for e3 in e1[k2]:
+                    s += f"---{e3}\n"
+
+        file.write(s)
+        file.close()
 
     def plot_data_to_compare(self, data_type, data_name1, data_name2, abscissa_name=None):
-        # Dobbiamo fare un run e poi salvare tutti i dati perché aspettare di avere i dati ogni volta è estenuante
-        # self.save_data()
         fig, axs = plt.subplots(3, figsize=(10, 7), sharex=True)
         plt.ioff()
         fig.suptitle(self.FOLDER[data_type])

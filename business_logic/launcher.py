@@ -107,8 +107,9 @@ class Launcher:
             except KeyboardInterrupt:
                 pass
         if self.comparison and not self.file_path:  # the graph must be plotted only when it has been chosen to solve the files in one or more folders and to compare the results
-            self.plotter.plot_data_to_compare(OurPlotter.SOLVER_TIME, "solver_performance", "solver_low_performance")
-            self.plotter.plot_data_to_compare(OurPlotter.MEMORY_USAGE, "memory_pre-process", "memory_no_pre-process")
+            self.plotter.save_data()
+            # self.plotter.plot_data_to_compare(OurPlotter.SOLVER_TIME, "solver_performance", "solver_low_performance")
+            # self.plotter.plot_data_to_compare(OurPlotter.MEMORY_USAGE, "memory_pre-process", "memory_no_pre-process")
 
     def performance_comparison(self):
         self.plotter.reset_data()
@@ -120,6 +121,7 @@ class Launcher:
                 self.solve_and_compare(i)
         except KeyboardInterrupt:
             pass
+        self.plotter.save_data()
         self.plotter.plot_data_to_compare(OurPlotter.SOLVER_TIME, "solver_performance", "solver_low_performance")
         self.plotter.plot_data_to_compare(OurPlotter.MEMORY_USAGE, "memory_pre-process", "memory_no_pre-process")
 
