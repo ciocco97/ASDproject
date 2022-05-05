@@ -1,6 +1,7 @@
 import copy
 import logging
 import os
+import random
 import time
 import shutil
 
@@ -10,7 +11,7 @@ from business_logic.problem_solver import Solver
 from business_logic.pre_process import PreProcess
 from our_plotter import OurPlotter
 
-log_path = 'ASD.log'
+log_path = f'ASD{random.randint(0,1000)}.log'
 
 
 def log_config():
@@ -136,15 +137,15 @@ class Launcher:
 
         self.pre_process_mode = self.ZERO
         result_2 = self.solve(copy.deepcopy(matrix), file_name, False, False)
-        self.plotter.add_data("pre_process_time", result_2[0], OurPlotter.PRE_PROC_TIME)
+        # self.plotter.add_data("pre_process_time", result_2[0], OurPlotter.PRE_PROC_TIME)
         self.plotter.add_data("solver_low_performance", result_2[1], OurPlotter.SOLVER_TIME)
         self.plotter.add_data("memory_no_pre-process", result_2[2], OurPlotter.MEMORY_USAGE)
-        self.plotter.add_data("Domain size", result_2[4], OurPlotter.DIM)
-        self.plotter.add_data("Set number", result_2[5], OurPlotter.DIM)
+        self.plotter.add_data("Domain_size", result_2[4], OurPlotter.DIM)
+        self.plotter.add_data("Set_number", result_2[5], OurPlotter.DIM)
 
         self.pre_process_mode = requested_pre_process
         result_1 = self.solve(copy.deepcopy(matrix), file_name)
-        self.plotter.add_data("pre_process_time", result_1[0], OurPlotter.PRE_PROC_TIME)
+        # self.plotter.add_data("pre_process_time", result_1[0], OurPlotter.PRE_PROC_TIME)
         self.plotter.add_data("solver_performance", result_1[1], OurPlotter.SOLVER_TIME)
         self.plotter.add_data("memory_pre-process", result_1[2], OurPlotter.MEMORY_USAGE)
 

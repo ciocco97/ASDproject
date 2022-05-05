@@ -1,6 +1,8 @@
 import logging
+from xml.dom import minidom
 
 import matplotlib.pyplot as plt
+import xml.etree.cElementTree as ET
 
 
 class OurPlotter:
@@ -11,12 +13,12 @@ class OurPlotter:
     MAX_MHS_SIZE = 4
     DIM = 5
     FOLDER = {
-        SOLVER_TIME: "Solver time",
-        PRE_PROC_TIME: "Pre-process time",
-        MEMORY_USAGE: "Memory usage",
-        MIN_MHS_SIZE: "Min MHS size",
-        MAX_MHS_SIZE: "Max MHS size",
-        DIM: "Dimensions of the problem"
+        SOLVER_TIME: "Solver_time",
+        PRE_PROC_TIME: "Pre-process_time",
+        MEMORY_USAGE: "Memory_usage",
+        MIN_MHS_SIZE: "Min_MHS_size",
+        MAX_MHS_SIZE: "Max_MHS_size",
+        DIM: "Dimensions_of_the_problem"
     }
 
     def __init__(self):
@@ -39,17 +41,19 @@ class OurPlotter:
             self.data[data_type][data_name].append(data)
 
     def save_data(self):
-        file = open("last_data_experience", "w")
+        file = open("output.xml", "w")
         d: dict = self.data
-        s = ""
+        root = ET.Element('output')
         for k1, e1 in enumerate(d):
-            s += f"-{self.FOLDER[int(k1)]}\n"
+            child1 = ET.SubElement(root, f"{self.FOLDER[int(k1)]}")
             for k2 in e1.keys():
-                s += f"--{k2}\n"
-                for e3 in e1[k2]:
-                    s += f"---{e3}\n"
-
-        file.write(s)
+                child2 = ET.SubElement(child1, k2)
+                for i, e3 in enumerate(e1[k2]):
+                    child3 = ET.SubElement(child2, f'{i}')
+                    child3.text = str(e3)
+        rough_string = ET.tostring(root, encoding='utf-8', method='xml')
+        s = minidom.parseString(rough_string)
+        file.write(s.toprettyxml(indent="\t"))
         file.close()
 
     def plot_data_to_compare(self, data_type, data_name1, data_name2, abscissa_name=None):
@@ -88,8 +92,8 @@ class OurPlotter:
         # axs[1].legend()
         # plt.show()
 
-        y1 = self.data[self.DIM]["Domain size"]
-        y2 = self.data[self.DIM]["Set number"]
+        y1 = self.data[self.DIM]["Domain_size"]
+        y2 = self.data[self.DIM]["Set_number"]
         while len(y2) > len(y1):
             logging.warning("La lunghezza dei dati che si vogliono plottare e' diversa")
             del y2[-1]
