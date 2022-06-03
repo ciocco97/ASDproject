@@ -11,7 +11,7 @@ from business_logic.problem_solver import Solver
 from business_logic.pre_process import PreProcess
 from our_plotter import OurPlotter
 
-log_path = f'ASD{random.randint(0,1000)}.log'
+log_path = f'ASD{random.randint(0, 1000)}.log'
 
 
 def log_config():
@@ -29,6 +29,10 @@ def reset_log():
 def print_log():
     with open(log_path, 'r') as f:
         print(f.read())
+
+
+def clear_temp_log():
+    os.remove(log_path)
 
 
 def save_log(file_name: str):
@@ -137,7 +141,7 @@ class Launcher:
 
         self.pre_process_mode = self.ZERO
         result_2 = self.solve(copy.deepcopy(matrix), file_name, False, False)
-        # self.plotter.add_data("pre_process_time", result_2[0], OurPlotter.PRE_PROC_TIME)
+        self.plotter.add_data("pre_process_time", result_2[0], OurPlotter.PRE_PROC_TIME)
         self.plotter.add_data("solver_low_performance", result_2[1], OurPlotter.SOLVER_TIME)
         self.plotter.add_data("memory_no_pre-process", result_2[2], OurPlotter.MEMORY_USAGE)
         self.plotter.add_data("Domain_size", result_2[4], OurPlotter.DIM)
@@ -145,7 +149,7 @@ class Launcher:
 
         self.pre_process_mode = requested_pre_process
         result_1 = self.solve(copy.deepcopy(matrix), file_name)
-        # self.plotter.add_data("pre_process_time", result_1[0], OurPlotter.PRE_PROC_TIME)
+        self.plotter.add_data("pre_process_time", result_1[0], OurPlotter.PRE_PROC_TIME)
         self.plotter.add_data("solver_performance", result_1[1], OurPlotter.SOLVER_TIME)
         self.plotter.add_data("memory_pre-process", result_1[2], OurPlotter.MEMORY_USAGE)
 
@@ -167,6 +171,7 @@ class Launcher:
             self.solve_file_number(k)
 
     def solve(self, matrix: list, file_name: str, save_result=True, log_MHS=True):
+        global pre_process
         M = len(matrix[0])
         N = len(matrix)
         print(f"Process file {file_name}, {self.pre_process_mode}")
@@ -207,4 +212,5 @@ class Launcher:
         if save_result:
             # print_log()
             save_log(file_name)
+        # clear_temp_log()
         return pre_proc_elapsed, solver_elapsed, problem_solver.max_memory, output, M, N

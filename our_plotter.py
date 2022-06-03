@@ -49,9 +49,10 @@ class OurPlotter:
             for k2 in e1.keys():
                 child2 = ET.SubElement(child1, k2)
                 for i, e3 in enumerate(e1[k2]):
-                    child3 = ET.SubElement(child2, f'{i}')
+                    child3 = ET.SubElement(child2, f'sample-{i}')
                     child3.text = str(e3)
         rough_string = ET.tostring(root, encoding='utf-8', method='xml')
+        print(rough_string)
         s = minidom.parseString(rough_string)
         file.write(s.toprettyxml(indent="\t"))
         file.close()
