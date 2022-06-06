@@ -58,7 +58,7 @@ class OurPlotter:
         file.close()
 
     def plot_data_to_compare(self, data_type, data_name1, data_name2, abscissa_name=None):
-        fig, axs = plt.subplots(4, figsize=(10, 7), sharex=True)
+        fig, axs = plt.subplots(5, figsize=(10, 7), sharex=True)
         plt.ioff()
         fig.suptitle(self.FOLDER[data_type])
         y1 = self.data[data_type][data_name1]
@@ -123,7 +123,13 @@ class OurPlotter:
         axs[3].plot(x, y2, label="Max_MHS_size")
         axs[3].legend()
 
-        axs[3].set_xlabel("Problem n°")
+        y1 = self.data[self.DIM]["MHS_found"]
+
+        axs[4].set_title("MHS found")
+        axs[4].plot(x, y1, label="Min_MHS_size")
+        axs[4].legend()
+
+        axs[4].set_xlabel("Problem n°")
 
         plt.tight_layout()
         plt.subplots_adjust(wspace=1, hspace=1)

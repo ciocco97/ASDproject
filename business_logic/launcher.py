@@ -148,6 +148,7 @@ class Launcher:
         self.plotter.add_data("Set_number", result_2[5], OurPlotter.DIM)
         self.plotter.add_data("Min_MHS_size", result_2[6], OurPlotter.MIN_MHS_SIZE)
         self.plotter.add_data("Max_MHS_size", result_2[7], OurPlotter.MAX_MHS_SIZE)
+        self.plotter.add_data("MHS_found", result_2[8], OurPlotter.DIM)
 
         self.pre_process_mode = requested_pre_process
         result_1 = self.solve(copy.deepcopy(matrix), file_name)
@@ -215,4 +216,4 @@ class Launcher:
             # print_log()
             save_log(file_name)
         # clear_temp_log()
-        return pre_proc_elapsed, solver_elapsed, problem_solver.max_memory, output, M, N, problem_solver.min_size, problem_solver.max_size
+        return pre_proc_elapsed, solver_elapsed, problem_solver.max_memory, output, M, N, problem_solver.min_size, problem_solver.max_size, len(problem_solver.output)
