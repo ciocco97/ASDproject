@@ -113,8 +113,8 @@ class Launcher:
                 pass
         if self.comparison and not self.file_path:  # the graph must be plotted only when it has been chosen to solve the files in one or more folders and to compare the results
             self.plotter.save_data()
-            # self.plotter.plot_data_to_compare(OurPlotter.SOLVER_TIME, "solver_performance", "solver_low_performance")
-            # self.plotter.plot_data_to_compare(OurPlotter.MEMORY_USAGE, "memory_pre-process", "memory_no_pre-process")
+            self.plotter.plot_data_to_compare(OurPlotter.SOLVER_TIME, "solver_performance", "solver_low_performance")
+            self.plotter.plot_data_to_compare(OurPlotter.MEMORY_USAGE, "memory_pre-process", "memory_no_pre-process")
 
     def performance_comparison(self):
         self.plotter.reset_data()
@@ -146,6 +146,8 @@ class Launcher:
         self.plotter.add_data("memory_no_pre-process", result_2[2], OurPlotter.MEMORY_USAGE)
         self.plotter.add_data("Domain_size", result_2[4], OurPlotter.DIM)
         self.plotter.add_data("Set_number", result_2[5], OurPlotter.DIM)
+        self.plotter.add_data("Min_MHS_size", result_2[6], OurPlotter.MIN_MHS_SIZE)
+        self.plotter.add_data("Max_MHS_size", result_2[7], OurPlotter.MAX_MHS_SIZE)
 
         self.pre_process_mode = requested_pre_process
         result_1 = self.solve(copy.deepcopy(matrix), file_name)
@@ -213,4 +215,4 @@ class Launcher:
             # print_log()
             save_log(file_name)
         # clear_temp_log()
-        return pre_proc_elapsed, solver_elapsed, problem_solver.max_memory, output, M, N
+        return pre_proc_elapsed, solver_elapsed, problem_solver.max_memory, output, M, N, problem_solver.min_size, problem_solver.max_size

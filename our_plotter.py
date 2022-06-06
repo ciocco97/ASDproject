@@ -58,7 +58,7 @@ class OurPlotter:
         file.close()
 
     def plot_data_to_compare(self, data_type, data_name1, data_name2, abscissa_name=None):
-        fig, axs = plt.subplots(3, figsize=(10, 7), sharex=True)
+        fig, axs = plt.subplots(4, figsize=(10, 7), sharex=True)
         plt.ioff()
         fig.suptitle(self.FOLDER[data_type])
         y1 = self.data[data_type][data_name1]
@@ -108,7 +108,22 @@ class OurPlotter:
         axs[2].plot(x, y1, label="Domain size")
         axs[2].plot(x, y2, label="Set number")
         axs[2].legend()
-        axs[2].set_xlabel("Problem n°")
+
+        y1 = self.data[self.MIN_MHS_SIZE]["Min_MHS_size"]
+        y2 = self.data[self.MAX_MHS_SIZE]["Max_MHS_size"]
+        while len(y2) > len(y1):
+            logging.warning("La lunghezza dei dati che si vogliono plottare e' diversa")
+            del y2[-1]
+        while len(y1) > len(y2):
+            logging.warning("La lunghezza dei dati che si vogliono plottare e' diversa")
+            del y1[-1]
+
+        axs[3].set_title("MHS size")
+        axs[3].plot(x, y1, label="Min_MHS_size")
+        axs[3].plot(x, y2, label="Max_MHS_size")
+        axs[3].legend()
+
+        axs[3].set_xlabel("Problem n°")
 
         plt.tight_layout()
         plt.subplots_adjust(wspace=1, hspace=1)

@@ -46,6 +46,8 @@ class Solver:
         self.out_of_time = False
         self.time_limit = None
 
+        self.max_size = self.min_size = 0
+
     def memory_fun(self):
         process = psutil.Process(os.getpid())
         while self.running:
@@ -111,10 +113,10 @@ class Solver:
                 delta.pop()
         self.end = time.time()
         self.running = False
-        max_size = min_size = 0
+        self.max_size = self.min_size = 0
         if len(self.output):
-            min_size = len(self.output[0])  # the first element is the smallest
-            max_size = len(self.output[-1])  # the last element is the biggest
+            self.min_size = len(self.output[0])  # the first element is the smallest
+            self.max_size = len(self.output[-1])  # the last element is the biggest
         resocont = ""
         if self.out_of_time:
             resocont += f"Time limit exceeded. Process not terminated in "
@@ -122,7 +124,7 @@ class Solver:
             resocont += f"Processing completed "
         logging.info(resocont + f"in {'{:e}'.format(self.end - self.start, 3)}s: {len(self.output)} MHS found")
         logging.info(f"Memory usage for this run: {abs(self.max_memory) / 10 ** 6}MB")
-        logging.info(f"Dimensions of the MHS: {max_size} max size, {min_size} min size")
+        logging.info(f"Dimensions of the MHS: {self.max_size} max size, {self.min_size} min size")
 
         return self.output
 
