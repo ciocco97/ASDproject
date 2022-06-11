@@ -1,4 +1,3 @@
-import logging
 from xml.dom import minidom
 
 import matplotlib.pyplot as plt
@@ -6,24 +5,19 @@ import xml.etree.cElementTree as ET
 
 
 class OurPlotter:
-    SOLVER_TIME = 0
-    PRE_PROC_TIME = 1
-    MEMORY_USAGE = 2
-    MIN_MHS_SIZE = 3
-    MAX_MHS_SIZE = 4
-    DIM = 5
+    ALONE = 0
+    NO_PRE_PROC = 1
+    PRE_PROC = 2
     FOLDER = {
-        SOLVER_TIME: "Solver_time",
-        PRE_PROC_TIME: "Pre-process_time",
-        MEMORY_USAGE: "Memory_usage",
-        MIN_MHS_SIZE: "Min_MHS_size",
-        MAX_MHS_SIZE: "Max_MHS_size",
-        DIM: "Dimensions_of_the_problem"
+        ALONE: "Stand_alone_statistics",
+        NO_PRE_PROC: "No_pre_proc_statistics",
+        PRE_PROC: "Pre_proc_statistics"
     }
 
-    def __init__(self):
+    def __init__(self, log_path):
         self.data = None
         self.reset_data()
+        self.log_path = log_path
 
     def reset_data(self):
         self.data = []
@@ -41,7 +35,7 @@ class OurPlotter:
             self.data[data_type][data_name].append(data)
 
     def save_data(self):
-        file = open("output.xml", "w")
+        file = open(self.log_path + "_statistics.xml", "w")
         d: dict = self.data
         root = ET.Element('output')
         for k1, e1 in enumerate(d):
@@ -52,87 +46,52 @@ class OurPlotter:
                     child3 = ET.SubElement(child2, f'sample-{i}')
                     child3.text = str(e3)
         rough_string = ET.tostring(root, encoding='utf-8', method='xml')
-        print(rough_string)
         s = minidom.parseString(rough_string)
         file.write(s.toprettyxml(indent="\t"))
         file.close()
 
-    def plot_data_to_compare(self, data_type, data_name1, data_name2, abscissa_name=None):
-        fig, axs = plt.subplots(5, figsize=(10, 7), sharex=True)
+    def plot_comparison(self):
+        fig, axs = plt.subplots(4, figsize=(10, 7), sharex=True)
         plt.ioff()
-        fig.suptitle(self.FOLDER[data_type])
-        y1 = self.data[data_type][data_name1]
-        y2 = self.data[data_type][data_name2]
-        while len(y1) > len(y2):
-            logging.warning("La lunghezza dei dati che si vogliono plottare e' diversa")
-            del self.data[data_type][data_name1][-1]
-        while len(y1) < len(y2):
-            logging.warning("La lunghezza dei dati che si vogliono plottare e' diversa")
-            del self.data[data_type][data_name2][-1]
-        if abscissa_name:
-            x = self.data[data_type][abscissa_name]
-        else:
-            x = range(0, max(len(y1), len(y2)))
+        fig.suptitle("Problem data")
+        ax_num = 0
+        for graph_name in self.data[self.ALONE].keys():
+            data = self.data[self.ALONE][graph_name]
+            axs[ax_num].set_title(graph_name)
+            x = range(0, len(data))
+            axs[ax_num].plot(x, data)
+            ax_num += 1
 
-        axs[0].plot(x, y1, label=data_name1)
-        axs[0].plot(x, y2, label=data_name2)
+        axs[ax_num - 1].set_xlabel("Problem n°")
+        self.adjust_and_save_plot(1)
 
-        # axs[1].plot(x, [((y2[i] - y1[i]) / y2[i] * 100 if y2[i] != 0 and y2[i] - y1[i] > 0 else 0) for i in x], label="y2 - y1")
-        axs[1].plot(x, [(y2[i] - y1[i]) / y2[i] * 100 for i in x], label="y2 - y1")
+        fig, axs = plt.subplots(8, figsize=(10, 7), sharex=True)
+        plt.ioff()
+        fig.suptitle("Comparison")
+        ax_num = 0
 
-        axs[0].set_title("Absolute values")
-        # axs[0].set_xlabel("Problem n°")
-        # axs[0].ylabel("Seconds")
-        # axs[0].grid()
-        axs[0].legend()
+        for graph_name in self.data[self.NO_PRE_PROC].keys():
+            y1 = self.data[self.NO_PRE_PROC][graph_name]
+            y2 = self.data[self.PRE_PROC][graph_name]
+            while len(y1) > len(y2):
+                del y1[-1]
+            while len(y2) > len(y1):
+                del y2[-1]
+            x = range(0, len(y1))
+            axs[ax_num].plot(x, y1, label=graph_name + " " + self.FOLDER[self.NO_PRE_PROC])
+            axs[ax_num].plot(x, y2, label=graph_name + " " + self.FOLDER[self.PRE_PROC])
+            axs[ax_num].legend()
+            ax_num += 1
+            axs[ax_num].set_title(graph_name + " difference")
+            axs[ax_num].plot(x, [(y1[i] - y2[i]) / y1[i] * 100 for i in x])
+            ax_num += 1
 
-        axs[1].set_title("Difference (%)")
-        # axs[1].set_xlabel("Problem n°")
-        # axs[1].ylabel("Seconds")
-        # axs[1].grid()
-        # axs[1].legend()
-        # plt.show()
+        self.adjust_and_save_plot(2)
 
-        y1 = self.data[self.DIM]["Domain_size"]
-        y2 = self.data[self.DIM]["Set_number"]
-        while len(y2) > len(y1):
-            logging.warning("La lunghezza dei dati che si vogliono plottare e' diversa")
-            del y2[-1]
-        while len(y1) > len(y2):
-            logging.warning("La lunghezza dei dati che si vogliono plottare e' diversa")
-            del y1[-1]
-
-        x = range(0, len(y1))
-
-        axs[2].set_title("Problem size")
-        axs[2].plot(x, y1, label="Domain size")
-        axs[2].plot(x, y2, label="Set number")
-        axs[2].legend()
-
-        y1 = self.data[self.MIN_MHS_SIZE]["Min_MHS_size"]
-        y2 = self.data[self.MAX_MHS_SIZE]["Max_MHS_size"]
-        while len(y2) > len(y1):
-            logging.warning("La lunghezza dei dati che si vogliono plottare e' diversa")
-            del y2[-1]
-        while len(y1) > len(y2):
-            logging.warning("La lunghezza dei dati che si vogliono plottare e' diversa")
-            del y1[-1]
-
-        axs[3].set_title("MHS size")
-        axs[3].plot(x, y1, label="Min_MHS_size")
-        axs[3].plot(x, y2, label="Max_MHS_size")
-        axs[3].legend()
-
-        y1 = self.data[self.DIM]["MHS_found"]
-
-        axs[4].set_title("MHS found")
-        axs[4].plot(x, y1, label="Min_MHS_size")
-        axs[4].legend()
-
-        axs[4].set_xlabel("Problem n°")
-
+    def adjust_and_save_plot(self, n: int):
         plt.tight_layout()
         plt.subplots_adjust(wspace=1, hspace=1)
 
-        plt.savefig("last_plot_experience_" + self.FOLDER[data_type] + ".png")
-        print(f"Graph saved in main folder: {'last_plot_experience_' + self.FOLDER[data_type] + '.png'}")
+        path = self.log_path + str(n) + "_graph.png"
+        plt.savefig(path)
+        print(f"Graph saved in main folder: {path}")

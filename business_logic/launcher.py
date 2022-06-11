@@ -69,7 +69,7 @@ class Launcher:
         self.file_path = None
         self.time_limit = None
         self.verbose = False
-        self.plotter = OurPlotter()
+        self.plotter = OurPlotter(log_path)
 
     def set_pre_process(self, mode: int):
         self.pre_process_mode = mode
@@ -113,8 +113,7 @@ class Launcher:
                 pass
         if self.comparison and not self.file_path:  # the graph must be plotted only when it has been chosen to solve the files in one or more folders and to compare the results
             self.plotter.save_data()
-            self.plotter.plot_data_to_compare(OurPlotter.SOLVER_TIME, "solver_performance", "solver_low_performance")
-            self.plotter.plot_data_to_compare(OurPlotter.MEMORY_USAGE, "memory_pre-process", "memory_no_pre-process")
+            self.plotter.plot_comparison()
 
     def performance_comparison(self):
         self.plotter.reset_data()
@@ -127,8 +126,7 @@ class Launcher:
         except KeyboardInterrupt:
             pass
         self.plotter.save_data()
-        self.plotter.plot_data_to_compare(OurPlotter.SOLVER_TIME, "solver_performance", "solver_low_performance")
-        self.plotter.plot_data_to_compare(OurPlotter.MEMORY_USAGE, "memory_pre-process", "memory_no_pre-process")
+        self.plotter.plot_comparison()
 
     def solve_and_compare(self, i):
         if i >= 0:
@@ -140,24 +138,12 @@ class Launcher:
         requested_pre_process = self.pre_process_mode
 
         self.pre_process_mode = self.ZERO
-        result_2 = self.solve(copy.deepcopy(matrix), file_name, False, False)
-        self.plotter.add_data("pre_process_time", result_2[0], OurPlotter.PRE_PROC_TIME)
-        self.plotter.add_data("solver_low_performance", result_2[1], OurPlotter.SOLVER_TIME)
-        self.plotter.add_data("memory_no_pre-process", result_2[2], OurPlotter.MEMORY_USAGE)
-        self.plotter.add_data("Domain_size", result_2[4], OurPlotter.DIM)
-        self.plotter.add_data("Set_number", result_2[5], OurPlotter.DIM)
-        self.plotter.add_data("Min_MHS_size", result_2[6], OurPlotter.MIN_MHS_SIZE)
-        self.plotter.add_data("Max_MHS_size", result_2[7], OurPlotter.MAX_MHS_SIZE)
-        self.plotter.add_data("MHS_found", result_2[8], OurPlotter.DIM)
+        result_0 = self.solve(copy.deepcopy(matrix), file_name, False, False)
+        self.to_plot(result_0, self.ZERO)
 
         self.pre_process_mode = requested_pre_process
         result_1 = self.solve(copy.deepcopy(matrix), file_name)
-        self.plotter.add_data("pre_process_time", result_1[0], OurPlotter.PRE_PROC_TIME)
-        self.plotter.add_data("solver_performance", result_1[1], OurPlotter.SOLVER_TIME)
-        self.plotter.add_data("memory_pre-process", result_1[2], OurPlotter.MEMORY_USAGE)
-
-        if result_1[3].__contains__(result_2[3]):
-            logging.info("Same results")
+        self.to_plot(result_1)
 
     def solve_file_number(self, n: int):
         matrix = self.parser.parse_file_number_n(n)
@@ -175,7 +161,7 @@ class Launcher:
 
     def solve(self, matrix: list, file_name: str, save_result=True, log_MHS=True):
         global pre_process
-        M = len(matrix[0])
+        M: int = len(matrix[0])
         N = len(matrix)
         print(f"Process file {file_name}, {self.pre_process_mode}")
         pre_proc_start = time.time()
@@ -216,4 +202,22 @@ class Launcher:
             # print_log()
             save_log(file_name)
         # clear_temp_log()
-        return pre_proc_elapsed, solver_elapsed, problem_solver.max_memory, output, M, N, problem_solver.min_size, problem_solver.max_size, len(problem_solver.output)
+        return M, N, len(output), pre_proc_elapsed, solver_elapsed, problem_solver.max_memory, problem_solver.min_size, problem_solver.max_size
+
+    def to_plot(self, result, n=1):
+        if n == self.ZERO:
+            self.plotter.add_data("solver_time", result[4], OurPlotter.NO_PRE_PROC)
+            self.plotter.add_data("solver_memory_used", result[5], OurPlotter.NO_PRE_PROC)
+            self.plotter.add_data("Max_MHS_size", result[7], OurPlotter.NO_PRE_PROC)
+            self.plotter.add_data("Number_of_MHS", result[2], OurPlotter.NO_PRE_PROC)
+
+        else:
+            self.plotter.add_data("Columns_number", result[0], OurPlotter.ALONE)
+            self.plotter.add_data("Rows_number", result[1], OurPlotter.ALONE)
+            self.plotter.add_data("Min_MHS_size", result[6], OurPlotter.ALONE)
+            self.plotter.add_data("pre-process_time", result[3], OurPlotter.ALONE)
+
+            self.plotter.add_data("solver_time", result[4], OurPlotter.PRE_PROC)
+            self.plotter.add_data("solver_memory_used", result[5], OurPlotter.PRE_PROC)
+            self.plotter.add_data("Max_MHS_size", result[7], OurPlotter.PRE_PROC)
+            self.plotter.add_data("Number_of_MHS", result[2], OurPlotter.PRE_PROC)
