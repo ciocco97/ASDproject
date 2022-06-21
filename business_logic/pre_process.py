@@ -1,6 +1,7 @@
 import time
 
 import logging
+from copy import copy
 
 
 class PreProcess:
@@ -49,6 +50,8 @@ class PreProcess:
         def row_sum(r: list) -> int:
             return sum(r)
 
+        original_matrix = copy(self.matrix_one_zero)
+        deleted_rows = []
         self.matrix_one_zero.sort(key=row_sum)
         self.del_row_indexes = []
 
