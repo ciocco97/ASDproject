@@ -68,13 +68,14 @@ class PreProcess:
                             # passare alla prossima riga.
                     if next_row:
                         break
-            for c in candidate.keys():
-                self.del_row_indexes.append(c + self.num_del_rows)
             for c in sorted(candidate, reverse=True):
+                deleted_rows.append(self.matrix_one_zero[c])
                 del self.matrix_one_zero[c]
                 self.num_del_rows += 1
             i += 1
         end = time.time()
+        for dr in deleted_rows:
+            self.del_row_indexes.append(original_matrix.index(dr))
         logging.info(
             f"Rows pre-process completed in {'{:e}'.format(end - start, 3)}s with {self.num_del_rows} removed rows")
         logging.info(f"Suppressed rows indexes {self.del_row_indexes}")
